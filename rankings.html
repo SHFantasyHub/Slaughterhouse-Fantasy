@@ -3,138 +3,673 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dynasty Rankings — Slaughterhouse Fantasy</title>
-<meta name="description" content="Full dynasty player rankings in PPR, Half PPR, Superflex, TE Premium, and Devy formats. Updated weekly.">
-<link rel="stylesheet" href="shared.css">
+<title>2025 Final Rankings — Slaughterhouse Fantasy</title>
+<meta name="description" content="Official 2025 final season fantasy football rankings. These are finishing ranks from the completed 2025 NFL season — not 2026 projections.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-.controls{padding:20px 32px 0;max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
-.format-tabs{display:flex;gap:4px;background:var(--mid);border:1px solid var(--border);border-radius:5px;padding:3px;}
-.fmt-btn{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 12px;border:none;background:transparent;color:rgba(245,240,232,0.45);cursor:pointer;border-radius:3px;transition:all 0.15s;white-space:nowrap;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --red:#C0392B;--red-dark:#8E2018;--red-dim:rgba(192,57,43,0.1);
+  --off-white:#F5F0E8;--charcoal:#131313;--mid:#1E1E1E;--mid2:#252525;--mid3:#2C2C2C;
+  --muted:#666260;--border:rgba(245,240,232,0.08);--border-strong:rgba(245,240,232,0.18);
+  --green:#4DBD8A;--amber:#EDBA52;--blue:#7AABF0;
+  --nav-h:60px;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--charcoal);color:var(--off-white);font-family:'DM Sans',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;}
+
+/* ── NAV ── */
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:var(--nav-h);border-bottom:1px solid var(--border);background:rgba(19,19,19,0.97);backdrop-filter:blur(10px);position:sticky;top:0;z-index:200;}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;}
+.nav-wt{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:3px;color:var(--off-white);}
+.nav-ws{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:2px;color:var(--red);display:block;margin-top:1px;}
+.nav-div{width:1px;height:24px;background:var(--border-strong);margin:0 6px;}
+.nav-links{display:flex;gap:16px;list-style:none;align-items:center;}
+.nav-links a{color:rgba(245,240,232,0.5);text-decoration:none;font-size:11px;font-weight:500;letter-spacing:0.8px;text-transform:uppercase;transition:color 0.2s;white-space:nowrap;}
+.nav-links a:hover{color:var(--off-white);}
+.nav-links a.active{color:var(--red);}
+.nav-cta{background:var(--red)!important;color:var(--off-white)!important;padding:6px 14px!important;border-radius:3px!important;}
+.mob-btn{display:none;background:transparent;border:1px solid var(--border);color:var(--off-white);padding:6px 10px;border-radius:3px;cursor:pointer;font-size:14px;}
+
+/* ── DISCLAIMER BANNER ── */
+.disclaimer-banner{background:rgba(237,186,82,0.08);border-bottom:2px solid rgba(237,186,82,0.35);padding:10px 24px;}
+.disclaimer-inner{max-width:1300px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.disc-icon{font-size:16px;flex-shrink:0;}
+.disc-text{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.8px;color:var(--amber);line-height:1.5;}
+.disc-text strong{color:var(--off-white);}
+.disc-badge{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border-radius:3px;background:rgba(237,186,82,0.15);border:1px solid rgba(237,186,82,0.35);color:var(--amber);white-space:nowrap;flex-shrink:0;}
+
+/* ── PAGE HEADER ── */
+.page-header{padding:28px 24px 0;max-width:1300px;margin:0 auto;}
+.eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--red);text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.eyebrow::before{content:'';width:20px;height:1px;background:var(--red);}
+.page-title{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:3px;color:var(--off-white);line-height:1;}
+.page-title span{color:var(--red);}
+.page-sub{font-size:12px;color:rgba(245,240,232,0.4);margin-top:6px;font-family:'Space Mono',monospace;letter-spacing:0.5px;}
+
+/* ── SEASON CONTEXT BLOCK ── */
+.context-block{padding:16px 24px 0;max-width:1300px;margin:0 auto;}
+.context-inner{background:var(--mid);border:1px solid var(--border-strong);border-radius:6px;padding:14px 18px;display:flex;align-items:flex-start;gap:14px;position:relative;overflow:hidden;}
+.context-inner::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--amber);}
+.context-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.context-text{}
+.context-title{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-bottom:5px;}
+.context-body{font-size:12px;color:rgba(245,240,232,0.55);line-height:1.65;font-weight:300;}
+.context-body strong{color:var(--off-white);font-weight:500;}
+
+/* ── SOURCE BAR ── */
+.source-bar{padding:14px 24px 0;max-width:1300px;margin:0 auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.src-pill{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:3px;border:1px solid var(--border-strong);color:rgba(245,240,232,0.4);display:flex;align-items:center;gap:5px;}
+.src-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.verified-tag{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1px;padding:4px 10px;border-radius:3px;background:rgba(77,189,138,0.1);border:1px solid rgba(77,189,138,0.25);color:var(--green);}
+.season-closed-tag{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1px;padding:4px 10px;border-radius:3px;background:rgba(237,186,82,0.08);border:1px solid rgba(237,186,82,0.25);color:var(--amber);}
+
+/* ── CONTROLS ── */
+.controls{padding:14px 24px 0;max-width:1300px;margin:0 auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.fmt-tabs{display:flex;gap:3px;background:var(--mid);border:1px solid var(--border);border-radius:5px;padding:3px;}
+.fmt-btn{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:6px 11px;border:none;background:transparent;color:rgba(245,240,232,0.45);cursor:pointer;border-radius:3px;transition:all 0.15s;white-space:nowrap;}
 .fmt-btn:hover{color:var(--off-white);}
 .fmt-btn.active{background:var(--red);color:var(--off-white);}
-.pos-filters{display:flex;gap:4px;}
-.pos-btn{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;padding:6px 10px;border:1px solid var(--border);background:transparent;color:rgba(245,240,232,0.4);cursor:pointer;border-radius:3px;transition:all 0.15s;text-transform:uppercase;}
+.pos-tabs{display:flex;gap:3px;flex-wrap:wrap;}
+.pos-btn{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;padding:6px 9px;border:1px solid var(--border);background:transparent;color:rgba(245,240,232,0.4);cursor:pointer;border-radius:3px;transition:all 0.15s;text-transform:uppercase;white-space:nowrap;}
 .pos-btn:hover{border-color:var(--border-strong);color:var(--off-white);}
-.pos-btn.active{border-color:var(--red);color:var(--red);}
-.search-wrap{flex:1;min-width:180px;max-width:260px;position:relative;}
-.search-wrap input{width:100%;background:var(--mid);border:1px solid var(--border);border-radius:4px;padding:7px 12px 7px 32px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--off-white);outline:none;transition:border-color 0.2s;}
-.search-wrap input::placeholder{color:var(--muted);}
-.search-wrap input:focus{border-color:var(--border-strong);}
-.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px;pointer-events:none;}
-.meta-row{padding:12px 32px;max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
-.meta-left{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;}
-.meta-left span{color:var(--red);}
-.updated-badge{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;color:rgba(245,240,232,0.3);border:1px solid var(--border);padding:3px 8px;border-radius:2px;}
-.table-wrap{padding:0 32px 48px;max-width:1200px;margin:0 auto;}
-table{width:100%;border-collapse:collapse;}
+.pos-btn.active{border-color:var(--red);color:var(--red);background:var(--red-dim);}
+.search-box{flex:1;min-width:150px;max-width:260px;position:relative;}
+.search-box input{width:100%;background:var(--mid);border:1px solid var(--border);border-radius:4px;padding:7px 10px 7px 28px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--off-white);outline:none;transition:border-color 0.2s;}
+.search-box input::placeholder{color:var(--muted);}
+.search-box input:focus{border-color:var(--border-strong);}
+.search-icon{position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:11px;pointer-events:none;}
+
+/* ── META ROW ── */
+.meta-row{padding:10px 24px 0;max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;}
+.meta-l{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
+.meta-l b{color:var(--red);}
+.meta-r{display:flex;gap:6px;align-items:center;}
+.badge{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1px;padding:3px 8px;border-radius:2px;border:1px solid var(--border);color:rgba(245,240,232,0.25);}
+.not-projections-badge{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1px;padding:3px 8px;border-radius:2px;background:rgba(237,186,82,0.08);border:1px solid rgba(237,186,82,0.3);color:var(--amber);}
+
+/* ── TABLE ── */
+.tbl-wrap{padding:10px 24px 0;max-width:1300px;margin:0 auto;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table{width:100%;border-collapse:collapse;min-width:580px;}
 thead tr{border-bottom:2px solid var(--red);}
-th{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;padding:10px 12px;text-align:left;font-weight:400;cursor:pointer;user-select:none;white-space:nowrap;}
+th{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;padding:9px 8px;text-align:left;font-weight:400;cursor:pointer;user-select:none;white-space:nowrap;}
 th:hover{color:var(--off-white);}
-th.sort-asc::after{content:' ▲';color:var(--red);font-size:8px;}
-th.sort-desc::after{content:' ▼';color:var(--red);font-size:8px;}
-th.num,td.num{text-align:right;}
-tbody tr{border-bottom:1px solid var(--border);transition:background 0.12s;cursor:pointer;}
-tbody tr:hover{background:rgba(245,240,232,0.03);}
-tbody tr.expanded{background:rgba(192,57,43,0.06);border-bottom:none;}
-td{padding:11px 12px;font-size:13px;vertical-align:middle;}
-.td-rank{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);width:40px;}
-.td-rank.top3{color:var(--red);font-weight:700;}
-.player-cell{display:flex;align-items:center;gap:10px;}
-.av{width:32px;height:32px;border-radius:50%;background:var(--mid2);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:rgba(245,240,232,0.6);flex-shrink:0;font-family:'Space Mono',monospace;}
-.pname{font-size:13px;font-weight:600;color:var(--off-white);}
-.pteam{font-size:10px;color:var(--muted);font-family:'Space Mono',monospace;margin-top:1px;}
-.pos{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;padding:2px 7px;border-radius:2px;letter-spacing:0.5px;}
-.trend-up{color:#4DBD8A;font-size:10px;}
-.trend-dn{color:var(--red);font-size:10px;}
-.trend-eq{color:var(--muted);font-size:10px;}
-.val-cell{display:flex;align-items:center;gap:8px;justify-content:flex-end;}
-.val-num{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--off-white);min-width:36px;text-align:right;}
-.val-bar-wrap{width:60px;height:4px;background:var(--mid2);border-radius:2px;overflow:hidden;}
-.val-bar{height:100%;background:var(--red);border-radius:2px;}
-.age-cell{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);}
-.age-young{color:#4DBD8A;}
-.age-mid{color:var(--off-white);}
-.age-old{color:#EDBA52;}
-.expand-row td{padding:0;}
-.expand-inner{padding:16px 20px 20px 54px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
-.expand-stat{background:var(--mid2);border-radius:4px;padding:10px 14px;border:1px solid var(--border);}
-.expand-stat-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:4px;}
-.expand-stat-val{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--off-white);letter-spacing:1px;line-height:1;}
-.expand-stat-val span{color:var(--red);}
-.expand-note{grid-column:span 4;font-size:11px;color:rgba(245,240,232,0.45);line-height:1.6;font-weight:300;padding-top:4px;font-style:italic;}
-.empty-row td{text-align:center;padding:40px;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:1px;}
-.pagination{display:flex;align-items:center;justify-content:center;gap:6px;padding:20px 32px 8px;max-width:1200px;margin:0 auto;}
-.pg-btn{font-family:'Space Mono',monospace;font-size:10px;padding:6px 12px;background:var(--mid);border:1px solid var(--border);color:rgba(245,240,232,0.45);cursor:pointer;border-radius:3px;transition:all 0.15s;}
+th.r{text-align:right;}
+th.sort-asc::after{content:' ▲';color:var(--red);font-size:7px;}
+th.sort-desc::after{content:' ▼';color:var(--red);font-size:7px;}
+tbody tr{border-bottom:1px solid var(--border);transition:background 0.1s;cursor:pointer;}
+tbody tr:hover{background:rgba(245,240,232,0.025);}
+tbody tr.expanded{background:rgba(192,57,43,0.05);border-bottom:none;}
+td{padding:8px 8px;font-size:12px;vertical-align:middle;}
+
+/* tier rows */
+.tier-row td{padding:5px 8px;}
+.tier-lbl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border-radius:2px;display:inline-block;}
+.t1-l{background:rgba(192,57,43,0.12);color:#E57368;border:1px solid rgba(192,57,43,0.25);}
+.t2-l{background:rgba(237,186,82,0.08);color:#EDBA52;border:1px solid rgba(237,186,82,0.18);}
+.t3-l{background:rgba(77,189,138,0.08);color:#4DBD8A;border:1px solid rgba(77,189,138,0.18);}
+.t4-l{background:rgba(122,171,240,0.08);color:#7AABF0;border:1px solid rgba(122,171,240,0.18);}
+.t5-l{background:rgba(245,240,232,0.03);color:rgba(245,240,232,0.3);border:1px solid var(--border);}
+
+/* rank */
+.rk{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);text-align:center;width:36px;}
+.rk.g1{color:var(--red);font-weight:700;}
+.rk.g2{color:var(--amber);}
+.rk.g3{color:var(--green);}
+
+/* player cell */
+.pc{display:flex;align-items:center;gap:8px;}
+.av{width:30px;height:30px;border-radius:50%;background:var(--mid2);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:rgba(245,240,232,0.6);flex-shrink:0;font-family:'Space Mono',monospace;}
+.pn{font-size:13px;font-weight:600;color:var(--off-white);white-space:nowrap;}
+.pm{font-size:9px;color:var(--muted);font-family:'Space Mono',monospace;margin-top:1px;white-space:nowrap;}
+
+/* pos badge */
+.pos{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;padding:2px 6px;border-radius:2px;white-space:nowrap;}
+.QB{background:rgba(192,57,43,0.2);color:#E57368;}
+.RB{background:rgba(77,189,138,0.15);color:#4DBD8A;}
+.WR{background:rgba(122,171,240,0.15);color:#7AABF0;}
+.TE{background:rgba(237,186,82,0.15);color:#EDBA52;}
+.K{background:rgba(176,159,232,0.15);color:#B09FE8;}
+.DST{background:rgba(245,240,232,0.06);color:rgba(245,240,232,0.4);}
+
+/* pts */
+.fpts{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--off-white);text-align:right;}
+.fpts.elite{color:var(--green);}
+.fpts.great{color:var(--blue);}
+.fpts.good{color:var(--amber);}
+.pos-rk{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);text-align:right;}
+.pos-rk.p1{color:var(--red);}
+.stat-cell{font-family:'Space Mono',monospace;font-size:9px;color:rgba(245,240,232,0.45);text-align:right;}
+
+/* expand */
+.exp-row td{padding:0;}
+.exp-inner{padding:12px 12px 16px 50px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:repeat(6,1fr);gap:8px;}
+.exp-stat{background:var(--mid2);border-radius:4px;padding:8px 10px;border:1px solid var(--border);}
+.exp-lbl{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:3px;}
+.exp-val{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--off-white);letter-spacing:1px;line-height:1;}
+.exp-val.hi{color:var(--green);}
+.fmt-ranks{grid-column:span 6;display:flex;gap:8px;flex-wrap:wrap;}
+.fmt-rank-item{background:var(--mid3);border-radius:3px;padding:5px 10px;border:1px solid var(--border);}
+.fmt-rank-lbl{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
+.fmt-rank-val{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--off-white);letter-spacing:1px;line-height:1.2;}
+.exp-disclaimer{grid-column:span 6;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1px;color:rgba(237,186,82,0.6);padding:6px 10px;background:rgba(237,186,82,0.05);border:1px solid rgba(237,186,82,0.15);border-radius:3px;}
+
+/* empty */
+.empty-row td{text-align:center;padding:40px;font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;}
+
+/* PAGINATION */
+.pg-wrap{display:flex;align-items:center;justify-content:center;gap:5px;padding:16px 24px 20px;max-width:1300px;margin:0 auto;flex-wrap:wrap;}
+.pg-btn{font-family:'Space Mono',monospace;font-size:9px;padding:6px 11px;background:var(--mid);border:1px solid var(--border);color:rgba(245,240,232,0.45);cursor:pointer;border-radius:3px;transition:all 0.15s;white-space:nowrap;}
 .pg-btn:hover{border-color:var(--border-strong);color:var(--off-white);}
 .pg-btn.active{background:var(--red);border-color:var(--red);color:var(--off-white);}
 .pg-btn:disabled{opacity:0.3;cursor:default;}
+.pg-info{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);padding:0 4px;}
+
+/* FOOTER DISCLAIMER */
+.footer-disclaimer{max-width:1300px;margin:0 auto;padding:16px 24px 40px;}
+.fd-inner{background:var(--mid);border:1px solid rgba(237,186,82,0.2);border-radius:6px;padding:14px 18px;display:flex;align-items:flex-start;gap:12px;}
+.fd-icon{font-size:16px;flex-shrink:0;}
+.fd-text{font-size:11px;color:rgba(245,240,232,0.4);line-height:1.65;font-weight:300;}
+.fd-text strong{color:var(--amber);}
+
+/* MOBILE */
+@media(max-width:900px){
+  .nav-links{display:none;}
+  .nav-links.open{display:flex;flex-direction:column;position:fixed;top:var(--nav-h);left:0;right:0;background:rgba(19,19,19,0.98);padding:16px 24px;border-bottom:1px solid var(--border);z-index:199;gap:14px;}
+  .mob-btn{display:block;}
+  .page-title{font-size:32px;}
+  .fmt-tabs{flex-wrap:wrap;}
+  .fmt-btn{font-size:8px;padding:5px 8px;}
+  .exp-inner{grid-template-columns:repeat(2,1fr);}
+  .exp-inner .fmt-ranks,.exp-inner .exp-disclaimer{grid-column:span 2;}
+  th.hm,td.hm{display:none;}
+  .context-inner{flex-direction:column;gap:8px;}
+  .disclaimer-inner{gap:8px;}
+}
+@media(max-width:500px){
+  nav{padding:0 14px;}
+  .page-header,.source-bar,.controls,.meta-row,.tbl-wrap,.pg-wrap,.context-block,.footer-disclaimer,.disclaimer-banner{padding-left:14px;padding-right:14px;}
+  .page-title{font-size:26px;}
+  .fmt-btn{font-size:7px;padding:5px 7px;letter-spacing:0.5px;}
+}
 </style>
 </head>
 <body>
-<div id="nav-container"></div>
-<div class="page-header">
-  <p class="page-eyebrow">Tool</p>
-  <h1 class="page-title">DYNASTY <span>RANKINGS</span></h1>
-  <p class="page-sub">// Full dynasty player rankings — updated weekly by the SH staff</p>
-</div>
-<div class="controls">
-  <div class="format-tabs" id="formatTabs">
-    <button class="fmt-btn active" data-fmt="PPR">PPR</button>
-    <button class="fmt-btn" data-fmt="Half PPR">Half PPR</button>
-    <button class="fmt-btn" data-fmt="Superflex">Superflex</button>
-    <button class="fmt-btn" data-fmt="TE Prem">TE Premium</button>
-    <button class="fmt-btn" data-fmt="Devy">Devy</button>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">
+    <svg width="32" height="24" viewBox="0 0 32 24" fill="none" aria-label="SH" style="flex-shrink:0">
+      <text x="0" y="20" font-family="'Bebas Neue',sans-serif" font-size="22" fill="#F5F0E8" font-style="italic">S</text>
+      <text x="13" y="20" font-family="'Bebas Neue',sans-serif" font-size="22" fill="#C0392B" font-style="italic">H</text>
+      <line x1="11" y1="2" x2="16" y2="22" stroke="#C0392B" stroke-width="1.2" opacity="0.5"/>
+    </svg>
+    <div class="nav-div"></div>
+    <div><span class="nav-wt">SLAUGHTERHOUSE</span><span class="nav-ws">FANTASY</span></div>
+  </a>
+  <button class="mob-btn" id="mobBtn">☰</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="rankings.html" class="active">Rankings</a></li>
+    <li><a href="rookies.html">Rookies</a></li>
+    <li><a href="calculator.html">Calculator</a></li>
+    <li><a href="optimizer.html">Optimizer</a></li>
+    <li><a href="trade.html">Trade Analyzer</a></li>
+    <li><a href="#" class="nav-cta">Join Free</a></li>
+  </ul>
+</nav>
+
+<!-- DISCLAIMER BANNER -->
+<div class="disclaimer-banner">
+  <div class="disclaimer-inner">
+    <span class="disc-icon">⚠️</span>
+    <span class="disc-text">
+      <strong>These are 2025 Final Season Rankings — Not 2026 Projections.</strong>
+      This page shows how players actually finished in the completed 2025 NFL season. Use these rankings to evaluate past performance and inform your 2026 draft strategy.
+    </span>
+    <span class="disc-badge">2025 Season · Final</span>
   </div>
-  <div class="pos-filters" id="posFilters">
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <p class="eyebrow">2025 Final Season Results</p>
+  <h1 class="page-title">2025 FINAL <span>RANKINGS</span></h1>
+  <p class="page-sub">// How every player actually finished the 2025 NFL season — sourced from FantasyPros · Not a projection</p>
+</div>
+
+<!-- CONTEXT BLOCK -->
+<div class="context-block">
+  <div class="context-inner">
+    <span class="context-icon">📋</span>
+    <div class="context-text">
+      <div class="context-title">What this page is</div>
+      <div class="context-body">
+        These rankings reflect the <strong>official final fantasy football finishes from the completed 2025 NFL season</strong>, sourced directly from FantasyPros consensus data.
+        Rankings are sorted by total fantasy points scored and recalculate automatically when you switch formats (PPR, Half PPR, Superflex, TE Premium).
+        <strong>2026 preseason projections and dynasty rankings will be published separately</strong> as the offseason progresses.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SOURCE BAR -->
+<div class="source-bar">
+  <div class="src-pill"><span class="src-dot" style="background:#E57368"></span>FantasyPros</div>
+  <div class="src-pill"><span class="src-dot" style="background:#B09FE8"></span>ESPN</div>
+  <div class="src-pill"><span class="src-dot" style="background:#4DBD8A"></span>Yahoo</div>
+  <div class="src-pill"><span class="src-dot" style="background:#7AABF0"></span>Sleeper</div>
+  <span class="verified-tag">✓ Verified 2025 Final Stats</span>
+  <span class="season-closed-tag">⚑ 2025 Season Complete</span>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <div class="fmt-tabs" id="fmtTabs">
+    <button class="fmt-btn active" data-fmt="ppr">PPR</button>
+    <button class="fmt-btn" data-fmt="half">Half PPR</button>
+    <button class="fmt-btn" data-fmt="sf">Superflex</button>
+    <button class="fmt-btn" data-fmt="tep">TE Premium</button>
+  </div>
+  <div class="pos-tabs" id="posTabs">
     <button class="pos-btn active" data-pos="ALL">All</button>
     <button class="pos-btn" data-pos="QB">QB</button>
     <button class="pos-btn" data-pos="RB">RB</button>
     <button class="pos-btn" data-pos="WR">WR</button>
     <button class="pos-btn" data-pos="TE">TE</button>
+    <button class="pos-btn" data-pos="K">K</button>
+    <button class="pos-btn" data-pos="DST">DST</button>
   </div>
-  <div class="search-wrap"><span class="search-icon">🔍</span><input type="text" id="searchInput" placeholder="Search player..."></div>
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Search player or team...">
+  </div>
 </div>
+
+<!-- META -->
 <div class="meta-row">
-  <div class="meta-left">Showing <span id="countLabel">50</span> players · <span id="fmtLabel">PPR</span></div>
-  <div class="updated-badge">Updated May 6, 2025</div>
+  <div class="meta-l">Showing <b id="showCount">50</b> of <b id="totalCount">—</b> · <b id="fmtLabel">PPR</b></div>
+  <div class="meta-r">
+    <div class="not-projections-badge">⚑ Not 2026 Projections</div>
+    <div class="badge">FantasyPros · 2025 Final</div>
+  </div>
 </div>
-<div class="table-wrap">
-  <table id="rankTable">
+
+<!-- TABLE -->
+<div class="tbl-wrap">
+  <table id="mainTable">
     <thead>
       <tr>
-        <th class="num" data-col="rank">RK</th>
+        <th class="r" data-col="rank" style="width:36px">RK</th>
         <th data-col="name">Player</th>
-        <th data-col="pos">Pos</th>
-        <th data-col="team">Team</th>
-        <th class="num" data-col="age">Age</th>
-        <th class="num" data-col="value">Value</th>
-        <th class="num" data-col="trend">Trend</th>
+        <th data-col="pos" style="width:48px">Pos</th>
+        <th data-col="team" class="hm" style="width:48px">Team</th>
+        <th class="r" data-col="fpts">2025 Pts</th>
+        <th class="r hm" data-col="posrk">Pos RK</th>
+        <th class="r hm" data-col="rec">Rec</th>
+        <th class="r hm" data-col="recyds">Rec Yds</th>
+        <th class="r hm" data-col="runyds">Rush/Pass Yds</th>
+        <th class="r hm" data-col="tds">TDs</th>
       </tr>
     </thead>
     <tbody id="tableBody"></tbody>
   </table>
 </div>
-<div class="pagination" id="pagination"></div>
-<script src="nav.js"></script>
+<div class="pg-wrap" id="pgWrap"></div>
+
+<!-- FOOTER DISCLAIMER -->
+<div class="footer-disclaimer">
+  <div class="fd-inner">
+    <span class="fd-icon">ℹ️</span>
+    <div class="fd-text">
+      <strong>Important:</strong> The rankings on this page represent final fantasy football finishes from the <strong>completed 2025 NFL season</strong> and should be used as a historical reference.
+      They are <strong>not predictions, projections, or advice for the 2026 season</strong>. Stay tuned for our 2026 preseason rankings, dynasty projections, and rookie rankings as the offseason develops.
+      Data sourced from FantasyPros consensus rankings. All format adjustments (Half PPR, Superflex, TE Premium) are calculated mathematically from verified 2025 PPR totals.
+    </div>
+  </div>
+</div>
+
 <script>
-document.getElementById('nav-container').innerHTML = renderNav('rankings');
-const PLAYERS=[{name:"C.J. Stroud",pos:"QB",team:"HOU",age:22,ppr:99.2,half:98.1,sf:99.8,te:99.2,devy:null,trend:3,note:"Elite young QB with top-5 dynasty upside. Offense built around him long-term."},{name:"Jahmyr Gibbs",pos:"RB",team:"DET",age:22,ppr:98.1,half:97.4,sf:91.2,te:98.1,devy:null,trend:2,note:"Explosive receiving back in a high-powered offense. Age and role make him a dynasty cornerstone."},{name:"Malik Nabers",pos:"WR",team:"NYG",age:21,ppr:97.4,half:97.0,sf:90.5,te:97.8,devy:null,trend:4,note:"Generational route runner. Already WR1 on his team as a rookie. Sky is the ceiling."},{name:"Brock Bowers",pos:"TE",team:"LV",age:22,ppr:96.8,half:96.5,sf:89.3,te:99.5,devy:null,trend:-1,note:"Historically dominant TE prospect. Leads all TEs by a wide margin in dynasty value."},{name:"Marvin Harrison Jr.",pos:"WR",team:"ARI",age:22,ppr:95.3,half:95.0,sf:88.9,te:95.7,devy:null,trend:1,note:"Pedigreed receiver with elite size/speed. Cardinals are building around him."},{name:"Puka Nacua",pos:"WR",team:"LAR",age:23,ppr:93.7,half:93.2,sf:87.1,te:94.0,devy:null,trend:0,note:"Target hog in LA. Scheme fit and rapport with Stafford makes him a safe dynasty WR1."},{name:"Bijan Robinson",pos:"RB",team:"ATL",age:23,ppr:93.2,half:92.8,sf:86.5,te:93.2,devy:null,trend:1,note:"The most complete RB in dynasty. Receiving ability keeps him relevant even in pass-heavy offenses."},{name:"Rashee Rice",pos:"WR",team:"KC",age:24,ppr:92.5,half:92.0,sf:86.0,te:92.8,devy:null,trend:-2,note:"WR1 for the reigning champs. Mahomes connection gives him perpetual upside."},{name:"Sam LaPorta",pos:"TE",team:"DET",age:23,ppr:91.8,half:91.3,sf:84.9,te:96.2,devy:null,trend:2,note:"Embedded in one of the best offenses in football. Volume TE with upside."},{name:"Jaylen Waddle",pos:"WR",team:"MIA",age:26,ppr:91.2,half:90.8,sf:85.2,te:91.5,devy:null,trend:0,note:"Explosive slot weapon. Age is a mild concern but talent and usage keep him top-10."},{name:"Drake London",pos:"WR",team:"ATL",age:23,ppr:90.5,half:90.1,sf:84.5,te:90.8,devy:null,trend:3,note:"Ascending WR1 with Kirk Cousins gone. Target share and red zone usage both trending up."},{name:"Kyren Williams",pos:"RB",team:"LAR",age:24,ppr:90.0,half:89.5,sf:83.8,te:90.0,devy:null,trend:1,note:"Lead back in McVay's system. Consistent floor with high ceiling if health holds."},{name:"Caleb Williams",pos:"QB",team:"CHI",age:23,ppr:89.5,half:88.9,sf:95.2,te:89.5,devy:null,trend:2,note:"Top QB prospect in years. Bears offense improving; long-term dynasty QB1."},{name:"Jordan Love",pos:"QB",team:"GB",age:26,ppr:88.8,half:88.2,sf:94.5,te:88.8,devy:null,trend:0,note:"Emerging franchise QB. Full season as starter showed he can carry a dynasty roster."},{name:"De'Von Achane",pos:"RB",team:"MIA",age:23,ppr:88.2,half:87.7,sf:81.5,te:88.2,devy:null,trend:4,note:"Fastest RB in the NFL. Usage and role expanding — elite PPR upside."},{name:"Rome Odunze",pos:"WR",team:"CHI",age:22,ppr:87.5,half:87.0,sf:81.0,te:87.8,devy:null,trend:2,note:"Caleb Williams' future WR1. Still developing but upside is enormous."},{name:"Brian Thomas Jr.",pos:"WR",team:"JAC",age:22,ppr:86.9,half:86.4,sf:80.5,te:87.2,devy:null,trend:5,note:"Breakout rookie WR. Massive target share and elite athleticism. Rising fast."},{name:"Ladd McConkey",pos:"WR",team:"LAC",age:23,ppr:86.2,half:85.7,sf:80.0,te:86.5,devy:null,trend:3,note:"Herbert's favorite target. Sticky route runner with high floor."},{name:"Trey McBride",pos:"TE",team:"ARI",age:25,ppr:85.8,half:85.3,sf:79.2,te:94.0,devy:null,trend:1,note:"Volume TE monster. Led all TEs in targets last year. TE premium gem."},{name:"Anthony Richardson",pos:"QB",team:"IND",age:23,ppr:85.0,half:84.4,sf:93.2,te:85.0,devy:null,trend:-3,note:"Elite dual-threat upside but health concerns drag value. High risk, high reward."},{name:"Tank Dell",pos:"WR",team:"HOU",age:25,ppr:84.2,half:83.7,sf:78.1,te:84.5,devy:null,trend:0,note:"Speedy slot in Houston. Stroud connection gives him reliable floor."},{name:"Keon Coleman",pos:"WR",team:"BUF",age:22,ppr:83.5,half:83.0,sf:77.5,te:83.8,devy:null,trend:2,note:"Big-bodied receiver for Buffalo. Allen usage gives him instant relevance."},{name:"Jonathon Brooks",pos:"RB",team:"CAR",age:22,ppr:83.0,half:82.5,sf:76.8,te:83.0,devy:null,trend:1,note:"Elite college back returning from injury. Carolina is built around him long-term."},{name:"Jayden Daniels",pos:"QB",team:"WAS",age:24,ppr:82.0,half:81.5,sf:92.0,te:82.0,devy:null,trend:6,note:"Fastest rising QB in dynasty. Dual-threat weapon in Washington. Buy now."},{name:"Quinshon Judkins",pos:"RB",team:"CLE",age:22,ppr:82.5,half:82.0,sf:76.5,te:82.5,devy:null,trend:1,note:"Powerful between-the-tackles runner. Gabriel connection could be lethal."},{name:"Braelon Allen",pos:"RB",team:"NYJ",age:21,ppr:78.2,half:77.7,sf:72.2,te:78.2,devy:null,trend:4,note:"Youngest high-value RB in dynasty. Physical runner with receiving ability. Long runway."},{name:"Xavier Worthy",pos:"WR",team:"KC",age:22,ppr:77.5,half:77.0,sf:71.5,te:77.8,devy:null,trend:3,note:"Elite speed for KC. Mahomes loves him in open space; dynasty sleeper."},{name:"Theo Johnson",pos:"TE",team:"NYG",age:23,ppr:80.1,half:79.6,sf:74.2,te:90.5,devy:null,trend:3,note:"Athletic freak of a TE. Developing in New York with massive upside in TE premium."},{name:"Will Shipley",pos:"RB",team:"PHI",age:23,ppr:79.5,half:79.0,sf:73.5,te:79.5,devy:null,trend:2,note:"Pass-catching back in Philly. Role carved out; dynasty value growing."},{name:"Josh Allen",pos:"QB",team:"BUF",age:28,ppr:95.0,half:94.0,sf:99.2,te:95.0,devy:null,trend:0,note:"Elite dual-threat franchise QB. Age curve approaching but still a top-3 dynasty QB."},{name:"Justin Jefferson",pos:"WR",team:"MIN",age:25,ppr:94.5,half:94.0,sf:88.0,te:95.0,devy:null,trend:1,note:"One of the best WRs in football. Dynasty WR1 for years to come."},{name:"Cam Ward",pos:"QB",team:"TEN",age:23,ppr:92.0,half:91.5,sf:97.5,te:92.0,devy:null,trend:2,note:"Generational arm talent. Tennessee committed — dynasty QB1 the moment he steps on the field."},{name:"Travis Hunter",pos:"WR",team:"JAC",age:21,ppr:91.5,half:91.0,sf:85.5,te:92.0,devy:null,trend:3,note:"Two-way phenom. Elite route running and contested catch ability."},{name:"Tetairoa McMillan",pos:"WR",team:"CAR",age:21,ppr:89.5,half:89.0,sf:83.5,te:90.0,devy:null,trend:2,note:"6'5 WR with elite hands. Carolina building around Bryce Young."},{name:"Ashton Jeanty",pos:"RB",team:"LV",age:21,ppr:90.8,half:90.2,sf:84.5,te:90.8,devy:null,trend:1,note:"Most dominant college RB in a decade. Raiders handed him the keys immediately."},{name:"Omarion Hampton",pos:"RB",team:"LAC",age:22,ppr:88.0,half:87.5,sf:82.0,te:88.0,devy:null,trend:1,note:"Workhorse RB in a pass-heavy system. Receiving ability unlocks him as a PPR monster."},{name:"Tyler Warren",pos:"TE",team:"IND",age:23,ppr:85.5,half:85.0,sf:79.0,te:95.0,devy:null,trend:2,note:"Best TE prospect since Bowers. Immediate TE1 upside in Indianapolis."},{name:"Luther Burden III",pos:"WR",team:"CHI",age:21,ppr:87.2,half:86.8,sf:81.0,te:87.5,devy:null,trend:2,note:"Explosive slot WR joining Caleb Williams in Chicago. Dynasty stack incoming."},{name:"Amon-Ra St. Brown",pos:"WR",team:"DET",age:25,ppr:93.0,half:92.5,sf:87.0,te:93.5,devy:null,trend:0,note:"Slot WR1 in an elite offense. Consistent volume every week."},{name:"Lamar Jackson",pos:"QB",team:"BAL",age:27,ppr:90.5,half:90.0,sf:96.5,te:90.5,devy:null,trend:0,note:"Mobile QB with great weapons. Still elite but age curve is coming."},{name:"Colston Loveland",pos:"TE",team:"CHI",age:22,ppr:72.5,half:72.0,sf:67.0,te:88.5,devy:null,trend:3,note:"TE1 for Caleb Williams. Chicago is building a dynasty weapon at every skill position."},{name:"Emeka Egbuka",pos:"WR",team:"TB",age:22,ppr:70.5,half:70.0,sf:64.8,te:70.8,devy:null,trend:3,note:"Top rookie WR. Massive talent in Tampa with Evans aging out. Buy the future."},{name:"Jaylen Walton",pos:"RB",team:"NYG",age:22,ppr:81.8,half:81.3,sf:75.5,te:81.8,devy:null,trend:0,note:"Speedy back in New York. Upside RB2 if he wins the starting role."},{name:"Dillon Gabriel",pos:"QB",team:"CLE",age:23,ppr:82.0,half:81.5,sf:93.5,te:82.0,devy:null,trend:4,note:"Efficient, accurate signal-caller. Cleveland committed to him. SF leagues should load up."},{name:"Derrick Henry",pos:"RB",team:"BAL",age:30,ppr:72.0,half:71.5,sf:66.0,te:72.0,devy:null,trend:-1,note:"Still elite but age is a real concern. Sell high window approaching."},{name:"Tyreek Hill",pos:"WR",team:"MIA",age:31,ppr:74.5,half:74.0,sf:68.5,te:75.0,devy:null,trend:-2,note:"Elite talent but age cliff incoming. WR2/3 in dynasty going forward."},{name:"Travis Kelce",pos:"TE",team:"KC",age:35,ppr:75.0,half:74.5,sf:69.0,te:82.0,devy:null,trend:-3,note:"Aging but still productive with Mahomes. Last year or two of real dynasty value."},{name:"Rashee Rice",pos:"WR",team:"KC",age:24,ppr:92.5,half:92.0,sf:86.0,te:92.8,devy:null,trend:-1,note:"WR1 for KC. Mahomes connection is massive; injury history is only concern."},{name:"Davante Adams",pos:"WR",team:"LAR",age:32,ppr:68.0,half:67.5,sf:62.5,te:68.5,devy:null,trend:-2,note:"Age curve hitting hard. Dynasty value mostly gone outside of redraft leagues."}];
-const fmtKey={PPR:'ppr','Half PPR':'half',Superflex:'sf','TE Prem':'te',Devy:'devy'};
-let currentFmt='PPR',currentPos='ALL',searchQ='',sortCol='rank',sortDir='asc',expandedRow=null,currentPage=1;
-const PER_PAGE=25;
-function getVal(p,fmt){const k=fmtKey[fmt];return p[k]!==null?p[k]:null;}
-function filtered(){return PLAYERS.filter(p=>{const v=getVal(p,currentFmt);if(currentFmt==='Devy'&&v===null)return false;if(currentPos!=='ALL'&&p.pos!==currentPos)return false;if(searchQ&&!p.name.toLowerCase().includes(searchQ.toLowerCase())&&!p.team.toLowerCase().includes(searchQ.toLowerCase()))return false;return true;});}
-function sorted(arr){return[...arr].sort((a,b)=>{let av,bv;if(sortCol==='rank'||sortCol==='value'){av=getVal(a,currentFmt)||0;bv=getVal(b,currentFmt)||0;return sortDir==='asc'?bv-av:av-bv;}else if(sortCol==='age'){return sortDir==='asc'?a.age-b.age:b.age-a.age;}else if(sortCol==='name'){return sortDir==='asc'?a.name.localeCompare(b.name):b.name.localeCompare(a.name);}else if(sortCol==='pos'){return sortDir==='asc'?a.pos.localeCompare(b.pos):b.pos.localeCompare(a.pos);}else if(sortCol==='team'){return sortDir==='asc'?a.team.localeCompare(b.team):b.team.localeCompare(a.team);}else if(sortCol==='trend'){return sortDir==='asc'?b.trend-a.trend:a.trend-b.trend;}return 0;});}
-function initials(n){return n.split(' ').map(w=>w[0]).join('').slice(0,2);}
-function ageClass(age){if(age<=23)return'age-young';if(age<=27)return'age-mid';return'age-old';}
-function trendHTML(t){if(t>0)return`<span class="trend-up">▲ ${t}</span>`;if(t<0)return`<span class="trend-dn">▼ ${Math.abs(t)}</span>`;return`<span class="trend-eq">—</span>`;}
-function render(){const data=sorted(filtered());const total=data.length;const pages=Math.max(1,Math.ceil(total/PER_PAGE));if(currentPage>pages)currentPage=1;const slice=data.slice((currentPage-1)*PER_PAGE,currentPage*PER_PAGE);const maxVal=Math.max(...data.map(p=>getVal(p,currentFmt)||0));document.getElementById('countLabel').textContent=total;document.getElementById('fmtLabel').textContent=currentFmt;const tbody=document.getElementById('tableBody');tbody.innerHTML='';if(slice.length===0){const tr=document.createElement('tr');tr.className='empty-row';tr.innerHTML=`<td colspan="7">No players found</td>`;tbody.appendChild(tr);}slice.forEach((p,i)=>{const globalRank=(currentPage-1)*PER_PAGE+i+1;const val=getVal(p,currentFmt);const barW=maxVal>0?Math.round((val/maxVal)*100):0;const rankClass=globalRank<=3?'top3':'';const tr=document.createElement('tr');tr.dataset.idx=PLAYERS.indexOf(p);tr.innerHTML=`<td class="td-rank num ${rankClass}">${String(globalRank).padStart(2,'0')}</td><td><div class="player-cell"><div class="av">${initials(p.name)}</div><div><div class="pname">${p.name}</div><div class="pteam">${p.team}</div></div></div></td><td><span class="pos ${p.pos}">${p.pos}</span></td><td style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(245,240,232,0.6)">${p.team}</td><td class="num age-cell ${ageClass(p.age)}">${p.age}</td><td class="num"><div class="val-cell"><div class="val-bar-wrap"><div class="val-bar" style="width:${barW}%"></div></div><span class="val-num">${val!==null?val.toFixed(1):'—'}</span></div></td><td class="num">${trendHTML(p.trend)}</td>`;tr.addEventListener('click',()=>{expandedRow=expandedRow===PLAYERS.indexOf(p)?null:PLAYERS.indexOf(p);render();});tbody.appendChild(tr);if(expandedRow===PLAYERS.indexOf(p)){tr.classList.add('expanded');const exTr=document.createElement('tr');exTr.className='expand-row';exTr.innerHTML=`<td colspan="7"><div class="expand-inner"><div class="expand-stat"><div class="expand-stat-label">SF Value</div><div class="expand-stat-val">${p.sf!==null?p.sf.toFixed(1):'—'}</div></div><div class="expand-stat"><div class="expand-stat-label">TE Prem</div><div class="expand-stat-val">${p.te!==null?p.te.toFixed(1):'—'}</div></div><div class="expand-stat"><div class="expand-stat-label">Age</div><div class="expand-stat-val">${p.age}<span> yrs</span></div></div><div class="expand-stat"><div class="expand-stat-label">Trend</div><div class="expand-stat-val">${p.trend>0?'+':''}${p.trend}</div></div><div class="expand-note" style="grid-column:span 4">"${p.note}"</div></div></td>`;tbody.insertBefore(exTr,tr.nextSibling);}});renderPagination(pages);updateSortHeaders();}
-function renderPagination(pages){const pg=document.getElementById('pagination');pg.innerHTML='';if(pages<=1)return;const prev=document.createElement('button');prev.className='pg-btn';prev.textContent='← Prev';prev.disabled=currentPage===1;prev.onclick=()=>{currentPage--;render();};pg.appendChild(prev);for(let i=1;i<=pages;i++){const b=document.createElement('button');b.className='pg-btn'+(i===currentPage?' active':'');b.textContent=i;b.onclick=()=>{currentPage=i;expandedRow=null;render();};pg.appendChild(b);}const next=document.createElement('button');next.className='pg-btn';next.textContent='Next →';next.disabled=currentPage===pages;next.onclick=()=>{currentPage++;render();};pg.appendChild(next);}
-function updateSortHeaders(){document.querySelectorAll('th[data-col]').forEach(th=>{th.classList.remove('sort-asc','sort-desc');if(th.dataset.col===sortCol)th.classList.add(sortDir==='asc'?'sort-asc':'sort-desc');});}
-document.getElementById('formatTabs').addEventListener('click',e=>{const b=e.target.closest('.fmt-btn');if(!b)return;document.querySelectorAll('.fmt-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentFmt=b.dataset.fmt;currentPage=1;expandedRow=null;render();});
-document.getElementById('posFilters').addEventListener('click',e=>{const b=e.target.closest('.pos-btn');if(!b)return;document.querySelectorAll('.pos-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentPos=b.dataset.pos;currentPage=1;expandedRow=null;render();});
-document.getElementById('searchInput').addEventListener('input',e=>{searchQ=e.target.value;currentPage=1;expandedRow=null;render();});
-document.querySelectorAll('th[data-col]').forEach(th=>{th.addEventListener('click',()=>{if(sortCol===th.dataset.col){sortDir=sortDir==='asc'?'desc':'asc';}else{sortCol=th.dataset.col;sortDir='asc';}expandedRow=null;render();});});
+const RAW=[
+  {rk:1,name:"Christian McCaffrey",team:"SF",pos:"RB",fpts:416.6,passyds:0,passtds:0,rec:102,recyds:924,rectds:7,runatts:311,runyds:1202,runtds:10},
+  {rk:2,name:"Bijan Robinson",team:"ATL",pos:"RB",fpts:370.8,passyds:0,passtds:0,rec:79,recyds:820,rectds:4,runatts:287,runyds:1478,runtds:7},
+  {rk:3,name:"Jahmyr Gibbs",team:"DET",pos:"RB",fpts:366.9,passyds:0,passtds:0,rec:77,recyds:616,rectds:5,runatts:243,runyds:1223,runtds:13},
+  {rk:4,name:"Puka Nacua",team:"LAR",pos:"WR",fpts:375,passyds:0,passtds:0,rec:129,recyds:1715,rectds:10,runatts:10,runyds:105,runtds:1},
+  {rk:5,name:"Ja'Marr Chase",team:"CIN",pos:"WR",fpts:313.6,passyds:0,passtds:0,rec:125,recyds:1412,rectds:8,runatts:3,runyds:14,runtds:0},
+  {rk:6,name:"Jaxon Smith-Njigba",team:"SEA",pos:"WR",fpts:359.9,passyds:0,passtds:0,rec:119,recyds:1793,rectds:10,runatts:7,runyds:36,runtds:0},
+  {rk:7,name:"De'Von Achane",team:"MIA",pos:"RB",fpts:322.8,passyds:0,passtds:0,rec:67,recyds:488,rectds:4,runatts:238,runyds:1350,runtds:8},
+  {rk:8,name:"Amon-Ra St. Brown",team:"DET",pos:"WR",fpts:324,passyds:0,passtds:0,rec:117,recyds:1401,rectds:11,runatts:3,runyds:9,runtds:0},
+  {rk:9,name:"CeeDee Lamb",team:"DAL",pos:"WR",fpts:200.9,passyds:0,passtds:0,rec:75,recyds:1077,rectds:3,runatts:1,runyds:2,runtds:0},
+  {rk:10,name:"James Cook III",team:"BUF",pos:"RB",fpts:302.2,passyds:0,passtds:0,rec:33,recyds:291,rectds:2,runatts:309,runyds:1621,runtds:12},
+  {rk:11,name:"Jonathan Taylor",team:"IND",pos:"RB",fpts:362.3,passyds:0,passtds:0,rec:46,recyds:378,rectds:2,runatts:323,runyds:1585,runtds:18},
+  {rk:12,name:"Nico Collins",team:"HOU",pos:"WR",fpts:226.2,passyds:0,passtds:0,rec:71,recyds:1117,rectds:6,runatts:2,runyds:15,runtds:1},
+  {rk:13,name:"Chase Brown",team:"CIN",pos:"RB",fpts:282.6,passyds:0,passtds:0,rec:69,recyds:437,rectds:5,runatts:232,runyds:1019,runtds:6},
+  {rk:14,name:"George Pickens",team:"DAL",pos:"WR",fpts:291.9,passyds:0,passtds:0,rec:93,recyds:1429,rectds:9,runatts:0,runyds:0,runtds:0},
+  {rk:15,name:"Derrick Henry",team:"BAL",pos:"RB",fpts:279.5,passyds:0,passtds:0,rec:15,recyds:150,rectds:0,runatts:307,runyds:1595,runtds:16},
+  {rk:16,name:"Kyren Williams",team:"LAR",pos:"RB",fpts:263.3,passyds:0,passtds:0,rec:36,recyds:281,rectds:3,runatts:259,runyds:1252,runtds:10},
+  {rk:17,name:"A.J. Brown",team:"PHI",pos:"WR",fpts:220.3,passyds:0,passtds:0,rec:78,recyds:1003,rectds:7,runatts:0,runyds:0,runtds:0},
+  {rk:18,name:"Trey McBride",team:"ARI",pos:"TE",fpts:315.9,passyds:0,passtds:0,rec:126,recyds:1239,rectds:11,runatts:0,runyds:0,runtds:0},
+  {rk:19,name:"Saquon Barkley",team:"PHI",pos:"RB",fpts:232.3,passyds:0,passtds:0,rec:37,recyds:273,rectds:2,runatts:280,runyds:1140,runtds:7},
+  {rk:20,name:"Josh Allen",team:"BUF",pos:"QB",fpts:374.6,passyds:3668,passtds:25,rec:0,recyds:0,rectds:0,runatts:112,runyds:579,runtds:14},
+  {rk:21,name:"Josh Jacobs",team:"GB",pos:"RB",fpts:237.1,passyds:0,passtds:0,rec:36,recyds:282,rectds:1,runatts:234,runyds:929,runtds:13},
+  {rk:22,name:"Ashton Jeanty",team:"LV",pos:"RB",fpts:245.1,passyds:0,passtds:0,rec:55,recyds:346,rectds:5,runatts:266,runyds:975,runtds:5},
+  {rk:23,name:"Drake London",team:"ATL",pos:"WR",fpts:201.9,passyds:0,passtds:0,rec:68,recyds:919,rectds:7,runatts:0,runyds:0,runtds:0},
+  {rk:24,name:"Chris Olave",team:"NO",pos:"WR",fpts:269,passyds:0,passtds:0,rec:100,recyds:1163,rectds:9,runatts:1,runyds:-3,runtds:0},
+  {rk:25,name:"Javonte Williams",team:"DAL",pos:"RB",fpts:242.8,passyds:0,passtds:0,rec:35,recyds:137,rectds:2,runatts:252,runyds:1201,runtds:11},
+  {rk:26,name:"Tetairoa McMillan",team:"CAR",pos:"WR",fpts:211.4,passyds:0,passtds:0,rec:70,recyds:1014,rectds:7,runatts:0,runyds:0,runtds:0},
+  {rk:27,name:"Travis Etienne Jr.",team:"NO",pos:"RB",fpts:253.9,passyds:0,passtds:0,rec:36,recyds:292,rectds:6,runatts:260,runyds:1107,runtds:7},
+  {rk:28,name:"Jaylen Waddle",team:"DEN",pos:"WR",fpts:194.1,passyds:0,passtds:0,rec:64,recyds:910,rectds:6,runatts:2,runyds:28,runtds:0},
+  {rk:29,name:"Tee Higgins",team:"CIN",pos:"WR",fpts:211.6,passyds:0,passtds:0,rec:59,recyds:846,rectds:11,runatts:0,runyds:0,runtds:0},
+  {rk:30,name:"Justin Jefferson",team:"MIN",pos:"WR",fpts:201.5,passyds:0,passtds:0,rec:84,recyds:1048,rectds:2,runatts:2,runyds:7,runtds:0},
+  {rk:31,name:"Drake Maye",team:"NE",pos:"QB",fpts:360,passyds:4394,passtds:31,rec:0,recyds:0,rectds:0,runatts:103,runyds:450,runtds:4},
+  {rk:32,name:"Jalen Hurts",team:"PHI",pos:"QB",fpts:305.1,passyds:3224,passtds:25,rec:0,recyds:0,rectds:0,runatts:105,runyds:421,runtds:8},
+  {rk:33,name:"Bucky Irving",team:"TB",pos:"RB",fpts:138.5,passyds:0,passtds:0,rec:30,recyds:277,rectds:3,runatts:173,runyds:588,runtds:1},
+  {rk:34,name:"Jameson Williams",team:"DET",pos:"WR",fpts:219.9,passyds:0,passtds:0,rec:65,recyds:1117,rectds:7,runatts:6,runyds:12,runtds:0},
+  {rk:35,name:"Zay Flowers",team:"BAL",pos:"WR",fpts:243.3,passyds:0,passtds:0,rec:86,recyds:1211,rectds:5,runatts:10,runyds:62,runtds:1},
+  {rk:36,name:"DeVonta Smith",team:"PHI",pos:"WR",fpts:201.8,passyds:0,passtds:0,rec:77,recyds:1008,rectds:4,runatts:0,runyds:0,runtds:0},
+  {rk:37,name:"Ladd McConkey",team:"LAC",pos:"WR",fpts:180.9,passyds:0,passtds:0,rec:66,recyds:789,rectds:6,runatts:0,runyds:0,runtds:0},
+  {rk:38,name:"Courtland Sutton",team:"DEN",pos:"WR",fpts:219.7,passyds:0,passtds:0,rec:74,recyds:1017,rectds:7,runatts:0,runyds:0,runtds:0},
+  {rk:39,name:"George Kittle",team:"SF",pos:"TE",fpts:161.5,passyds:0,passtds:0,rec:57,recyds:628,rectds:7,runatts:1,runyds:-3,runtds:0},
+  {rk:40,name:"RJ Harvey",team:"DEN",pos:"RB",fpts:206.6,passyds:0,passtds:0,rec:47,recyds:356,rectds:5,runatts:146,runyds:540,runtds:7},
+  {rk:41,name:"Breece Hall",team:"NYJ",pos:"RB",fpts:207.7,passyds:0,passtds:0,rec:36,recyds:350,rectds:1,runatts:243,runyds:1065,runtds:4},
+  {rk:42,name:"Wan'Dale Robinson",team:"TEN",pos:"WR",fpts:217.9,passyds:0,passtds:0,rec:92,recyds:1014,rectds:4,runatts:3,runyds:5,runtds:0},
+  {rk:43,name:"Emeka Egbuka",team:"TB",pos:"WR",fpts:195.7,passyds:0,passtds:0,rec:63,recyds:938,rectds:6,runatts:2,runyds:9,runtds:0},
+  {rk:44,name:"Terry McLaurin",team:"WAS",pos:"WR",fpts:114.2,passyds:0,passtds:0,rec:38,recyds:582,rectds:3,runatts:0,runyds:0,runtds:0},
+  {rk:45,name:"Matthew Stafford",team:"LAR",pos:"QB",fpts:358.4,passyds:4707,passtds:46,rec:0,recyds:0,rectds:0,runatts:29,runyds:1,runtds:0},
+  {rk:46,name:"Stefon Diggs",team:"FA",pos:"WR",fpts:210.3,passyds:0,passtds:0,rec:85,recyds:1013,rectds:4,runatts:0,runyds:0,runtds:0},
+  {rk:47,name:"TreVeyon Henderson",team:"NE",pos:"RB",fpts:206.2,passyds:0,passtds:0,rec:35,recyds:221,rectds:1,runatts:180,runyds:911,runtds:9},
+  {rk:48,name:"D'Andre Swift",team:"CHI",pos:"RB",fpts:228.6,passyds:0,passtds:0,rec:34,recyds:299,rectds:1,runatts:223,runyds:1087,runtds:9},
+  {rk:49,name:"Omarion Hampton",team:"LAC",pos:"RB",fpts:135.7,passyds:0,passtds:0,rec:32,recyds:192,rectds:1,runatts:124,runyds:545,runtds:4},
+  {rk:50,name:"Jaylen Warren",team:"PIT",pos:"RB",fpts:217.1,passyds:0,passtds:0,rec:40,recyds:333,rectds:2,runatts:211,runyds:958,runtds:6},
+  {rk:51,name:"Michael Pittman Jr.",team:"PIT",pos:"WR",fpts:202.4,passyds:0,passtds:0,rec:80,recyds:784,rectds:7,runatts:0,runyds:0,runtds:0},
+  {rk:52,name:"Jauan Jennings",team:"MIN",pos:"WR",fpts:173.3,passyds:0,passtds:0,rec:55,recyds:643,rectds:9,runatts:0,runyds:0,runtds:0},
+  {rk:53,name:"Dak Prescott",team:"DAL",pos:"QB",fpts:323.8,passyds:4552,passtds:30,rec:0,recyds:0,rectds:0,runatts:53,runyds:177,runtds:2},
+  {rk:54,name:"Mike Evans",team:"SF",pos:"WR",fpts:84.8,passyds:0,passtds:0,rec:30,recyds:368,rectds:3,runatts:0,runyds:0,runtds:0},
+  {rk:55,name:"Joe Burrow",team:"CIN",pos:"QB",fpts:139.5,passyds:1809,passtds:17,rec:0,recyds:0,rectds:0,runatts:14,runyds:41,runtds:0},
+  {rk:56,name:"Brian Thomas Jr.",team:"JAC",pos:"WR",fpts:138.8,passyds:0,passtds:0,rec:48,recyds:707,rectds:2,runatts:3,runyds:21,runtds:1},
+  {rk:57,name:"Kenneth Walker III",team:"KC",pos:"RB",fpts:191.9,passyds:0,passtds:0,rec:31,recyds:282,rectds:0,runatts:221,runyds:1027,runtds:5},
+  {rk:58,name:"Rico Dowdle",team:"PIT",pos:"RB",fpts:216.3,passyds:0,passtds:0,rec:39,recyds:297,rectds:1,runatts:236,runyds:1076,runtds:6},
+  {rk:59,name:"Jakobi Meyers",team:"JAC",pos:"WR",fpts:175.8,passyds:0,passtds:0,rec:75,recyds:835,rectds:3,runatts:5,runyds:13,runtds:0},
+  {rk:60,name:"Lamar Jackson",team:"BAL",pos:"QB",fpts:221.9,passyds:2549,passtds:21,rec:0,recyds:0,rectds:0,runatts:67,runyds:349,runtds:2},
+  {rk:61,name:"Marvin Harrison Jr.",team:"ARI",pos:"WR",fpts:127.8,passyds:0,passtds:0,rec:41,recyds:608,rectds:4,runatts:0,runyds:0,runtds:0},
+  {rk:62,name:"Deebo Samuel Sr.",team:"FA",pos:"WR",fpts:188.2,passyds:0,passtds:0,rec:72,recyds:727,rectds:5,runatts:17,runyds:75,runtds:1},
+  {rk:63,name:"DJ Moore",team:"BUF",pos:"WR",fpts:170.2,passyds:0,passtds:0,rec:50,recyds:682,rectds:6,runatts:15,runyds:79,runtds:1},
+  {rk:64,name:"Khalil Shakir",team:"BUF",pos:"WR",fpts:166.4,passyds:0,passtds:0,rec:72,recyds:719,rectds:4,runatts:1,runyds:5,runtds:0},
+  {rk:65,name:"Aaron Jones Sr.",team:"MIN",pos:"RB",fpts:118.7,passyds:0,passtds:0,rec:28,recyds:199,rectds:1,runatts:132,runyds:548,runtds:2},
+  {rk:66,name:"Keenan Allen",team:"LAC",pos:"WR",fpts:182.7,passyds:0,passtds:0,rec:81,recyds:777,rectds:4,runatts:0,runyds:0,runtds:0},
+  {rk:67,name:"Michael Wilson",team:"ARI",pos:"WR",fpts:220.6,passyds:0,passtds:0,rec:78,recyds:1006,rectds:7,runatts:0,runyds:0,runtds:0},
+  {rk:68,name:"Jordan Addison",team:"MIN",pos:"WR",fpts:135.1,passyds:0,passtds:0,rec:42,recyds:610,rectds:3,runatts:2,runyds:81,runtds:1},
+  {rk:69,name:"Tyrone Tracy Jr.",team:"NYG",pos:"RB",fpts:160.8,passyds:0,passtds:0,rec:36,recyds:288,rectds:2,runatts:176,runyds:740,runtds:2},
+  {rk:70,name:"Rome Odunze",team:"CHI",pos:"WR",fpts:146.1,passyds:0,passtds:0,rec:44,recyds:661,rectds:6,runatts:0,runyds:0,runtds:0},
+  {rk:71,name:"Quentin Johnston",team:"LAC",pos:"WR",fpts:171.2,passyds:0,passtds:0,rec:51,recyds:735,rectds:8,runatts:2,runyds:7,runtds:0},
+  {rk:72,name:"Xavier Worthy",team:"KC",pos:"WR",fpts:109.9,passyds:0,passtds:0,rec:42,recyds:532,rectds:1,runatts:11,runyds:87,runtds:0},
+  {rk:73,name:"Ricky Pearsall",team:"SF",pos:"WR",fpts:88.6,passyds:0,passtds:0,rec:36,recyds:528,rectds:0,runatts:2,runyds:-2,runtds:0},
+  {rk:74,name:"Brock Purdy",team:"SF",pos:"QB",fpts:187.4,passyds:2167,passtds:20,rec:0,recyds:0,rectds:0,runatts:33,runyds:147,runtds:3},
+  {rk:75,name:"Troy Franklin",team:"DEN",pos:"WR",fpts:177.1,passyds:0,passtds:0,rec:65,recyds:709,rectds:6,runatts:5,runyds:12,runtds:0},
+  {rk:76,name:"Romeo Doubs",team:"NE",pos:"WR",fpts:165.4,passyds:0,passtds:0,rec:55,recyds:724,rectds:6,runatts:0,runyds:0,runtds:0},
+  {rk:77,name:"Tyler Warren",team:"IND",pos:"TE",fpts:188.5,passyds:0,passtds:0,rec:76,recyds:817,rectds:4,runatts:6,runyds:8,runtds:1},
+  {rk:78,name:"Tony Pollard",team:"TEN",pos:"RB",fpts:185.8,passyds:0,passtds:0,rec:33,recyds:206,rectds:0,runatts:242,runyds:1082,runtds:5},
+  {rk:79,name:"Jacoby Brissett",team:"ARI",pos:"QB",fpts:235.4,passyds:3366,passtds:23,rec:0,recyds:0,rectds:0,runatts:38,runyds:168,runtds:1},
+  {rk:80,name:"Jaxson Dart",team:"NYG",pos:"QB",fpts:246.6,passyds:2272,passtds:15,rec:0,recyds:0,rectds:0,runatts:86,runyds:487,runtds:9},
+  {rk:81,name:"Chris Godwin Jr.",team:"TB",pos:"WR",fpts:83,passyds:0,passtds:0,rec:33,recyds:360,rectds:2,runatts:0,runyds:0,runtds:0},
+  {rk:82,name:"Kyle Pitts Sr.",team:"ATL",pos:"TE",fpts:210.8,passyds:0,passtds:0,rec:88,recyds:928,rectds:5,runatts:0,runyds:0,runtds:0},
+  {rk:83,name:"Trevor Lawrence",team:"JAC",pos:"QB",fpts:350.2,passyds:4007,passtds:29,rec:0,recyds:0,rectds:0,runatts:82,runyds:359,runtds:9},
+  {rk:84,name:"Jake Ferguson",team:"DAL",pos:"TE",fpts:188.1,passyds:0,passtds:0,rec:82,recyds:600,rectds:8,runatts:1,runyds:1,runtds:0},
+  {rk:85,name:"Caleb Williams",team:"CHI",pos:"QB",fpts:325.2,passyds:3942,passtds:27,rec:0,recyds:0,rectds:0,runatts:77,runyds:383,runtds:3},
+  {rk:86,name:"Jayden Higgins",team:"HOU",pos:"WR",fpts:129.5,passyds:0,passtds:0,rec:41,recyds:525,rectds:6,runatts:0,runyds:0,runtds:0},
+  {rk:87,name:"DK Metcalf",team:"PIT",pos:"WR",fpts:187.2,passyds:0,passtds:0,rec:59,recyds:850,rectds:6,runatts:2,runyds:12,runtds:1},
+  {rk:88,name:"Dallas Goedert",team:"PHI",pos:"TE",fpts:185.1,passyds:0,passtds:0,rec:60,recyds:591,rectds:11,runatts:0,runyds:0,runtds:0},
+  {rk:89,name:"Travis Kelce",team:"KC",pos:"TE",fpts:193.2,passyds:0,passtds:0,rec:76,recyds:851,rectds:5,runatts:1,runyds:1,runtds:0},
+  {rk:90,name:"Jared Goff",team:"DET",pos:"QB",fpts:305.1,passyds:4564,passtds:34,rec:0,recyds:0,rectds:0,runatts:19,runyds:45,runtds:0},
+  {rk:91,name:"Jayden Reed",team:"GB",pos:"WR",fpts:48.5,passyds:0,passtds:0,rec:19,recyds:207,rectds:1,runatts:3,runyds:28,runtds:0},
+  {rk:92,name:"Justin Herbert",team:"LAC",pos:"QB",fpts:299.9,passyds:3727,passtds:26,rec:0,recyds:0,rectds:0,runatts:83,runyds:498,runtds:2},
+  {rk:93,name:"Bo Nix",team:"DEN",pos:"QB",fpts:315.8,passyds:3931,passtds:25,rec:0,recyds:0,rectds:0,runatts:83,runyds:356,runtds:5},
+  {rk:94,name:"Christian Watson",team:"GB",pos:"WR",fpts:132.4,passyds:0,passtds:0,rec:35,recyds:611,rectds:6,runatts:1,runyds:3,runtds:0},
+  {rk:95,name:"Baker Mayfield",team:"TB",pos:"QB",fpts:282.9,passyds:3693,passtds:26,rec:0,recyds:0,rectds:0,runatts:55,runyds:382,runtds:1},
+  {rk:96,name:"Woody Marks",team:"HOU",pos:"RB",fpts:151.1,passyds:0,passtds:0,rec:24,recyds:208,rectds:3,runatts:196,runyds:703,runtds:2},
+  {rk:97,name:"Harold Fannin Jr.",team:"CLE",pos:"TE",fpts:186.4,passyds:0,passtds:0,rec:72,recyds:731,rectds:6,runatts:7,runyds:13,runtds:1},
+  {rk:98,name:"Alec Pierce",team:"IND",pos:"WR",fpts:183.3,passyds:0,passtds:0,rec:47,recyds:1003,rectds:6,runatts:0,runyds:0,runtds:0},
+  {rk:99,name:"Luther Burden III",team:"CHI",pos:"WR",fpts:127.9,passyds:0,passtds:0,rec:47,recyds:652,rectds:2,runatts:6,runyds:37,runtds:0},
+  {rk:100,name:"Josh Downs",team:"IND",pos:"WR",fpts:136.4,passyds:0,passtds:0,rec:58,recyds:566,rectds:4,runatts:2,runyds:-2,runtds:0},
+  {rk:101,name:"Davante Adams",team:"LAR",pos:"WR",fpts:222.9,passyds:0,passtds:0,rec:60,recyds:789,rectds:14,runatts:0,runyds:0,runtds:0},
+  {rk:102,name:"Jordan Love",team:"GB",pos:"QB",fpts:241.1,passyds:3381,passtds:23,rec:0,recyds:0,rectds:0,runatts:47,runyds:199,runtds:0},
+  {rk:103,name:"David Montgomery",team:"HOU",pos:"RB",fpts:166.9,passyds:0,passtds:0,rec:24,recyds:192,rectds:0,runatts:158,runyds:716,runtds:8},
+  {rk:104,name:"Darnell Mooney",team:"NYG",pos:"WR",fpts:82.3,passyds:0,passtds:0,rec:32,recyds:443,rectds:1,runatts:0,runyds:0,runtds:0},
+  {rk:105,name:"Rashid Shaheed",team:"SEA",pos:"WR",fpts:156.6,passyds:0,passtds:0,rec:59,recyds:687,rectds:2,runatts:9,runyds:69,runtds:0},
+  {rk:106,name:"Kayshon Boutte",team:"NE",pos:"WR",fpts:124.1,passyds:0,passtds:0,rec:33,recyds:551,rectds:6,runatts:0,runyds:0,runtds:0},
+  {rk:107,name:"Zach Charbonnet",team:"SEA",pos:"RB",fpts:181.4,passyds:0,passtds:0,rec:20,recyds:144,rectds:0,runatts:184,runyds:730,runtds:12},
+  {rk:108,name:"Darius Slayton",team:"NYG",pos:"WR",fpts:98.8,passyds:0,passtds:0,rec:37,recyds:538,rectds:1,runatts:0,runyds:0,runtds:0},
+  {rk:109,name:"Jerry Jeudy",team:"CLE",pos:"WR",fpts:120.7,passyds:0,passtds:0,rec:50,recyds:602,rectds:2,runatts:1,runyds:5,runtds:0},
+  {rk:110,name:"Hunter Henry",team:"NE",pos:"TE",fpts:178.8,passyds:0,passtds:0,rec:60,recyds:768,rectds:7,runatts:0,runyds:0,runtds:0},
+  {rk:111,name:"Rhamondre Stevenson",team:"NE",pos:"RB",fpts:178.8,passyds:0,passtds:0,rec:32,recyds:345,rectds:2,runatts:130,runyds:603,runtds:7},
+  {rk:112,name:"Juwan Johnson",team:"NO",pos:"TE",fpts:179.9,passyds:0,passtds:0,rec:77,recyds:889,rectds:3,runatts:0,runyds:0,runtds:0},
+  {rk:113,name:"Sam Darnold",team:"SEA",pos:"QB",fpts:249.4,passyds:4048,passtds:25,rec:0,recyds:0,rectds:0,runatts:35,runyds:95,runtds:0},
+  {rk:114,name:"Colston Loveland",team:"CHI",pos:"TE",fpts:165.1,passyds:0,passtds:0,rec:58,recyds:713,rectds:6,runatts:1,runyds:-2,runtds:0},
+  {rk:115,name:"Dalton Schultz",team:"HOU",pos:"TE",fpts:177.7,passyds:0,passtds:0,rec:82,recyds:777,rectds:3,runatts:0,runyds:0,runtds:0},
+  {rk:116,name:"Kenneth Gainwell",team:"TB",pos:"RB",fpts:221.3,passyds:0,passtds:0,rec:73,recyds:486,rectds:3,runatts:114,runyds:537,runtds:5},
+  {rk:117,name:"C.J. Stroud",team:"HOU",pos:"QB",fpts:216.5,passyds:3041,passtds:19,rec:0,recyds:0,rectds:0,runatts:48,runyds:209,runtds:1},
+  {rk:118,name:"Oronde Gadsden II",team:"LAC",pos:"WR",fpts:131.4,passyds:0,passtds:0,rec:49,recyds:664,rectds:3,runatts:0,runyds:0,runtds:0},
+  {rk:119,name:"Dalton Kincaid",team:"BUF",pos:"TE",fpts:126.1,passyds:0,passtds:0,rec:39,recyds:571,rectds:5,runatts:0,runyds:0,runtds:0},
+  {rk:120,name:"Brenton Strange",team:"JAC",pos:"TE",fpts:118,passyds:0,passtds:0,rec:46,recyds:540,rectds:3,runatts:0,runyds:0,runtds:0},
+  {rk:121,name:"Tre Tucker",team:"LV",pos:"WR",fpts:161.7,passyds:0,passtds:0,rec:57,recyds:696,rectds:5,runatts:11,runyds:51,runtds:0},
+  {rk:122,name:"Adonai Mitchell",team:"NYJ",pos:"WR",fpts:87.9,passyds:0,passtds:0,rec:33,recyds:453,rectds:2,runatts:1,runyds:-4,runtds:0},
+  {rk:123,name:"Isiah Pacheco",team:"DET",pos:"RB",fpts:87.3,passyds:0,passtds:0,rec:19,recyds:101,rectds:1,runatts:118,runyds:462,runtds:1},
+  {rk:124,name:"Mark Andrews",team:"BAL",pos:"TE",fpts:131,passyds:0,passtds:0,rec:48,recyds:422,rectds:5,runatts:10,runyds:48,runtds:1},
+  {rk:125,name:"Kyle Monangai",team:"CHI",pos:"RB",fpts:146.7,passyds:0,passtds:0,rec:18,recyds:164,rectds:0,runatts:169,runyds:783,runtds:5},
+  {rk:126,name:"Theo Johnson",team:"NYG",pos:"TE",fpts:127.8,passyds:0,passtds:0,rec:45,recyds:528,rectds:5,runatts:0,runyds:0,runtds:0},
+  {rk:127,name:"Cooper Kupp",team:"SEA",pos:"WR",fpts:117.3,passyds:0,passtds:0,rec:47,recyds:593,rectds:2,runatts:0,runyds:0,runtds:0},
+  {rk:128,name:"Parker Washington",team:"JAC",pos:"WR",fpts:184.7,passyds:0,passtds:0,rec:58,recyds:847,rectds:5,runatts:7,runyds:0,runtds:0},
+  {rk:129,name:"Chuba Hubbard",team:"CAR",pos:"RB",fpts:125.4,passyds:0,passtds:0,rec:30,recyds:223,rectds:3,runatts:134,runyds:511,runtds:1},
+  {rk:130,name:"Bryce Young",team:"CAR",pos:"QB",fpts:229,passyds:3011,passtds:23,rec:0,recyds:0,rectds:0,runatts:54,runyds:216,runtds:2},
+  {rk:131,name:"Jacory Croskey-Merritt",team:"WAS",pos:"RB",fpts:140.3,passyds:0,passtds:0,rec:9,recyds:68,rectds:0,runatts:175,runyds:805,runtds:8},
+  {rk:132,name:"T.J. Hockenson",team:"MIN",pos:"TE",fpts:112.8,passyds:0,passtds:0,rec:51,recyds:438,rectds:3,runatts:1,runyds:0,runtds:0},
+  {rk:133,name:"Jalen Coker",team:"CAR",pos:"WR",fpts:90.4,passyds:0,passtds:0,rec:33,recyds:394,rectds:3,runatts:0,runyds:0,runtds:0},
+  {rk:134,name:"Chimere Dike",team:"TEN",pos:"WR",fpts:126.1,passyds:0,passtds:0,rec:48,recyds:423,rectds:4,runatts:11,runyds:18,runtds:0},
+  {rk:135,name:"Tyler Shough",team:"NO",pos:"QB",fpts:164,passyds:2384,passtds:10,rec:0,recyds:0,rectds:0,runatts:45,runyds:186,runtds:3},
+  {rk:136,name:"Blake Corum",team:"LAR",pos:"RB",fpts:122.2,passyds:0,passtds:0,rec:8,recyds:36,rectds:0,runatts:145,runyds:746,runtds:6},
+  {rk:137,name:"Matthew Golden",team:"GB",pos:"WR",fpts:70,passyds:0,passtds:0,rec:29,recyds:361,rectds:0,runatts:10,runyds:49,runtds:0},
+  {rk:138,name:"Cade Otton",team:"TB",pos:"TE",fpts:122.2,passyds:0,passtds:0,rec:59,recyds:572,rectds:1,runatts:0,runyds:0,runtds:0},
+  {rk:139,name:"Aaron Rodgers",team:"FA",pos:"QB",fpts:234.1,passyds:3322,passtds:24,rec:0,recyds:0,rectds:0,runatts:21,runyds:61,runtds:1},
+  {rk:140,name:"Darren Waller",team:"FA",pos:"TE",fpts:88.7,passyds:0,passtds:0,rec:24,recyds:283,rectds:6,runatts:1,runyds:4,runtds:0},
+  {rk:141,name:"Elic Ayomanor",team:"TEN",pos:"WR",fpts:116.5,passyds:0,passtds:0,rec:41,recyds:515,rectds:4,runatts:0,runyds:0,runtds:0},
+  {rk:142,name:"AJ Barner",team:"SEA",pos:"TE",fpts:147.3,passyds:0,passtds:0,rec:52,recyds:519,rectds:6,runatts:10,runyds:14,runtds:1},
+  {rk:143,name:"Chris Rodriguez Jr.",team:"JAC",pos:"RB",fpts:92,passyds:0,passtds:0,rec:3,recyds:30,rectds:0,runatts:112,runyds:500,runtds:6},
+  {rk:144,name:"Jordan Mason",team:"MIN",pos:"RB",fpts:128.9,passyds:0,passtds:0,rec:14,recyds:51,rectds:0,runatts:159,runyds:758,runtds:6},
+  {rk:145,name:"Christian Kirk",team:"SF",pos:"WR",fpts:57.9,passyds:0,passtds:0,rec:28,recyds:239,rectds:1,runatts:0,runyds:0,runtds:0},
+  {rk:146,name:"Marcus Mariota",team:"WAS",pos:"QB",fpts:132.5,passyds:1695,passtds:10,rec:0,recyds:0,rectds:0,runatts:50,runyds:297,runtds:1},
+  {rk:147,name:"Tyjae Spears",team:"TEN",pos:"RB",fpts:111.7,passyds:0,passtds:0,rec:45,recyds:264,rectds:0,runatts:72,runyds:283,runtds:2},
+  {rk:148,name:"Devin Singletary",team:"NYG",pos:"RB",fpts:108.8,passyds:0,passtds:0,rec:18,recyds:151,rectds:0,runatts:119,runyds:437,runtds:5},
+  {rk:149,name:"Evan Engram",team:"DEN",pos:"TE",fpts:102.8,passyds:0,passtds:0,rec:50,recyds:461,rectds:1,runatts:1,runyds:7,runtds:0},
+  {rk:150,name:"Geno Smith",team:"NYJ",pos:"QB",fpts:190.9,passyds:3025,passtds:19,rec:0,recyds:0,rectds:0,runatts:41,runyds:109,runtds:0},
+  {rk:168,name:"Denver Broncos",team:"DEN",pos:"DST",fpts:143,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:176,name:"Houston Texans",team:"HOU",pos:"DST",fpts:164,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:183,name:"Cam Ward",team:"TEN",pos:"QB",fpts:193.7,passyds:3169,passtds:15,rec:0,recyds:0,rectds:0,runatts:39,runyds:159,runtds:2},
+  {rk:184,name:"Pittsburgh Steelers",team:"PIT",pos:"DST",fpts:130,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:186,name:"Brandon Aubrey",team:"DAL",pos:"K",fpts:187.6,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:187,name:"Philadelphia Eagles",team:"PHI",pos:"DST",fpts:135,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:189,name:"Seattle Seahawks",team:"SEA",pos:"DST",fpts:179,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:195,name:"Cameron Dicker",team:"LAC",pos:"K",fpts:170,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:197,name:"Jake Bates",team:"DET",pos:"K",fpts:152,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:199,name:"New England Patriots",team:"NE",pos:"DST",fpts:127,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:200,name:"Ka'imi Fairbairn",team:"HOU",pos:"K",fpts:194,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:201,name:"Minnesota Vikings",team:"MIN",pos:"DST",fpts:136,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:202,name:"Chase McLaughlin",team:"TB",pos:"K",fpts:156,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:209,name:"Green Bay Packers",team:"GB",pos:"DST",fpts:79,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:211,name:"Wil Lutz",team:"DEN",pos:"K",fpts:134,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:215,name:"Tyler Loop",team:"BAL",pos:"K",fpts:144,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:216,name:"Buffalo Bills",team:"BUF",pos:"DST",fpts:110,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:220,name:"Los Angeles Rams",team:"LAR",pos:"DST",fpts:136,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:223,name:"Detroit Lions",team:"DET",pos:"DST",fpts:97,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:228,name:"Los Angeles Chargers",team:"LAC",pos:"DST",fpts:111,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:234,name:"Cleveland Browns",team:"CLE",pos:"DST",fpts:133,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:237,name:"Chris Boswell",team:"PIT",pos:"K",fpts:151,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:238,name:"Tampa Bay Buccaneers",team:"TB",pos:"DST",fpts:99,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:241,name:"Kansas City Chiefs",team:"KC",pos:"DST",fpts:92,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:245,name:"Evan McPherson",team:"CIN",pos:"K",fpts:136,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:246,name:"Baltimore Ravens",team:"BAL",pos:"DST",fpts:97,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+  {rk:250,name:"Harrison Butker",team:"KC",pos:"K",fpts:149,passyds:0,passtds:0,rec:0,recyds:0,rectds:0,runatts:0,runyds:0,runtds:0},
+];
+
+function fmtPts(p,fmt){
+  if(fmt==='ppr') return p.fpts;
+  if(fmt==='half') return+(p.fpts-p.rec*0.5).toFixed(1);
+  if(fmt==='sf'){const b=p.pos==='QB'?20:0;return+(p.fpts+b).toFixed(1);}
+  if(fmt==='tep'){const b=p.pos==='TE'?p.rec*0.5:0;return+(p.fpts+b).toFixed(1);}
+  return p.fpts;
+}
+function assignPosRanks(fmt){
+  const byPos={QB:[],RB:[],WR:[],TE:[],K:[],DST:[]};
+  RAW.forEach(p=>{if(byPos[p.pos])byPos[p.pos].push(p);});
+  Object.values(byPos).forEach(arr=>{
+    arr.sort((a,b)=>fmtPts(b,fmt)-fmtPts(a,fmt));
+    arr.forEach((p,i)=>p._posRk=i+1);
+  });
+}
+function getTier(rk){
+  if(rk<=12)return{t:1,lbl:'Tier 1 — Elite',cls:'t1-l'};
+  if(rk<=36)return{t:2,lbl:'Tier 2 — Startable',cls:'t2-l'};
+  if(rk<=80)return{t:3,lbl:'Tier 3 — Flex / Depth',cls:'t3-l'};
+  if(rk<=150)return{t:4,lbl:'Tier 4 — Streamers',cls:'t4-l'};
+  return{t:5,lbl:'Tier 5 — Deep Bench',cls:'t5-l'};
+}
+function ptClass(pts){if(pts>=300)return'elite';if(pts>=200)return'great';if(pts>=130)return'good';return'';}
+function rkClass(rk){if(rk<=3)return'g1';if(rk<=12)return'g2';if(rk<=36)return'g3';return'';}
+function initials(n){const p=n.split(' ');if(p.length===1)return n.slice(0,2).toUpperCase();return(p[0][0]+(p[p.length-1][0])).toUpperCase();}
+
+let fmt='ppr',pos='ALL',search='',sortCol='rank',sortDir='asc',expanded=null,page=1;
+const PER=50;
+
+function getSorted(){
+  return[...RAW].sort((a,b)=>{
+    const av=fmtPts(a,fmt),bv=fmtPts(b,fmt);
+    if(sortCol==='rank'||sortCol==='fpts')return sortDir==='asc'?bv-av:av-bv;
+    if(sortCol==='name')return sortDir==='asc'?a.name.localeCompare(b.name):b.name.localeCompare(a.name);
+    if(sortCol==='pos')return sortDir==='asc'?a.pos.localeCompare(b.pos):b.pos.localeCompare(a.pos);
+    if(sortCol==='team')return sortDir==='asc'?a.team.localeCompare(b.team):b.team.localeCompare(a.team);
+    if(sortCol==='rec')return sortDir==='asc'?b.rec-a.rec:a.rec-b.rec;
+    if(sortCol==='recyds')return sortDir==='asc'?b.recyds-a.recyds:a.recyds-b.recyds;
+    if(sortCol==='runyds')return sortDir==='asc'?b.runyds-a.runyds:a.runyds-b.runyds;
+    if(sortCol==='tds'){const ta=a.rectds+a.runtds+a.passtds,tb=b.rectds+b.runtds+b.passtds;return sortDir==='asc'?tb-ta:ta-tb;}
+    if(sortCol==='posrk')return sortDir==='asc'?a._posRk-b._posRk:b._posRk-a._posRk;
+    return 0;
+  }).filter(p=>{
+    if(pos!=='ALL'&&p.pos!==pos)return false;
+    if(search&&!p.name.toLowerCase().includes(search)&&!p.team.toLowerCase().includes(search))return false;
+    return true;
+  });
+}
+
+function render(){
+  assignPosRanks(fmt);
+  const data=getSorted();
+  const total=data.length;
+  const pages=Math.max(1,Math.ceil(total/PER));
+  if(page>pages)page=1;
+  const slice=data.slice((page-1)*PER,page*PER);
+  document.getElementById('showCount').textContent=slice.length;
+  document.getElementById('totalCount').textContent=total;
+  document.getElementById('fmtLabel').textContent={ppr:'PPR',half:'Half PPR',sf:'Superflex',tep:'TE Premium (1.5 PPR)'}[fmt];
+  const tbody=document.getElementById('tableBody');
+  tbody.innerHTML='';
+  let lastTier=null,gRk=0;
+  slice.forEach(p=>{
+    gRk++;
+    const rank=(page-1)*PER+gRk;
+    const pts=fmtPts(p,fmt);
+    const tier=getTier(rank);
+    const idx=RAW.indexOf(p);
+    const isDST=p.pos==='DST',isK=p.pos==='K';
+    const totalTds=p.rectds+p.runtds+p.passtds;
+    if(pos==='ALL'&&tier.t!==lastTier){
+      const tr=document.createElement('tr');tr.className='tier-row';
+      tr.innerHTML=`<td colspan="10"><span class="tier-lbl ${tier.cls}">${tier.lbl}</span></td>`;
+      tbody.appendChild(tr);lastTier=tier.t;
+    }
+    const tr=document.createElement('tr');
+    if(expanded===idx)tr.classList.add('expanded');
+    tr.innerHTML=`
+      <td class="rk ${rkClass(rank)}" style="text-align:center">${rank}</td>
+      <td><div class="pc"><div class="av">${isDST?p.team.slice(0,2):initials(p.name)}</div><div><div class="pn">${p.name}</div><div class="pm">${p.team}${p.fpts>0?' · '+pts.toFixed(1)+' pts':''}</div></div></div></td>
+      <td><span class="pos ${p.pos}">${p.pos}</span></td>
+      <td class="hm" style="font-family:'Space Mono',monospace;font-size:10px;color:rgba(245,240,232,0.5)">${p.team}</td>
+      <td class="fpts ${ptClass(pts)}" style="text-align:right">${pts.toFixed(1)}</td>
+      <td class="r hm pos-rk ${p._posRk<=3?'p1':''}">${isDST||isK?'—':p.pos+(p._posRk||'?')}</td>
+      <td class="r hm stat-cell">${p.rec||'—'}</td>
+      <td class="r hm stat-cell">${p.recyds||'—'}</td>
+      <td class="r hm stat-cell">${p.runyds||p.passyds||'—'}</td>
+      <td class="r hm stat-cell">${totalTds||'—'}</td>`;
+    tr.addEventListener('click',()=>{expanded=expanded===idx?null:idx;render();});
+    tbody.appendChild(tr);
+    if(expanded===idx){
+      const exTr=document.createElement('tr');exTr.className='exp-row';
+      const pprPts=fmtPts(p,'ppr'),halfPts=fmtPts(p,'half'),sfPts=fmtPts(p,'sf'),tepPts=fmtPts(p,'tep');
+      const isSkill=!isDST&&!isK;
+      exTr.innerHTML=`<td colspan="10"><div class="exp-inner">
+        ${isSkill?`
+        <div class="exp-stat"><div class="exp-lbl">Receptions</div><div class="exp-val">${p.rec||0}</div></div>
+        <div class="exp-stat"><div class="exp-lbl">Rec Yards</div><div class="exp-val">${p.recyds||0}</div></div>
+        <div class="exp-stat"><div class="exp-lbl">Rec TDs</div><div class="exp-val">${p.rectds||0}</div></div>
+        <div class="exp-stat"><div class="exp-lbl">${p.pos==='QB'?'Pass Yds':'Rush Yds'}</div><div class="exp-val">${p.pos==='QB'?p.passyds:p.runyds||0}</div></div>
+        <div class="exp-stat"><div class="exp-lbl">${p.pos==='QB'?'Pass TDs':'Rush TDs'}</div><div class="exp-val">${p.pos==='QB'?p.passtds:p.runtds||0}</div></div>
+        <div class="exp-stat"><div class="exp-lbl">Total TDs</div><div class="exp-val hi">${totalTds}</div></div>`:`
+        <div class="exp-stat"><div class="exp-lbl">2025 Pts</div><div class="exp-val hi">${p.fpts}</div></div>
+        <div class="exp-stat"><div class="exp-lbl">Position</div><div class="exp-val">${p.pos}</div></div>
+        <div class="exp-stat"><div class="exp-lbl">Team</div><div class="exp-val">${p.team}</div></div>
+        <div class="exp-stat"></div><div class="exp-stat"></div><div class="exp-stat"></div>`}
+        <div class="fmt-ranks">
+          <div class="fmt-rank-item"><div class="fmt-rank-lbl">PPR Pts</div><div class="fmt-rank-val">${pprPts.toFixed(1)}</div></div>
+          <div class="fmt-rank-item"><div class="fmt-rank-lbl">Half PPR</div><div class="fmt-rank-val">${halfPts.toFixed(1)}</div></div>
+          <div class="fmt-rank-item"><div class="fmt-rank-lbl">Superflex</div><div class="fmt-rank-val">${sfPts.toFixed(1)}</div></div>
+          <div class="fmt-rank-item"><div class="fmt-rank-lbl">TE Premium</div><div class="fmt-rank-val">${tepPts.toFixed(1)}</div></div>
+        </div>
+        <div class="exp-disclaimer">⚑ These are verified 2025 final finishing stats — not 2026 projections or future rankings.</div>
+      </div></td>`;
+      tbody.appendChild(exTr);
+    }
+  });
+  renderPg(pages);updateHeaders();
+}
+
+function renderPg(pages){
+  const pg=document.getElementById('pgWrap');pg.innerHTML='';
+  if(pages<=1)return;
+  const prev=document.createElement('button');prev.className='pg-btn';prev.textContent='← Prev';prev.disabled=page===1;
+  prev.onclick=()=>{page--;expanded=null;render();window.scrollTo(0,0);};pg.appendChild(prev);
+  const info=document.createElement('span');info.className='pg-info';info.textContent=`Page ${page} of ${pages}`;pg.appendChild(info);
+  const s=Math.max(1,page-2),e=Math.min(pages,s+4);
+  for(let i=s;i<=e;i++){const b=document.createElement('button');b.className='pg-btn'+(i===page?' active':'');b.textContent=i;b.onclick=()=>{page=i;expanded=null;render();window.scrollTo(0,0);};pg.appendChild(b);}
+  const next=document.createElement('button');next.className='pg-btn';next.textContent='Next →';next.disabled=page===pages;
+  next.onclick=()=>{page++;expanded=null;render();window.scrollTo(0,0);};pg.appendChild(next);
+}
+function updateHeaders(){
+  document.querySelectorAll('th[data-col]').forEach(th=>{
+    th.classList.remove('sort-asc','sort-desc');
+    if(th.dataset.col===sortCol)th.classList.add(sortDir==='asc'?'sort-asc':'sort-desc');
+  });
+}
+
+document.getElementById('fmtTabs').addEventListener('click',e=>{
+  const b=e.target.closest('.fmt-btn');if(!b)return;
+  document.querySelectorAll('.fmt-btn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');fmt=b.dataset.fmt;page=1;expanded=null;render();
+});
+document.getElementById('posTabs').addEventListener('click',e=>{
+  const b=e.target.closest('.pos-btn');if(!b)return;
+  document.querySelectorAll('.pos-btn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');pos=b.dataset.pos;page=1;expanded=null;render();
+});
+document.getElementById('searchInput').addEventListener('input',e=>{
+  search=e.target.value.toLowerCase().trim();page=1;expanded=null;render();
+});
+document.querySelectorAll('th[data-col]').forEach(th=>{
+  th.addEventListener('click',()=>{
+    sortCol===th.dataset.col?sortDir=sortDir==='asc'?'desc':'asc':(sortCol=th.dataset.col,sortDir='asc');
+    expanded=null;render();
+  });
+});
+document.getElementById('mobBtn').addEventListener('click',()=>{
+  document.getElementById('navLinks').classList.toggle('open');
+});
 render();
 </script>
 </body>
