@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slaughterhouse Fantasy — Dynasty. Strategy. Edge.</title>
+<meta name="description" content="The ultimate dynasty fantasy football community. Rankings, trade tools, lineup optimizers, rookie rankings, and more.">
+<link rel="stylesheet" href="shared.css">
+<style>
+.ticker-wrap{background:var(--red);padding:7px 0;overflow:hidden;white-space:nowrap;}
+.ticker{display:inline-block;animation:ticker 32s linear infinite;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:rgba(245,240,232,0.9);}
+@keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+.hero-wrap{max-width:1100px;margin:0 auto;padding:0 40px;}
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;padding:72px 0 60px;min-height:500px;}
+.hero-eyebrow{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--red);text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:10px;}
+.hero-eyebrow::before{content:'';display:block;width:28px;height:1px;background:var(--red);}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:84px;line-height:0.88;letter-spacing:3px;color:var(--off-white);}
+.hero-title .slash{color:var(--red);display:block;}
+.hero-tagline{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:3px;color:rgba(245,240,232,0.35);text-transform:uppercase;margin-top:14px;}
+.hero-tagline span{color:var(--red);}
+.hero-sub{font-size:15px;color:rgba(245,240,232,0.5);line-height:1.75;margin:22px 0 34px;font-weight:300;max-width:400px;}
+.hero-actions{display:flex;gap:12px;align-items:center;}
+.btn-primary{background:var(--red);color:var(--off-white);border:none;padding:13px 26px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:3px;transition:background 0.2s,transform 0.15s;text-decoration:none;display:inline-block;}
+.btn-primary:hover{background:var(--red-dark);transform:translateY(-1px);}
+.btn-ghost{background:transparent;color:rgba(245,240,232,0.65);border:1px solid var(--border-strong);padding:12px 22px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:3px;transition:all 0.2s;text-decoration:none;display:inline-block;}
+.btn-ghost:hover{color:var(--off-white);border-color:rgba(245,240,232,0.4);}
+
+.rank-card{background:var(--mid);border:1px solid var(--border-strong);border-radius:8px;overflow:hidden;position:relative;}
+.rank-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--red);}
+.rank-card-header{padding:14px 20px 13px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--mid2);}
+.rank-card-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2.5px;color:var(--red);text-transform:uppercase;}
+.rank-card-badge{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;color:rgba(245,240,232,0.35);border:1px solid var(--border);padding:3px 7px;border-radius:2px;}
+.player-row{display:flex;align-items:center;gap:12px;padding:11px 20px;border-bottom:1px solid var(--border);}
+.player-row:last-of-type{border-bottom:none;}
+.rk{font-family:'Space Mono',monospace;font-size:10px;width:18px;text-align:center;flex-shrink:0;color:var(--muted);}
+.rk.top{color:var(--red);font-weight:700;}
+.av{width:34px;height:34px;border-radius:50%;background:var(--charcoal);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--off-white);flex-shrink:0;font-family:'Space Mono',monospace;}
+.pi{flex:1;}
+.pn{font-size:13px;font-weight:600;color:var(--off-white);}
+.pp{font-size:10px;color:var(--muted);margin-top:2px;font-family:'Space Mono',monospace;}
+.ps{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:var(--off-white);}
+.up{color:#4DBD8A;font-size:9px;margin-left:3px;}
+.dn{color:var(--red);font-size:9px;margin-left:3px;}
+.pos-badge-sm{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;padding:2px 6px;border-radius:2px;}
+
+.stats-bar{background:var(--mid2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:22px 40px;}
+.stats-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);}
+.stat-item{text-align:center;padding:6px 0;border-right:1px solid var(--border);}
+.stat-item:last-child{border-right:none;}
+.stat-number{font-family:'Bebas Neue',sans-serif;font-size:38px;color:var(--off-white);letter-spacing:1px;line-height:1;}
+.stat-number span{color:var(--red);}
+.stat-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:3px;font-family:'Space Mono',monospace;}
+
+.section{padding:64px 40px;max-width:1100px;margin:0 auto;}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:2px;color:var(--off-white);line-height:1;}
+.sec-title span{color:var(--red);}
+.sec-link{font-size:11px;color:var(--red);text-decoration:none;font-family:'Space Mono',monospace;letter-spacing:1px;text-transform:uppercase;padding-bottom:1px;border-bottom:1px solid transparent;transition:border-color 0.2s;}
+.sec-link:hover{border-color:var(--red);}
+
+.tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.tool-card{background:var(--mid);border:1px solid var(--border);border-radius:6px;padding:22px;transition:border-color 0.2s,transform 0.2s;cursor:pointer;position:relative;overflow:hidden;text-decoration:none;display:block;}
+.tool-card:hover{border-color:rgba(192,57,43,0.5);transform:translateY(-2px);}
+.tool-card.feat{grid-column:span 2;background:var(--mid2);border-color:var(--border-strong);}
+.tool-card.feat::after{content:'FEATURED';position:absolute;top:14px;right:14px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--red);border:1px solid rgba(192,57,43,0.4);padding:3px 7px;border-radius:2px;}
+.tool-icon-wrap{width:36px;height:36px;background:rgba(192,57,43,0.12);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:18px;}
+.tool-name{font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:1px;color:var(--off-white);margin-bottom:7px;}
+.tool-desc{font-size:12px;color:rgba(245,240,232,0.45);line-height:1.65;font-weight:300;}
+.tool-tag{display:inline-block;margin-top:14px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--red);text-transform:uppercase;}
+
+.comm-strip{background:var(--red);padding:48px 40px;}
+.comm-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:40px;}
+.comm-text .eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;color:rgba(245,240,232,0.65);text-transform:uppercase;margin-bottom:10px;}
+.comm-text h2{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:2px;color:var(--off-white);line-height:1;}
+.comm-text p{color:rgba(245,240,232,0.75);font-size:13px;margin-top:10px;font-weight:300;max-width:400px;line-height:1.65;}
+.comm-stats{display:flex;gap:36px;flex-shrink:0;}
+.cs-num{font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--off-white);line-height:1;}
+.cs-lbl{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:rgba(245,240,232,0.6);text-transform:uppercase;margin-top:4px;}
+
+.footer-inner{max-width:1100px;margin:0 auto;padding:28px 40px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);}
+.footer-name{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:rgba(245,240,232,0.25);}
+.footer-tag{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;color:rgba(245,240,232,0.15);text-transform:uppercase;}
+.footer-copy{font-size:10px;color:var(--muted);font-family:'Space Mono',monospace;}
+</style>
+</head>
+<body>
+<div id="nav-container"></div>
+
+<div class="ticker-wrap" aria-hidden="true">
+  <span class="ticker">&nbsp;&nbsp;&nbsp;DYNASTY RANKINGS UPDATED &nbsp;·&nbsp; ROOKIE RANKINGS LIVE &nbsp;·&nbsp; 2025 NFL DRAFT ANALYSIS &nbsp;·&nbsp; TRADE VALUE CHART UPDATED &nbsp;·&nbsp; NEW: DEVY TRACKER &nbsp;·&nbsp; SUPERFLEX TOP 300 LIVE &nbsp;·&nbsp; TE PREMIUM RANKINGS POSTED &nbsp;·&nbsp; DYNASTY RANKINGS UPDATED &nbsp;·&nbsp; ROOKIE RANKINGS LIVE &nbsp;·&nbsp; 2025 NFL DRAFT ANALYSIS &nbsp;·&nbsp; TRADE VALUE CHART UPDATED &nbsp;·&nbsp; NEW: DEVY TRACKER &nbsp;·&nbsp; SUPERFLEX TOP 300 LIVE &nbsp;·&nbsp; TE PREMIUM RANKINGS POSTED &nbsp;&nbsp;&nbsp;</span>
+</div>
+
+<div class="hero-wrap">
+  <div class="hero">
+    <div>
+      <p class="hero-eyebrow">Dynasty Fantasy Football</p>
+      <h1 class="hero-title">DOMINATE<br>YOUR<br><span class="slash">DYNASTY.</span></h1>
+      <p class="hero-tagline">Dynasty<span> · </span>Strategy<span> · </span>Edge.</p>
+      <p class="hero-sub">Rankings, trade tools, lineup optimizers, and a community of dynasty managers who live and breathe football. Built for the obsessed.</p>
+      <div class="hero-actions">
+        <a href="rankings.html" class="btn-primary">Get Started Free</a>
+        <a href="rankings.html" class="btn-ghost">Explore Tools</a>
+      </div>
+    </div>
+    <div class="rank-card">
+      <div class="rank-card-header">
+        <span class="rank-card-label">// Dynasty Top 5</span>
+        <span class="rank-card-badge">Updated Today</span>
+      </div>
+      <div class="player-row"><span class="rk top">01</span><div class="av">CJ</div><div class="pi"><div class="pn">C.J. Stroud</div><div class="pp">HOU · Age 22</div></div><span class="pos-badge-sm QB">QB</span><span class="ps">99.2<span class="up">▲</span></span></div>
+      <div class="player-row"><span class="rk top">02</span><div class="av">JG</div><div class="pi"><div class="pn">Jahmyr Gibbs</div><div class="pp">DET · Age 22</div></div><span class="pos-badge-sm RB">RB</span><span class="ps">98.1<span class="up">▲</span></span></div>
+      <div class="player-row"><span class="rk">03</span><div class="av">MN</div><div class="pi"><div class="pn">Malik Nabers</div><div class="pp">NYG · Age 21</div></div><span class="pos-badge-sm WR">WR</span><span class="ps">97.4<span class="up">▲</span></span></div>
+      <div class="player-row"><span class="rk">04</span><div class="av">BB</div><div class="pi"><div class="pn">Brock Bowers</div><div class="pp">LV · Age 22</div></div><span class="pos-badge-sm TE">TE</span><span class="ps">96.8<span class="dn">▼</span></span></div>
+      <div class="player-row"><span class="rk">05</span><div class="av">MH</div><div class="pi"><div class="pn">Marvin Harrison Jr.</div><div class="pp">ARI · Age 22</div></div><span class="pos-badge-sm WR">WR</span><span class="ps">95.3<span class="up">▲</span></span></div>
+    </div>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item"><div class="stat-number">12<span>K+</span></div><div class="stat-label">Active Managers</div></div>
+    <div class="stat-item"><div class="stat-number">500<span>+</span></div><div class="stat-label">Players Ranked</div></div>
+    <div class="stat-item"><div class="stat-number">98<span>%</span></div><div class="stat-label">Accuracy Rate</div></div>
+    <div class="stat-item"><div class="stat-number">24<span>/7</span></div><div class="stat-label">Live Data</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-head">
+    <h2 class="sec-title">YOUR <span>ARSENAL</span></h2>
+    <a href="rankings.html" class="sec-link">View all tools →</a>
+  </div>
+  <div class="tools-grid">
+    <a href="trade.html" class="tool-card feat">
+      <div class="tool-icon-wrap">⚔️</div>
+      <div class="tool-name">Trade Analyzer</div>
+      <div class="tool-desc">Input any trade — players, picks, and draft capital — and get an instant dynasty-specific value breakdown. See who wins, who loses, and by exactly how much.</div>
+      <span class="tool-tag">→ Run a trade</span>
+    </a>
+    <a href="rankings.html" class="tool-card">
+      <div class="tool-icon-wrap">📊</div>
+      <div class="tool-name">Dynasty Rankings</div>
+      <div class="tool-desc">Updated weekly. PPR, Superflex, TE Premium — sorted your way.</div>
+      <span class="tool-tag">→ View rankings</span>
+    </a>
+    <a href="optimizer.html" class="tool-card">
+      <div class="tool-icon-wrap">🏆</div>
+      <div class="tool-name">Lineup Optimizer</div>
+      <div class="tool-desc">Max your projected score with one click. Handles bye weeks and injuries.</div>
+      <span class="tool-tag">→ Optimize now</span>
+    </a>
+    <a href="rookies.html" class="tool-card">
+      <div class="tool-icon-wrap">🎯</div>
+      <div class="tool-name">Rookie Rankings</div>
+      <div class="tool-desc">Devy scores, landing spot analysis, and updated rookie ADP post-draft.</div>
+      <span class="tool-tag">→ Scout rookies</span>
+    </a>
+    <a href="calculator.html" class="tool-card">
+      <div class="tool-icon-wrap">📈</div>
+      <div class="tool-name">Dynasty Calculator</div>
+      <div class="tool-desc">Rebuild or contend? Get a team grade and a custom strategy roadmap.</div>
+      <span class="tool-tag">→ Grade my team</span>
+    </a>
+  </div>
+</div>
+
+<div class="comm-strip">
+  <div class="comm-inner">
+    <div class="comm-text">
+      <p class="eyebrow">// The Community</p>
+      <h2>WHERE DYNASTY<br>MANAGERS LIVE.</h2>
+      <p>Forum threads, expert picks, league advice, and people who understand why you traded for a 22-year-old WR2 in June.</p>
+    </div>
+    <div class="comm-stats">
+      <div><div class="cs-num">12K</div><div class="cs-lbl">Members</div></div>
+      <div><div class="cs-num">340+</div><div class="cs-lbl">Daily Posts</div></div>
+      <div><div class="cs-num">Free</div><div class="cs-lbl">To Join</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="footer-inner">
+  <div>
+    <div class="footer-name">SLAUGHTERHOUSE FANTASY</div>
+    <div class="footer-tag">Dynasty · Strategy · Edge.</div>
+  </div>
+  <div class="footer-copy">© 2025 Slaughterhouse Fantasy · All Rights Reserved</div>
+</div>
+
+<script src="nav.js"></script>
+<script>document.getElementById('nav-container').innerHTML = renderNav('home');</script>
+</body>
+</html>

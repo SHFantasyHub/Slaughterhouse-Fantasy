@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dynasty Rankings — Slaughterhouse Fantasy</title>
+<meta name="description" content="Full dynasty player rankings in PPR, Half PPR, Superflex, TE Premium, and Devy formats. Updated weekly.">
+<link rel="stylesheet" href="shared.css">
+<style>
+.controls{padding:20px 32px 0;max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.format-tabs{display:flex;gap:4px;background:var(--mid);border:1px solid var(--border);border-radius:5px;padding:3px;}
+.fmt-btn{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 12px;border:none;background:transparent;color:rgba(245,240,232,0.45);cursor:pointer;border-radius:3px;transition:all 0.15s;white-space:nowrap;}
+.fmt-btn:hover{color:var(--off-white);}
+.fmt-btn.active{background:var(--red);color:var(--off-white);}
+.pos-filters{display:flex;gap:4px;}
+.pos-btn{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;padding:6px 10px;border:1px solid var(--border);background:transparent;color:rgba(245,240,232,0.4);cursor:pointer;border-radius:3px;transition:all 0.15s;text-transform:uppercase;}
+.pos-btn:hover{border-color:var(--border-strong);color:var(--off-white);}
+.pos-btn.active{border-color:var(--red);color:var(--red);}
+.search-wrap{flex:1;min-width:180px;max-width:260px;position:relative;}
+.search-wrap input{width:100%;background:var(--mid);border:1px solid var(--border);border-radius:4px;padding:7px 12px 7px 32px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--off-white);outline:none;transition:border-color 0.2s;}
+.search-wrap input::placeholder{color:var(--muted);}
+.search-wrap input:focus{border-color:var(--border-strong);}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px;pointer-events:none;}
+.meta-row{padding:12px 32px;max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.meta-left{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;}
+.meta-left span{color:var(--red);}
+.updated-badge{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;color:rgba(245,240,232,0.3);border:1px solid var(--border);padding:3px 8px;border-radius:2px;}
+.table-wrap{padding:0 32px 48px;max-width:1200px;margin:0 auto;}
+table{width:100%;border-collapse:collapse;}
+thead tr{border-bottom:2px solid var(--red);}
+th{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;padding:10px 12px;text-align:left;font-weight:400;cursor:pointer;user-select:none;white-space:nowrap;}
+th:hover{color:var(--off-white);}
+th.sort-asc::after{content:' ▲';color:var(--red);font-size:8px;}
+th.sort-desc::after{content:' ▼';color:var(--red);font-size:8px;}
+th.num,td.num{text-align:right;}
+tbody tr{border-bottom:1px solid var(--border);transition:background 0.12s;cursor:pointer;}
+tbody tr:hover{background:rgba(245,240,232,0.03);}
+tbody tr.expanded{background:rgba(192,57,43,0.06);border-bottom:none;}
+td{padding:11px 12px;font-size:13px;vertical-align:middle;}
+.td-rank{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);width:40px;}
+.td-rank.top3{color:var(--red);font-weight:700;}
+.player-cell{display:flex;align-items:center;gap:10px;}
+.av{width:32px;height:32px;border-radius:50%;background:var(--mid2);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:rgba(245,240,232,0.6);flex-shrink:0;font-family:'Space Mono',monospace;}
+.pname{font-size:13px;font-weight:600;color:var(--off-white);}
+.pteam{font-size:10px;color:var(--muted);font-family:'Space Mono',monospace;margin-top:1px;}
+.pos{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;padding:2px 7px;border-radius:2px;letter-spacing:0.5px;}
+.trend-up{color:#4DBD8A;font-size:10px;}
+.trend-dn{color:var(--red);font-size:10px;}
+.trend-eq{color:var(--muted);font-size:10px;}
+.val-cell{display:flex;align-items:center;gap:8px;justify-content:flex-end;}
+.val-num{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--off-white);min-width:36px;text-align:right;}
+.val-bar-wrap{width:60px;height:4px;background:var(--mid2);border-radius:2px;overflow:hidden;}
+.val-bar{height:100%;background:var(--red);border-radius:2px;}
+.age-cell{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);}
+.age-young{color:#4DBD8A;}
+.age-mid{color:var(--off-white);}
+.age-old{color:#EDBA52;}
+.expand-row td{padding:0;}
+.expand-inner{padding:16px 20px 20px 54px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.expand-stat{background:var(--mid2);border-radius:4px;padding:10px 14px;border:1px solid var(--border);}
+.expand-stat-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:4px;}
+.expand-stat-val{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--off-white);letter-spacing:1px;line-height:1;}
+.expand-stat-val span{color:var(--red);}
+.expand-note{grid-column:span 4;font-size:11px;color:rgba(245,240,232,0.45);line-height:1.6;font-weight:300;padding-top:4px;font-style:italic;}
+.empty-row td{text-align:center;padding:40px;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:1px;}
+.pagination{display:flex;align-items:center;justify-content:center;gap:6px;padding:20px 32px 8px;max-width:1200px;margin:0 auto;}
+.pg-btn{font-family:'Space Mono',monospace;font-size:10px;padding:6px 12px;background:var(--mid);border:1px solid var(--border);color:rgba(245,240,232,0.45);cursor:pointer;border-radius:3px;transition:all 0.15s;}
+.pg-btn:hover{border-color:var(--border-strong);color:var(--off-white);}
+.pg-btn.active{background:var(--red);border-color:var(--red);color:var(--off-white);}
+.pg-btn:disabled{opacity:0.3;cursor:default;}
+</style>
+</head>
+<body>
+<div id="nav-container"></div>
+<div class="page-header">
+  <p class="page-eyebrow">Tool</p>
+  <h1 class="page-title">DYNASTY <span>RANKINGS</span></h1>
+  <p class="page-sub">// Full dynasty player rankings — updated weekly by the SH staff</p>
+</div>
+<div class="controls">
+  <div class="format-tabs" id="formatTabs">
+    <button class="fmt-btn active" data-fmt="PPR">PPR</button>
+    <button class="fmt-btn" data-fmt="Half PPR">Half PPR</button>
+    <button class="fmt-btn" data-fmt="Superflex">Superflex</button>
+    <button class="fmt-btn" data-fmt="TE Prem">TE Premium</button>
+    <button class="fmt-btn" data-fmt="Devy">Devy</button>
+  </div>
+  <div class="pos-filters" id="posFilters">
+    <button class="pos-btn active" data-pos="ALL">All</button>
+    <button class="pos-btn" data-pos="QB">QB</button>
+    <button class="pos-btn" data-pos="RB">RB</button>
+    <button class="pos-btn" data-pos="WR">WR</button>
+    <button class="pos-btn" data-pos="TE">TE</button>
+  </div>
+  <div class="search-wrap"><span class="search-icon">🔍</span><input type="text" id="searchInput" placeholder="Search player..."></div>
+</div>
+<div class="meta-row">
+  <div class="meta-left">Showing <span id="countLabel">50</span> players · <span id="fmtLabel">PPR</span></div>
+  <div class="updated-badge">Updated May 6, 2025</div>
+</div>
+<div class="table-wrap">
+  <table id="rankTable">
+    <thead>
+      <tr>
+        <th class="num" data-col="rank">RK</th>
+        <th data-col="name">Player</th>
+        <th data-col="pos">Pos</th>
+        <th data-col="team">Team</th>
+        <th class="num" data-col="age">Age</th>
+        <th class="num" data-col="value">Value</th>
+        <th class="num" data-col="trend">Trend</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+</div>
+<div class="pagination" id="pagination"></div>
+<script src="nav.js"></script>
+<script>
+document.getElementById('nav-container').innerHTML = renderNav('rankings');
+const PLAYERS=[{name:"C.J. Stroud",pos:"QB",team:"HOU",age:22,ppr:99.2,half:98.1,sf:99.8,te:99.2,devy:null,trend:3,note:"Elite young QB with top-5 dynasty upside. Offense built around him long-term."},{name:"Jahmyr Gibbs",pos:"RB",team:"DET",age:22,ppr:98.1,half:97.4,sf:91.2,te:98.1,devy:null,trend:2,note:"Explosive receiving back in a high-powered offense. Age and role make him a dynasty cornerstone."},{name:"Malik Nabers",pos:"WR",team:"NYG",age:21,ppr:97.4,half:97.0,sf:90.5,te:97.8,devy:null,trend:4,note:"Generational route runner. Already WR1 on his team as a rookie. Sky is the ceiling."},{name:"Brock Bowers",pos:"TE",team:"LV",age:22,ppr:96.8,half:96.5,sf:89.3,te:99.5,devy:null,trend:-1,note:"Historically dominant TE prospect. Leads all TEs by a wide margin in dynasty value."},{name:"Marvin Harrison Jr.",pos:"WR",team:"ARI",age:22,ppr:95.3,half:95.0,sf:88.9,te:95.7,devy:null,trend:1,note:"Pedigreed receiver with elite size/speed. Cardinals are building around him."},{name:"Puka Nacua",pos:"WR",team:"LAR",age:23,ppr:93.7,half:93.2,sf:87.1,te:94.0,devy:null,trend:0,note:"Target hog in LA. Scheme fit and rapport with Stafford makes him a safe dynasty WR1."},{name:"Bijan Robinson",pos:"RB",team:"ATL",age:23,ppr:93.2,half:92.8,sf:86.5,te:93.2,devy:null,trend:1,note:"The most complete RB in dynasty. Receiving ability keeps him relevant even in pass-heavy offenses."},{name:"Rashee Rice",pos:"WR",team:"KC",age:24,ppr:92.5,half:92.0,sf:86.0,te:92.8,devy:null,trend:-2,note:"WR1 for the reigning champs. Mahomes connection gives him perpetual upside."},{name:"Sam LaPorta",pos:"TE",team:"DET",age:23,ppr:91.8,half:91.3,sf:84.9,te:96.2,devy:null,trend:2,note:"Embedded in one of the best offenses in football. Volume TE with upside."},{name:"Jaylen Waddle",pos:"WR",team:"MIA",age:26,ppr:91.2,half:90.8,sf:85.2,te:91.5,devy:null,trend:0,note:"Explosive slot weapon. Age is a mild concern but talent and usage keep him top-10."},{name:"Drake London",pos:"WR",team:"ATL",age:23,ppr:90.5,half:90.1,sf:84.5,te:90.8,devy:null,trend:3,note:"Ascending WR1 with Kirk Cousins gone. Target share and red zone usage both trending up."},{name:"Kyren Williams",pos:"RB",team:"LAR",age:24,ppr:90.0,half:89.5,sf:83.8,te:90.0,devy:null,trend:1,note:"Lead back in McVay's system. Consistent floor with high ceiling if health holds."},{name:"Caleb Williams",pos:"QB",team:"CHI",age:23,ppr:89.5,half:88.9,sf:95.2,te:89.5,devy:null,trend:2,note:"Top QB prospect in years. Bears offense improving; long-term dynasty QB1."},{name:"Jordan Love",pos:"QB",team:"GB",age:26,ppr:88.8,half:88.2,sf:94.5,te:88.8,devy:null,trend:0,note:"Emerging franchise QB. Full season as starter showed he can carry a dynasty roster."},{name:"De'Von Achane",pos:"RB",team:"MIA",age:23,ppr:88.2,half:87.7,sf:81.5,te:88.2,devy:null,trend:4,note:"Fastest RB in the NFL. Usage and role expanding — elite PPR upside."},{name:"Rome Odunze",pos:"WR",team:"CHI",age:22,ppr:87.5,half:87.0,sf:81.0,te:87.8,devy:null,trend:2,note:"Caleb Williams' future WR1. Still developing but upside is enormous."},{name:"Brian Thomas Jr.",pos:"WR",team:"JAC",age:22,ppr:86.9,half:86.4,sf:80.5,te:87.2,devy:null,trend:5,note:"Breakout rookie WR. Massive target share and elite athleticism. Rising fast."},{name:"Ladd McConkey",pos:"WR",team:"LAC",age:23,ppr:86.2,half:85.7,sf:80.0,te:86.5,devy:null,trend:3,note:"Herbert's favorite target. Sticky route runner with high floor."},{name:"Trey McBride",pos:"TE",team:"ARI",age:25,ppr:85.8,half:85.3,sf:79.2,te:94.0,devy:null,trend:1,note:"Volume TE monster. Led all TEs in targets last year. TE premium gem."},{name:"Anthony Richardson",pos:"QB",team:"IND",age:23,ppr:85.0,half:84.4,sf:93.2,te:85.0,devy:null,trend:-3,note:"Elite dual-threat upside but health concerns drag value. High risk, high reward."},{name:"Tank Dell",pos:"WR",team:"HOU",age:25,ppr:84.2,half:83.7,sf:78.1,te:84.5,devy:null,trend:0,note:"Speedy slot in Houston. Stroud connection gives him reliable floor."},{name:"Keon Coleman",pos:"WR",team:"BUF",age:22,ppr:83.5,half:83.0,sf:77.5,te:83.8,devy:null,trend:2,note:"Big-bodied receiver for Buffalo. Allen usage gives him instant relevance."},{name:"Jonathon Brooks",pos:"RB",team:"CAR",age:22,ppr:83.0,half:82.5,sf:76.8,te:83.0,devy:null,trend:1,note:"Elite college back returning from injury. Carolina is built around him long-term."},{name:"Jayden Daniels",pos:"QB",team:"WAS",age:24,ppr:82.0,half:81.5,sf:92.0,te:82.0,devy:null,trend:6,note:"Fastest rising QB in dynasty. Dual-threat weapon in Washington. Buy now."},{name:"Quinshon Judkins",pos:"RB",team:"CLE",age:22,ppr:82.5,half:82.0,sf:76.5,te:82.5,devy:null,trend:1,note:"Powerful between-the-tackles runner. Gabriel connection could be lethal."},{name:"Braelon Allen",pos:"RB",team:"NYJ",age:21,ppr:78.2,half:77.7,sf:72.2,te:78.2,devy:null,trend:4,note:"Youngest high-value RB in dynasty. Physical runner with receiving ability. Long runway."},{name:"Xavier Worthy",pos:"WR",team:"KC",age:22,ppr:77.5,half:77.0,sf:71.5,te:77.8,devy:null,trend:3,note:"Elite speed for KC. Mahomes loves him in open space; dynasty sleeper."},{name:"Theo Johnson",pos:"TE",team:"NYG",age:23,ppr:80.1,half:79.6,sf:74.2,te:90.5,devy:null,trend:3,note:"Athletic freak of a TE. Developing in New York with massive upside in TE premium."},{name:"Will Shipley",pos:"RB",team:"PHI",age:23,ppr:79.5,half:79.0,sf:73.5,te:79.5,devy:null,trend:2,note:"Pass-catching back in Philly. Role carved out; dynasty value growing."},{name:"Josh Allen",pos:"QB",team:"BUF",age:28,ppr:95.0,half:94.0,sf:99.2,te:95.0,devy:null,trend:0,note:"Elite dual-threat franchise QB. Age curve approaching but still a top-3 dynasty QB."},{name:"Justin Jefferson",pos:"WR",team:"MIN",age:25,ppr:94.5,half:94.0,sf:88.0,te:95.0,devy:null,trend:1,note:"One of the best WRs in football. Dynasty WR1 for years to come."},{name:"Cam Ward",pos:"QB",team:"TEN",age:23,ppr:92.0,half:91.5,sf:97.5,te:92.0,devy:null,trend:2,note:"Generational arm talent. Tennessee committed — dynasty QB1 the moment he steps on the field."},{name:"Travis Hunter",pos:"WR",team:"JAC",age:21,ppr:91.5,half:91.0,sf:85.5,te:92.0,devy:null,trend:3,note:"Two-way phenom. Elite route running and contested catch ability."},{name:"Tetairoa McMillan",pos:"WR",team:"CAR",age:21,ppr:89.5,half:89.0,sf:83.5,te:90.0,devy:null,trend:2,note:"6'5 WR with elite hands. Carolina building around Bryce Young."},{name:"Ashton Jeanty",pos:"RB",team:"LV",age:21,ppr:90.8,half:90.2,sf:84.5,te:90.8,devy:null,trend:1,note:"Most dominant college RB in a decade. Raiders handed him the keys immediately."},{name:"Omarion Hampton",pos:"RB",team:"LAC",age:22,ppr:88.0,half:87.5,sf:82.0,te:88.0,devy:null,trend:1,note:"Workhorse RB in a pass-heavy system. Receiving ability unlocks him as a PPR monster."},{name:"Tyler Warren",pos:"TE",team:"IND",age:23,ppr:85.5,half:85.0,sf:79.0,te:95.0,devy:null,trend:2,note:"Best TE prospect since Bowers. Immediate TE1 upside in Indianapolis."},{name:"Luther Burden III",pos:"WR",team:"CHI",age:21,ppr:87.2,half:86.8,sf:81.0,te:87.5,devy:null,trend:2,note:"Explosive slot WR joining Caleb Williams in Chicago. Dynasty stack incoming."},{name:"Amon-Ra St. Brown",pos:"WR",team:"DET",age:25,ppr:93.0,half:92.5,sf:87.0,te:93.5,devy:null,trend:0,note:"Slot WR1 in an elite offense. Consistent volume every week."},{name:"Lamar Jackson",pos:"QB",team:"BAL",age:27,ppr:90.5,half:90.0,sf:96.5,te:90.5,devy:null,trend:0,note:"Mobile QB with great weapons. Still elite but age curve is coming."},{name:"Colston Loveland",pos:"TE",team:"CHI",age:22,ppr:72.5,half:72.0,sf:67.0,te:88.5,devy:null,trend:3,note:"TE1 for Caleb Williams. Chicago is building a dynasty weapon at every skill position."},{name:"Emeka Egbuka",pos:"WR",team:"TB",age:22,ppr:70.5,half:70.0,sf:64.8,te:70.8,devy:null,trend:3,note:"Top rookie WR. Massive talent in Tampa with Evans aging out. Buy the future."},{name:"Jaylen Walton",pos:"RB",team:"NYG",age:22,ppr:81.8,half:81.3,sf:75.5,te:81.8,devy:null,trend:0,note:"Speedy back in New York. Upside RB2 if he wins the starting role."},{name:"Dillon Gabriel",pos:"QB",team:"CLE",age:23,ppr:82.0,half:81.5,sf:93.5,te:82.0,devy:null,trend:4,note:"Efficient, accurate signal-caller. Cleveland committed to him. SF leagues should load up."},{name:"Derrick Henry",pos:"RB",team:"BAL",age:30,ppr:72.0,half:71.5,sf:66.0,te:72.0,devy:null,trend:-1,note:"Still elite but age is a real concern. Sell high window approaching."},{name:"Tyreek Hill",pos:"WR",team:"MIA",age:31,ppr:74.5,half:74.0,sf:68.5,te:75.0,devy:null,trend:-2,note:"Elite talent but age cliff incoming. WR2/3 in dynasty going forward."},{name:"Travis Kelce",pos:"TE",team:"KC",age:35,ppr:75.0,half:74.5,sf:69.0,te:82.0,devy:null,trend:-3,note:"Aging but still productive with Mahomes. Last year or two of real dynasty value."},{name:"Rashee Rice",pos:"WR",team:"KC",age:24,ppr:92.5,half:92.0,sf:86.0,te:92.8,devy:null,trend:-1,note:"WR1 for KC. Mahomes connection is massive; injury history is only concern."},{name:"Davante Adams",pos:"WR",team:"LAR",age:32,ppr:68.0,half:67.5,sf:62.5,te:68.5,devy:null,trend:-2,note:"Age curve hitting hard. Dynasty value mostly gone outside of redraft leagues."}];
+const fmtKey={PPR:'ppr','Half PPR':'half',Superflex:'sf','TE Prem':'te',Devy:'devy'};
+let currentFmt='PPR',currentPos='ALL',searchQ='',sortCol='rank',sortDir='asc',expandedRow=null,currentPage=1;
+const PER_PAGE=25;
+function getVal(p,fmt){const k=fmtKey[fmt];return p[k]!==null?p[k]:null;}
+function filtered(){return PLAYERS.filter(p=>{const v=getVal(p,currentFmt);if(currentFmt==='Devy'&&v===null)return false;if(currentPos!=='ALL'&&p.pos!==currentPos)return false;if(searchQ&&!p.name.toLowerCase().includes(searchQ.toLowerCase())&&!p.team.toLowerCase().includes(searchQ.toLowerCase()))return false;return true;});}
+function sorted(arr){return[...arr].sort((a,b)=>{let av,bv;if(sortCol==='rank'||sortCol==='value'){av=getVal(a,currentFmt)||0;bv=getVal(b,currentFmt)||0;return sortDir==='asc'?bv-av:av-bv;}else if(sortCol==='age'){return sortDir==='asc'?a.age-b.age:b.age-a.age;}else if(sortCol==='name'){return sortDir==='asc'?a.name.localeCompare(b.name):b.name.localeCompare(a.name);}else if(sortCol==='pos'){return sortDir==='asc'?a.pos.localeCompare(b.pos):b.pos.localeCompare(a.pos);}else if(sortCol==='team'){return sortDir==='asc'?a.team.localeCompare(b.team):b.team.localeCompare(a.team);}else if(sortCol==='trend'){return sortDir==='asc'?b.trend-a.trend:a.trend-b.trend;}return 0;});}
+function initials(n){return n.split(' ').map(w=>w[0]).join('').slice(0,2);}
+function ageClass(age){if(age<=23)return'age-young';if(age<=27)return'age-mid';return'age-old';}
+function trendHTML(t){if(t>0)return`<span class="trend-up">▲ ${t}</span>`;if(t<0)return`<span class="trend-dn">▼ ${Math.abs(t)}</span>`;return`<span class="trend-eq">—</span>`;}
+function render(){const data=sorted(filtered());const total=data.length;const pages=Math.max(1,Math.ceil(total/PER_PAGE));if(currentPage>pages)currentPage=1;const slice=data.slice((currentPage-1)*PER_PAGE,currentPage*PER_PAGE);const maxVal=Math.max(...data.map(p=>getVal(p,currentFmt)||0));document.getElementById('countLabel').textContent=total;document.getElementById('fmtLabel').textContent=currentFmt;const tbody=document.getElementById('tableBody');tbody.innerHTML='';if(slice.length===0){const tr=document.createElement('tr');tr.className='empty-row';tr.innerHTML=`<td colspan="7">No players found</td>`;tbody.appendChild(tr);}slice.forEach((p,i)=>{const globalRank=(currentPage-1)*PER_PAGE+i+1;const val=getVal(p,currentFmt);const barW=maxVal>0?Math.round((val/maxVal)*100):0;const rankClass=globalRank<=3?'top3':'';const tr=document.createElement('tr');tr.dataset.idx=PLAYERS.indexOf(p);tr.innerHTML=`<td class="td-rank num ${rankClass}">${String(globalRank).padStart(2,'0')}</td><td><div class="player-cell"><div class="av">${initials(p.name)}</div><div><div class="pname">${p.name}</div><div class="pteam">${p.team}</div></div></div></td><td><span class="pos ${p.pos}">${p.pos}</span></td><td style="font-family:'Space Mono',monospace;font-size:11px;color:rgba(245,240,232,0.6)">${p.team}</td><td class="num age-cell ${ageClass(p.age)}">${p.age}</td><td class="num"><div class="val-cell"><div class="val-bar-wrap"><div class="val-bar" style="width:${barW}%"></div></div><span class="val-num">${val!==null?val.toFixed(1):'—'}</span></div></td><td class="num">${trendHTML(p.trend)}</td>`;tr.addEventListener('click',()=>{expandedRow=expandedRow===PLAYERS.indexOf(p)?null:PLAYERS.indexOf(p);render();});tbody.appendChild(tr);if(expandedRow===PLAYERS.indexOf(p)){tr.classList.add('expanded');const exTr=document.createElement('tr');exTr.className='expand-row';exTr.innerHTML=`<td colspan="7"><div class="expand-inner"><div class="expand-stat"><div class="expand-stat-label">SF Value</div><div class="expand-stat-val">${p.sf!==null?p.sf.toFixed(1):'—'}</div></div><div class="expand-stat"><div class="expand-stat-label">TE Prem</div><div class="expand-stat-val">${p.te!==null?p.te.toFixed(1):'—'}</div></div><div class="expand-stat"><div class="expand-stat-label">Age</div><div class="expand-stat-val">${p.age}<span> yrs</span></div></div><div class="expand-stat"><div class="expand-stat-label">Trend</div><div class="expand-stat-val">${p.trend>0?'+':''}${p.trend}</div></div><div class="expand-note" style="grid-column:span 4">"${p.note}"</div></div></td>`;tbody.insertBefore(exTr,tr.nextSibling);}});renderPagination(pages);updateSortHeaders();}
+function renderPagination(pages){const pg=document.getElementById('pagination');pg.innerHTML='';if(pages<=1)return;const prev=document.createElement('button');prev.className='pg-btn';prev.textContent='← Prev';prev.disabled=currentPage===1;prev.onclick=()=>{currentPage--;render();};pg.appendChild(prev);for(let i=1;i<=pages;i++){const b=document.createElement('button');b.className='pg-btn'+(i===currentPage?' active':'');b.textContent=i;b.onclick=()=>{currentPage=i;expandedRow=null;render();};pg.appendChild(b);}const next=document.createElement('button');next.className='pg-btn';next.textContent='Next →';next.disabled=currentPage===pages;next.onclick=()=>{currentPage++;render();};pg.appendChild(next);}
+function updateSortHeaders(){document.querySelectorAll('th[data-col]').forEach(th=>{th.classList.remove('sort-asc','sort-desc');if(th.dataset.col===sortCol)th.classList.add(sortDir==='asc'?'sort-asc':'sort-desc');});}
+document.getElementById('formatTabs').addEventListener('click',e=>{const b=e.target.closest('.fmt-btn');if(!b)return;document.querySelectorAll('.fmt-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentFmt=b.dataset.fmt;currentPage=1;expandedRow=null;render();});
+document.getElementById('posFilters').addEventListener('click',e=>{const b=e.target.closest('.pos-btn');if(!b)return;document.querySelectorAll('.pos-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentPos=b.dataset.pos;currentPage=1;expandedRow=null;render();});
+document.getElementById('searchInput').addEventListener('input',e=>{searchQ=e.target.value;currentPage=1;expandedRow=null;render();});
+document.querySelectorAll('th[data-col]').forEach(th=>{th.addEventListener('click',()=>{if(sortCol===th.dataset.col){sortDir=sortDir==='asc'?'desc':'asc';}else{sortCol=th.dataset.col;sortDir='asc';}expandedRow=null;render();});});
+render();
+</script>
+</body>
+</html>
