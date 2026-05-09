@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dynasty Calculator — Slaughterhouse Fantasy</title>
+<meta name="description" content="Full dynasty team grade calculator. Connect Sleeper, ESPN or Yahoo, or enter manually. Get a complete report: team grade, positional breakdown, contention window, roadmap, and pick capital grade.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --red:#C0392B;--red-dark:#8E2018;--red-dim:rgba(192,57,43,0.1);
+  --off-white:#F5F0E8;--charcoal:#131313;--mid:#1E1E1E;--mid2:#252525;--mid3:#2C2C2C;
+  --muted:#666260;--border:rgba(245,240,232,0.08);--border-strong:rgba(245,240,232,0.18);
+  --green:#4DBD8A;--amber:#EDBA52;--blue:#7AABF0;--purple:#B09FE8;--nav-h:60px;
+}
+html{scroll-behavior:smooth;overflow-x:hidden;}
+body{overflow-x:hidden;background:var(--charcoal);color:var(--off-white);font-family:'DM Sans',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;}
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:var(--nav-h);border-bottom:1px solid var(--border);background:rgba(19,19,19,0.97);backdrop-filter:blur(10px);position:sticky;top:0;z-index:200;}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;}
+.nav-wt{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:3px;color:var(--off-white);}
+.nav-ws{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:2px;color:var(--red);display:block;margin-top:1px;}
+.nav-div{width:1px;height:24px;background:var(--border-strong);margin:0 6px;}
+.nav-links{display:flex;gap:16px;list-style:none;align-items:center;}
+.nav-links a{color:rgba(245,240,232,0.5);text-decoration:none;font-size:11px;font-weight:500;letter-spacing:0.8px;text-transform:uppercase;transition:color 0.2s;white-space:nowrap;}
+.nav-links a:hover{color:var(--off-white);}
+.nav-links a.active{color:var(--red);}
+.nav-cta{background:var(--red)!important;color:var(--off-white)!important;padding:6px 14px!important;border-radius:3px!important;}
+.mob-btn{display:none;background:transparent;border:1px solid var(--border);color:var(--off-white);padding:6px 10px;border-radius:3px;cursor:pointer;font-size:14px;}
+
+/* PAGE HEADER */
+.page-header{padding:28px 24px 0;max-width:1300px;margin:0 auto;}
+.eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--red);text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.eyebrow::before{content:'';width:20px;height:1px;background:var(--red);}
+.page-title{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:3px;color:var(--off-white);line-height:1;}
+.page-title span{color:var(--red);}
+.page-sub{font-size:12px;color:rgba(245,240,232,0.4);margin-top:6px;font-family:'Space Mono',monospace;letter-spacing:0.5px;}
+
+/* MAIN LAYOUT */
+.main{max-width:1300px;margin:20px auto 0;padding:0 24px 60px;display:grid;grid-template-columns:380px 1fr;gap:20px;align-items:start;}
+
+/* LEFT PANEL */
+.left-panel{display:flex;flex-direction:column;gap:14px;}
+
+/* PLATFORM CONNECT */
+.platform-card{background:var(--mid);border:1px solid var(--border);border-radius:7px;overflow:hidden;position:relative;}
+.platform-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--red);}
+.card-header{padding:14px 16px;border-bottom:1px solid var(--border);background:var(--mid2);}
+.card-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--red);text-transform:uppercase;}
+.card-sub{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1px;margin-top:3px;}
+.card-body{padding:14px 16px;}
+.platform-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;}
+.plat-btn{background:var(--mid2);border:1px solid var(--border);border-radius:5px;padding:12px 8px;cursor:pointer;transition:all 0.2s;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.plat-btn:hover{border-color:var(--border-strong);background:var(--mid3);}
+.plat-btn.connected{border-color:rgba(77,189,138,0.4);background:rgba(77,189,138,0.06);}
+.plat-icon{font-size:20px;}
+.plat-name{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;color:var(--off-white);}
+.plat-status{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:1px;color:var(--muted);}
+.plat-btn.connected .plat-status{color:var(--green);}
+.plat-divider{display:flex;align-items:center;gap:8px;margin:10px 0;}
+.plat-divider::before,.plat-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.plat-divider span{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1px;}
+
+/* CONNECT MODAL */
+.connect-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:300;align-items:center;justify-content:center;}
+.connect-modal.open{display:flex;}
+.connect-inner{background:var(--mid);border:1px solid var(--border-strong);border-radius:8px;padding:24px;width:360px;max-width:90vw;}
+.connect-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:var(--off-white);margin-bottom:4px;}
+.connect-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;margin-bottom:16px;line-height:1.5;}
+.connect-input{width:100%;background:var(--mid2);border:1px solid var(--border);border-radius:4px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--off-white);outline:none;margin-bottom:10px;}
+.connect-input:focus{border-color:var(--border-strong);}
+.connect-input::placeholder{color:var(--muted);}
+.connect-btn{width:100%;background:var(--red);color:var(--off-white);border:none;border-radius:4px;padding:11px;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;cursor:pointer;transition:background 0.2s;}
+.connect-btn:hover{background:var(--red-dark);}
+.connect-cancel{width:100%;background:transparent;color:var(--muted);border:none;padding:8px;font-family:'Space Mono',monospace;font-size:9px;cursor:pointer;margin-top:4px;letter-spacing:1px;}
+.connect-note{font-family:'Space Mono',monospace;font-size:8px;color:rgba(245,240,232,0.25);line-height:1.6;margin-top:10px;letter-spacing:0.5px;}
+
+/* SETTINGS */
+.settings-card{background:var(--mid);border:1px solid var(--border);border-radius:7px;overflow:hidden;}
+.settings-grid{padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.setting-item{}
+.setting-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+.setting-select{width:100%;background:var(--mid2);border:1px solid var(--border);border-radius:4px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--off-white);outline:none;cursor:pointer;}
+.setting-select:focus{border-color:var(--border-strong);}
+
+/* ROSTER BUILDER */
+.roster-card{background:var(--mid);border:1px solid var(--border);border-radius:7px;overflow:hidden;}
+.search-row{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:6px;}
+.dd-wrap{flex:1;position:relative;}
+.dd-wrap input{width:100%;background:var(--mid2);border:1px solid var(--border);border-radius:4px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--off-white);outline:none;}
+.dd-wrap input::placeholder{color:var(--muted);}
+.dd-wrap input:focus{border-color:var(--border-strong);}
+.dropdown{position:absolute;top:100%;left:0;right:0;background:var(--mid2);border:1px solid var(--border-strong);border-radius:4px;z-index:100;max-height:200px;overflow-y:auto;margin-top:2px;display:none;}
+.dropdown.open{display:block;}
+.dd-item{padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background 0.1s;border-bottom:1px solid var(--border);}
+.dd-item:last-child{border-bottom:none;}
+.dd-item:hover{background:var(--mid3);}
+.dd-name{font-size:12px;font-weight:600;color:var(--off-white);}
+.dd-meta{font-size:9px;color:var(--muted);font-family:'Space Mono',monospace;}
+.pos-badge{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;padding:2px 5px;border-radius:2px;flex-shrink:0;}
+.QB{background:rgba(192,57,43,0.2);color:#E57368;}
+.RB{background:rgba(77,189,138,0.15);color:#4DBD8A;}
+.WR{background:rgba(122,171,240,0.15);color:#7AABF0;}
+.TE{background:rgba(237,186,82,0.15);color:#EDBA52;}
+.PK{background:rgba(176,159,232,0.15);color:#B09FE8;}
+
+/* ADD PICK BTN */
+.add-pick-btn{background:var(--mid2);border:1px solid var(--border);border-radius:4px;padding:7px 10px;font-family:'Space Mono',monospace;font-size:9px;color:rgba(245,240,232,0.5);cursor:pointer;transition:all 0.15s;white-space:nowrap;letter-spacing:1px;}
+.add-pick-btn:hover{border-color:var(--border-strong);color:var(--off-white);}
+
+/* ROSTER COUNT */
+.roster-meta{padding:8px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.roster-meta-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;}
+.roster-meta-count{font-family:'Space Mono',monospace;font-size:8px;color:var(--red);letter-spacing:1px;}
+
+/* ROSTER LIST */
+.roster-list{padding:8px;max-height:380px;overflow-y:auto;}
+.roster-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--mid2);border-radius:4px;border:1px solid var(--border);margin-bottom:4px;}
+.roster-item:last-child{margin-bottom:0;}
+.ri-av{width:26px;height:26px;border-radius:50%;background:var(--mid3);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:rgba(245,240,232,0.6);font-family:'Space Mono',monospace;flex-shrink:0;}
+.ri-pick-av{border-radius:3px;background:rgba(176,159,232,0.1);border:1px solid rgba(176,159,232,0.2);}
+.ri-name{flex:1;font-size:12px;font-weight:600;color:var(--off-white);}
+.ri-sub{font-size:9px;color:var(--muted);font-family:'Space Mono',monospace;margin-top:1px;}
+.ri-remove{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:14px;line-height:1;transition:color 0.15s;flex-shrink:0;}
+.ri-remove:hover{color:var(--red);}
+.roster-empty{text-align:center;padding:24px;font-family:'Space Mono',monospace;font-size:9px;color:rgba(245,240,232,0.18);letter-spacing:1px;border:1px dashed var(--border);border-radius:4px;margin:6px;}
+
+/* ANALYZE BTN */
+.analyze-btn{width:100%;background:var(--red);color:var(--off-white);border:none;border-radius:5px;padding:14px;font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;cursor:pointer;transition:all 0.2s;}
+.analyze-btn:hover{background:var(--red-dark);transform:translateY(-1px);}
+
+/* PICK MODAL */
+.pick-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:300;align-items:center;justify-content:center;}
+.pick-modal.open{display:flex;}
+.pick-inner{background:var(--mid);border:1px solid var(--border-strong);border-radius:8px;padding:22px;width:400px;max-width:90vw;max-height:85vh;overflow-y:auto;}
+.pick-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:var(--off-white);margin-bottom:14px;}
+.year-tabs{display:flex;gap:4px;margin-bottom:12px;}
+.year-tab{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;padding:5px 12px;border:1px solid var(--border);background:transparent;color:rgba(245,240,232,0.4);cursor:pointer;border-radius:3px;transition:all 0.15s;}
+.year-tab.active{background:var(--mid3);border-color:var(--border-strong);color:var(--off-white);}
+.picks-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:10px;}
+.pick-slot{background:var(--mid2);border:1px solid var(--border);border-radius:4px;padding:7px 4px;text-align:center;cursor:pointer;transition:all 0.15s;}
+.pick-slot:hover{border-color:var(--amber);}
+.pick-slot.sel{border-color:var(--amber);background:rgba(237,186,82,0.1);}
+.pick-slot-lbl{font-family:'Bebas Neue',sans-serif;font-size:13px;color:var(--off-white);}
+.pick-slot-val{font-family:'Space Mono',monospace;font-size:7px;color:var(--amber);margin-top:1px;}
+.future-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px;}
+.future-opt{background:var(--mid2);border:1px solid var(--border);border-radius:4px;padding:8px 6px;text-align:center;cursor:pointer;transition:all 0.15s;}
+.future-opt:hover{border-color:rgba(176,159,232,0.4);}
+.future-opt.sel{border-color:var(--purple);background:rgba(176,159,232,0.08);}
+.fo-round{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--off-white);line-height:1;}
+.fo-quality{font-family:'Space Mono',monospace;font-size:8px;color:var(--purple);margin-top:2px;letter-spacing:1px;}
+.fo-val{font-family:'Space Mono',monospace;font-size:7px;color:var(--muted);margin-top:2px;}
+.rnd-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin:8px 0 4px;}
+.pick-add-btn{width:100%;background:var(--red);color:var(--off-white);border:none;border-radius:4px;padding:10px;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;cursor:pointer;margin-top:6px;}
+.pick-cancel{width:100%;background:transparent;color:var(--muted);border:none;padding:7px;font-family:'Space Mono',monospace;font-size:9px;cursor:pointer;margin-top:4px;letter-spacing:1px;}
+
+/* RIGHT PANEL — REPORT */
+.right-panel{}
+.report-placeholder{background:var(--mid);border:1px solid var(--border);border-radius:7px;padding:60px 32px;text-align:center;}
+.placeholder-icon{font-size:48px;margin-bottom:16px;opacity:0.25;}
+.placeholder-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;color:rgba(245,240,232,0.15);}
+.placeholder-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;margin-top:8px;}
+
+/* REPORT SECTIONS */
+.report{display:flex;flex-direction:column;gap:16px;}
+
+/* OVERALL GRADE */
+.grade-card{background:var(--mid);border:1px solid var(--border-strong);border-radius:7px;padding:22px;position:relative;overflow:hidden;}
+.grade-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.grade-powerhouse::before{background:linear-gradient(90deg,#4DBD8A,#7AABF0);}
+.grade-contender::before{background:var(--green);}
+.grade-fringe::before{background:var(--amber);}
+.grade-developing::before{background:var(--blue);}
+.grade-rebuild::before{background:var(--red);}
+.grade-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px;}
+.grade-left{}
+.grade-tier-badge{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border-radius:3px;display:inline-block;margin-bottom:10px;}
+.grade-letter-wrap{display:flex;align-items:baseline;gap:2px;}
+.grade-letter{font-family:'Bebas Neue',sans-serif;font-size:88px;line-height:0.85;letter-spacing:-2px;}
+.grade-plus{font-family:'Bebas Neue',sans-serif;font-size:44px;}
+.grade-right{text-align:right;}
+.grade-verdict{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;color:var(--off-white);line-height:1.1;}
+.grade-score{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:1px;}
+.grade-score b{color:var(--off-white);}
+.grade-window{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;margin-top:4px;}
+.grade-summary{font-size:13px;color:rgba(245,240,232,0.55);line-height:1.7;font-weight:300;border-top:1px solid var(--border);padding-top:14px;}
+
+/* SCORE BAR */
+.score-bar-section{margin-bottom:14px;}
+.score-bar-label{display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.score-bar-track{height:5px;background:var(--mid2);border-radius:3px;overflow:hidden;}
+.score-bar-fill{height:100%;border-radius:3px;transition:width 0.6s ease;}
+
+/* POSITIONAL GRADES */
+.pos-grades-card{background:var(--mid);border:1px solid var(--border);border-radius:7px;padding:18px;}
+.section-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--red);text-transform:uppercase;margin-bottom:14px;}
+.pos-grades-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px;}
+.pg-item{background:var(--mid2);border:1px solid var(--border);border-radius:5px;padding:12px 10px;text-align:center;}
+.pg-pos-lbl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+.pg-grade{font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:1px;line-height:1;}
+.pg-detail{font-size:9px;color:var(--muted);margin-top:4px;font-family:'Space Mono',monospace;letter-spacing:0.5px;}
+.pg-bar{height:3px;border-radius:2px;margin-top:8px;}
+.pg-players{font-size:10px;color:rgba(245,240,232,0.45);margin-top:6px;line-height:1.5;}
+
+/* PICK CAPITAL GRADE */
+.pick-capital-card{background:var(--mid);border:1px solid var(--border);border-radius:7px;padding:18px;}
+.pick-capital-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;}
+.pc-year{background:var(--mid2);border:1px solid var(--border);border-radius:5px;padding:10px;text-align:center;}
+.pc-year-label{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:var(--off-white);line-height:1;}
+.pc-year-grade{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;line-height:1;margin-top:4px;}
+.pc-year-picks{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);margin-top:4px;letter-spacing:0.5px;}
+.pc-year-val{font-family:'Space Mono',monospace;font-size:9px;margin-top:3px;letter-spacing:1px;}
+.pc-total-bar{margin-top:12px;}
+
+/* CONTENTION WINDOW */
+.window-card{background:var(--mid);border:1px solid var(--border);border-radius:7px;padding:18px;}
+.window-timeline{display:flex;gap:8px;margin-top:12px;align-items:flex-end;}
+.wt-col{flex:1;text-align:center;}
+.wt-bar-wrap{height:60px;background:var(--mid2);border-radius:3px;overflow:hidden;display:flex;align-items:flex-end;margin-bottom:5px;position:relative;}
+.wt-bar{width:100%;border-radius:3px;transition:height 0.5s ease;}
+.wt-peak-ring{position:absolute;inset:0;border:2px solid var(--amber);border-radius:3px;opacity:0;}
+.wt-peak-ring.show{opacity:1;}
+.wt-year-lbl{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1px;}
+.wt-score-lbl{font-family:'Space Mono',monospace;font-size:7px;color:var(--muted);margin-top:2px;}
+
+/* ROADMAP */
+.roadmap-card{background:var(--mid);border:1px solid var(--border);border-radius:7px;padding:18px;}
+.roadmap-strategy{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:5px;margin-bottom:14px;}
+.rs-icon{font-size:22px;flex-shrink:0;}
+.rs-name{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--off-white);}
+.rs-desc{font-size:11px;color:rgba(245,240,232,0.5);margin-top:2px;font-weight:300;}
+.roadmap-steps{display:flex;flex-direction:column;gap:8px;}
+.roadmap-step{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--mid2);border-radius:4px;border-left:3px solid var(--border);}
+.rs-num{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--red);line-height:1;flex-shrink:0;width:20px;}
+.rs-text{font-size:12px;color:rgba(245,240,232,0.65);line-height:1.6;font-weight:300;}
+.rs-text strong{color:var(--off-white);font-weight:600;}
+
+/* RECOMMENDED MOVES */
+.moves-card{background:var(--mid);border:1px solid var(--border);border-radius:7px;padding:18px;}
+.move-list{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
+.move-item{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:var(--mid2);border-radius:5px;border:1px solid var(--border);}
+.move-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
+.move-content{}
+.move-type{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;}
+.move-sell .move-type{color:var(--red);}
+.move-buy .move-type{color:var(--green);}
+.move-hold .move-type{color:var(--amber);}
+.move-draft .move-type{color:var(--blue);}
+.move-stash .move-type{color:var(--purple);}
+.move-text{font-size:12px;color:rgba(245,240,232,0.65);line-height:1.55;font-weight:300;}
+
+/* MOBILE */
+@media(max-width:1000px){
+  .main{grid-template-columns:1fr;}
+  .pos-grades-grid{grid-template-columns:repeat(2,1fr);}
+  .pick-capital-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:768px){
+  .nav-links{display:none;}
+  .nav-links.open{display:flex;flex-direction:column;position:fixed;top:var(--nav-h);left:0;right:0;background:rgba(19,19,19,0.98);padding:16px 24px;border-bottom:1px solid var(--border);z-index:199;gap:14px;}
+  .mob-btn{display:block;}
+  .page-title{font-size:32px;}
+  .platform-grid{grid-template-columns:1fr 1fr 1fr;}
+  .settings-grid{grid-template-columns:1fr;}
+  .grade-top{flex-direction:column;}
+  .grade-right{text-align:left;}
+}
+@media(max-width:500px){
+  nav,.page-header,.main{padding-left:12px;padding-right:12px;}
+  .page-title{font-size:24px;letter-spacing:1px;}
+  .picks-grid{grid-template-columns:repeat(3,1fr);}
+  .future-grid{grid-template-columns:1fr 1fr;}
+  .pos-grades-grid{grid-template-columns:1fr 1fr;}
+  .pick-capital-grid{grid-template-columns:1fr 1fr;}
+  .settings-grid{grid-template-columns:1fr;}
+  .platform-grid{grid-template-columns:1fr 1fr 1fr;}
+  .grade-letter{font-size:60px!important;}
+  .grade-verdict{font-size:20px!important;}
+  .window-timeline{gap:4px;}
+  .wt-year-lbl{font-size:7px;}
+  .left-panel{gap:10px;}
+  .analyze-btn{font-size:20px;}
+  .roadmap-step{padding:8px 10px;}
+  .rs-text{font-size:11px;}
+}
+
+/* ── PLATFORM CONNECT MODAL ── */
+.connect-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:500;align-items:center;justify-content:center;}
+.connect-overlay.open{display:flex;}
+.connect-box{background:var(--mid);border:1px solid var(--border-strong);border-radius:8px;padding:26px;width:400px;max-width:92vw;max-height:88vh;overflow-y:auto;}
+.connect-box-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;color:var(--off-white);margin-bottom:4px;}
+.connect-box-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;line-height:1.6;margin-bottom:14px;}
+.connect-step{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;background:var(--mid2);border-radius:4px;border:1px solid var(--border);margin-bottom:6px;}
+.connect-step-num{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--red);line-height:1;flex-shrink:0;width:16px;}
+.connect-step-text{font-size:11px;color:rgba(245,240,232,0.6);line-height:1.5;}
+.connect-step-text strong{color:var(--off-white);}
+.connect-input-row{display:flex;gap:8px;margin:12px 0 8px;}
+.connect-text-input{flex:1;background:var(--mid2);border:1px solid var(--border);border-radius:4px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--off-white);outline:none;}
+.connect-text-input:focus{border-color:var(--border-strong);}
+.connect-text-input::placeholder{color:var(--muted);}
+.connect-submit-btn{background:var(--red);color:var(--off-white);border:none;border-radius:4px;padding:9px 16px;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;cursor:pointer;white-space:nowrap;}
+.connect-submit-btn:disabled{opacity:0.5;cursor:default;}
+.connect-loading{display:none;text-align:center;padding:12px;font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;}
+.connect-loading.show{display:block;}
+.connect-error{font-family:'Space Mono',monospace;font-size:9px;color:var(--red);letter-spacing:1px;padding:8px 10px;background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.2);border-radius:3px;margin-top:6px;display:none;}
+.connect-error.show{display:block;}
+.connect-leagues{display:none;margin-top:10px;}
+.connect-leagues.show{display:block;}
+.connect-leagues-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+.league-item{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--mid2);border:1px solid var(--border);border-radius:4px;margin-bottom:5px;cursor:pointer;transition:border-color 0.15s;}
+.league-item:hover{border-color:var(--border-strong);}
+.league-item.sel{border-color:var(--red);background:var(--red-dim);}
+.league-name{font-size:12px;font-weight:600;color:var(--off-white);}
+.league-meta{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);margin-top:2px;}
+.connect-teams{display:none;margin-top:10px;}
+.connect-teams.show{display:block;}
+.connect-teams-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+.team-item{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--mid2);border:1px solid var(--border);border-radius:4px;margin-bottom:4px;cursor:pointer;transition:border-color 0.15s;}
+.team-item:hover{border-color:var(--border-strong);}
+.team-item.sel{border-color:var(--red);background:var(--red-dim);}
+.team-name{font-size:12px;font-weight:600;color:var(--off-white);}
+.team-record{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);}
+.import-roster-btn{width:100%;background:var(--green);color:var(--charcoal);border:none;border-radius:4px;padding:10px;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;cursor:pointer;margin-top:8px;font-weight:700;}
+.import-roster-btn:disabled{opacity:0.4;cursor:default;}
+.connect-cancel-btn{width:100%;background:transparent;color:var(--muted);border:none;padding:8px;font-family:'Space Mono',monospace;font-size:9px;cursor:pointer;margin-top:4px;letter-spacing:1px;}
+.connect-api-note{font-family:'Space Mono',monospace;font-size:7px;color:rgba(245,240,232,0.2);line-height:1.6;margin-top:10px;letter-spacing:0.5px;border-top:1px solid var(--border);padding-top:8px;}
+.connected-roster-badge{display:none;background:rgba(77,189,138,0.08);border:1px solid rgba(77,189,138,0.25);border-radius:4px;padding:8px 12px;margin:10px 16px;font-family:'Space Mono',monospace;font-size:9px;color:var(--green);letter-spacing:1px;}
+.connected-roster-badge.show{display:block;}
+.connected-roster-badge span{color:var(--off-white);}
+
+
+/* ── GLOBAL MOBILE OVERFLOW FIX ── */
+html,body{overflow-x:hidden;max-width:100vw;}
+*{max-width:100%;}
+img,svg,video{max-width:100%;}
+
+
+@media(max-width:400px){
+  html,body{overflow-x:hidden;}
+  .page-title{font-size:22px!important;letter-spacing:1px!important;}
+  .fmt-tabs{gap:2px!important;}
+  .fmt-btn{font-size:7px!important;padding:5px 5px!important;letter-spacing:0!important;}
+  .pos-btn{font-size:7px!important;padding:5px 5px!important;}
+  .controls{gap:5px!important;padding-left:10px!important;padding-right:10px!important;}
+  .settings-bar{gap:5px!important;padding-left:10px!important;padding-right:10px!important;}
+  .setting-select{font-size:8px!important;padding:5px 6px!important;}
+  table{min-width:320px!important;}
+}
+
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">
+    <svg width="32" height="24" viewBox="0 0 32 24" fill="none" style="flex-shrink:0">
+      <text x="0" y="20" font-family="'Bebas Neue',sans-serif" font-size="22" fill="#F5F0E8" font-style="italic">S</text>
+      <text x="13" y="20" font-family="'Bebas Neue',sans-serif" font-size="22" fill="#C0392B" font-style="italic">H</text>
+      <line x1="11" y1="2" x2="16" y2="22" stroke="#C0392B" stroke-width="1.2" opacity="0.5"/>
+    </svg>
+    <div class="nav-div"></div>
+    <div><span class="nav-wt">SLAUGHTERHOUSE</span><span class="nav-ws">FANTASY</span></div>
+  </a>
+  <button class="mob-btn" id="mobBtn">☰</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="rankings.html">Rankings</a></li>
+    <li><a href="rookies.html">Rookies</a></li>
+    <li><a href="calculator.html" class="active">Calculator</a></li>
+    <li><a href="optimizer.html">Optimizer</a></li>
+    <li><a href="trade.html">Trade Analyzer</a></li>
+    <li><a href="#" class="nav-cta">Join Free</a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <p class="eyebrow">Tool</p>
+  <h1 class="page-title">DYNASTY <span>CALCULATOR</span></h1>
+  <p class="page-sub">// Connect your platform or build manually · Full team grade · Positional breakdown · Roadmap · Pick capital</p>
+</div>
+
+<div class="main">
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+
+    <!-- PLATFORM CONNECT -->
+    <div class="platform-card">
+      <div class="card-header">
+        <div class="card-label">// Connect Your League</div>
+        <div class="card-sub">Import your roster automatically</div>
+      </div>
+      <div class="card-body">
+        <div class="platform-grid">
+          <div class="plat-btn" id="platSleeper" onclick="openPlatformConnect('Sleeper')">
+            <span class="plat-icon">😴</span>
+            <div class="plat-name">Sleeper</div>
+            <div class="plat-status" id="sleeperStatus">Tap to connect</div>
+          </div>
+          <div class="plat-btn" id="platESPN" onclick="openPlatformConnect('ESPN')">
+            <span class="plat-icon">🏈</span>
+            <div class="plat-name">ESPN</div>
+            <div class="plat-status" id="espnStatus">Coming soon</div>
+          </div>
+          <div class="plat-btn" id="platYahoo" onclick="openPlatformConnect('Yahoo')">
+            <span class="plat-icon">🟣</span>
+            <div class="plat-name">Yahoo</div>
+            <div class="plat-status" id="yahooStatus">Coming soon</div>
+          </div>
+        </div>
+        <div class="connected-roster-badge" id="connectedBadge">✓ Connected: <span id="connectedInfo">—</span></div>
+        <div class="plat-divider"><span>or build manually below</span></div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="settings-card">
+      <div class="card-header">
+        <div class="card-label">// League Settings</div>
+      </div>
+      <div class="settings-grid">
+        <div class="setting-item">
+          <div class="setting-label">Scoring Format</div>
+          <select class="setting-select" id="fmtSelect">
+            <option value="sf">Superflex (PPR)</option>
+            <option value="ppr">PPR</option>
+            <option value="half">Half PPR</option>
+            <option value="tep15">TE Premium (1.5)</option>
+            <option value="tep175">TE Premium (1.75)</option>
+            <option value="tep2">TE Premium (2.0)</option>
+          </select>
+        </div>
+        <div class="setting-item">
+          <div class="setting-label">League Size</div>
+          <select class="setting-select" id="leagueSize">
+            <option value="10">10 Team</option>
+            <option value="12" selected>12 Team</option>
+            <option value="14">14 Team</option>
+          </select>
+        </div>
+        <div class="setting-item">
+          <div class="setting-label">Roster Spots</div>
+          <select class="setting-select" id="rosterType">
+            <option value="sf">2QB / Superflex</option>
+            <option value="1qb">1QB Standard</option>
+          </select>
+        </div>
+        <div class="setting-item">
+          <div class="setting-label">League Type</div>
+          <select class="setting-select" id="leagueType">
+            <option value="dynasty">Dynasty</option>
+            <option value="keeper">Keeper</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROSTER BUILDER -->
+    <div class="roster-card">
+      <div class="card-header">
+        <div class="card-label">// Your Roster</div>
+        <div class="card-sub">Search players · add picks · grade your team</div>
+      </div>
+      <div class="search-row">
+        <div class="dd-wrap">
+          <input type="text" id="playerSearch" placeholder="Search player to add..." autocomplete="off">
+          <div class="dropdown" id="playerDropdown"></div>
+        </div>
+        <button class="add-pick-btn" onclick="openPickModal()">+ Pick</button>
+      </div>
+      <div class="roster-meta">
+        <span class="roster-meta-label">Roster</span>
+        <span class="roster-meta-count" id="rosterCount">0 players · 0 picks</span>
+      </div>
+      <div class="roster-list" id="rosterList">
+        <div class="roster-empty">Add players and picks to build your dynasty roster</div>
+      </div>
+    </div>
+
+    <button class="analyze-btn" onclick="runAnalysis()">GRADE MY TEAM →</button>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel" id="rightPanel">
+    <div class="report-placeholder">
+      <div class="placeholder-icon">📊</div>
+      <div class="placeholder-title">YOUR REPORT AWAITS</div>
+      <div class="placeholder-sub">Add your roster + hit Grade My Team</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONNECT MODAL -->
+<div class="connect-modal" id="connectModal">
+  <div class="connect-inner">
+    <div class="connect-title" id="connectTitle">CONNECT</div>
+    <div class="connect-sub" id="connectSub">Enter your username to import your roster</div>
+    <input type="text" class="connect-input" id="connectInput" placeholder="Enter username or league ID...">
+    <button class="connect-btn" onclick="simulateConnect()">CONNECT & IMPORT</button>
+    <button class="connect-cancel" onclick="closeConnect()">Cancel</button>
+    <div class="connect-note" id="connectNote">Note: Platform integrations require backend API setup. This demo simulates the connection flow. Full live imports will be enabled in a future update.</div>
+  </div>
+</div>
+
+<!-- PLATFORM CONNECT MODAL -->
+<div class="connect-overlay" id="connectOverlay">
+  <div class="connect-box">
+    <div class="connect-box-title" id="connectModalTitle">CONNECT SLEEPER</div>
+    <div class="connect-box-sub" id="connectModalSub">Import your dynasty roster directly from Sleeper — no password needed</div>
+
+    <div id="sleeperSteps">
+      <div class="connect-step"><div class="connect-step-num">1</div><div class="connect-step-text">Enter your <strong>Sleeper username</strong> — Sleeper's API is public, no password required.</div></div>
+      <div class="connect-step"><div class="connect-step-num">2</div><div class="connect-step-text">Select your <strong>dynasty league</strong> from the list that appears.</div></div>
+      <div class="connect-step"><div class="connect-step-num">3</div><div class="connect-step-text">Choose <strong>your team</strong> — your full roster auto-populates into the calculator.</div></div>
+    </div>
+    <div id="oauthSteps" style="display:none">
+      <div class="connect-step"><div class="connect-step-num">1</div><div class="connect-step-text">Enter your <strong>League ID</strong> from your league URL.</div></div>
+      <div class="connect-step"><div class="connect-step-num">2</div><div class="connect-step-text"><strong>Full OAuth integration coming soon.</strong> Use Sleeper for live imports now.</div></div>
+    </div>
+
+    <div class="connect-input-row">
+      <input type="text" class="connect-text-input" id="connectTextInput" placeholder="Your Sleeper username...">
+      <button class="connect-submit-btn" id="connectSubmitBtn" onclick="submitPlatformConnect()">FIND</button>
+    </div>
+    <div class="connect-error" id="connectError">Could not find that account. Please check your spelling.</div>
+    <div class="connect-loading" id="connectLoading">Searching leagues...</div>
+
+    <div class="connect-leagues" id="connectLeagues">
+      <div class="connect-leagues-label">Select Your League</div>
+      <div id="leagueList"></div>
+    </div>
+    <div class="connect-teams" id="connectTeams">
+      <div class="connect-teams-label">Select Your Team</div>
+      <div id="teamList"></div>
+      <button class="import-roster-btn" id="importRosterBtn" onclick="importRosterToCalc()" disabled>IMPORT MY ROSTER →</button>
+    </div>
+
+    <button class="connect-cancel-btn" onclick="closePlatformConnect()">Cancel</button>
+    <div class="connect-api-note">Sleeper API is public and free — no authentication needed for roster data. Full live imports require a lightweight backend proxy. ESPN and Yahoo OAuth coming in a future update.</div>
+  </div>
+</div>
+
+<!-- PICK MODAL -->
+<div class="pick-modal" id="pickModal">
+  <div class="pick-inner">
+    <div class="pick-title">ADD DRAFT PICK</div>
+    <div class="year-tabs" id="pickYearTabs">
+      <button class="year-tab active" data-year="2026">2026</button>
+      <button class="year-tab" data-year="2027">2027</button>
+      <button class="year-tab" data-year="2028">2028</button>
+      <button class="year-tab" data-year="2029">2029</button>
+    </div>
+    <div id="pickContent"></div>
+    <button class="pick-add-btn" onclick="confirmPick()">ADD PICK</button>
+    <button class="pick-cancel" onclick="closePickModal()">Cancel</button>
+  </div>
+</div>
+
+<script src="data/player-values.js"></script>
+<script src="data/pick-values.js"></script>
+<script>
+// Player data loaded from data/player-values.js
+
+
+
+// Pick values loaded from data/pick-values.js
+// ── FORMAT VALUE ──
+function getPlayerVal(p){
+  const fmt=document.getElementById('fmtSelect').value;
+  if(fmt==='ppr') return p.ppr;
+  if(fmt==='half') return p.half;
+  if(fmt==='sf') return p.sf;
+  if(fmt.startsWith('tep')){
+    const mult=fmt==='tep15'?1.5:fmt==='tep175'?1.75:2.0;
+    const bonus=p.pos==='TE'?Math.round(p.ppr*(mult-1)*0.12):0;
+    return p.ppr+bonus;
+  }
+  return p.ppr;
+}
+
+// ── CONNECT MODAL ──
+function openConnect(platform){
+  connectPlatform=platform;
+  const configs={
+    Sleeper:{title:'CONNECT SLEEPER',sub:'Enter your Sleeper username to auto-import your dynasty roster.',placeholder:'Your Sleeper username',note:'Sleeper has a free public API — no OAuth required. Full live import coming soon.'},
+    ESPN:{title:'CONNECT ESPN',sub:'Enter your ESPN league ID and team number to import your roster.',placeholder:'ESPN League ID',note:'ESPN requires OAuth authentication. Full live import coming soon.'},
+    Yahoo:{title:'CONNECT YAHOO',sub:'Enter your Yahoo league ID to import your roster.',placeholder:'Yahoo League ID',note:'Yahoo requires OAuth authentication. Full live import coming soon.'}
+  };
+  const c=configs[platform];
+  document.getElementById('connectTitle').textContent=c.title;
+  document.getElementById('connectSub').textContent=c.sub;
+  document.getElementById('connectInput').placeholder=c.placeholder;
+  document.getElementById('connectNote').textContent=c.note;
+  document.getElementById('connectInput').value='';
+  document.getElementById('connectModal').classList.add('open');
+}
+function closeConnect(){document.getElementById('connectModal').classList.remove('open');}
+function simulateConnect(){
+  const val=document.getElementById('connectInput').value.trim();
+  if(!val){alert('Please enter your username or league ID.');return;}
+  closeConnect();
+  alert(`✓ "${val}" connected! In the live build, this would auto-import your full dynasty roster from ${connectPlatform}. For now, please add your players manually below.`);
+  document.getElementById('plat'+connectPlatform).classList.add('connected');
+  document.getElementById('plat'+connectPlatform).querySelector('.plat-status').textContent='✓ Connected';
+}
+
+// ── SEARCH ──
+function ini(n){const p=n.split(' ');return p.length===1?n.slice(0,2).toUpperCase():(p[0][0]+p[p.length-1][0]).toUpperCase();}
+
+document.getElementById('playerSearch').addEventListener('input',function(){
+  const q=this.value.toLowerCase().trim();
+  const dd=document.getElementById('playerDropdown');
+  if(q.length<2){dd.classList.remove('open');return;}
+  const taken=new Set(roster.filter(r=>r.type==='player').map(r=>r.data.name));
+  const matches=PLAYERS.filter(p=>!taken.has(p.name)&&(p.name.toLowerCase().includes(q)||p.team.toLowerCase().includes(q)||p.pos.toLowerCase().includes(q))).slice(0,8);
+  if(!matches.length){dd.classList.remove('open');return;}
+  dd.innerHTML=matches.map(p=>`
+    <div class="dd-item" onclick="addPlayer('${p.name.replace(/'/g,"\\'")}')">
+      <span class="pos-badge ${p.pos}">${p.pos}</span>
+      <div><div class="dd-name">${p.name}</div><div class="dd-meta">${p.team} · Age ${p.age}</div></div>
+    </div>`).join('');
+  dd.classList.add('open');
+});
+document.addEventListener('click',e=>{if(!e.target.closest('#playerSearch')&&!e.target.closest('#playerDropdown')) document.getElementById('playerDropdown').classList.remove('open');});
+
+function addPlayer(name){
+  const p=PLAYERS.find(x=>x.name===name);
+  if(!p||roster.find(r=>r.type==='player'&&r.data.name===name)) return;
+  roster.push({type:'player',data:p});
+  document.getElementById('playerSearch').value='';
+  document.getElementById('playerDropdown').classList.remove('open');
+  renderRoster();
+}
+function removeAsset(idx){
+  roster.splice(idx,1);
+  renderRoster();
+}
+
+function renderRoster(){
+  const list=document.getElementById('rosterList');
+  const players=roster.filter(r=>r.type==='player');
+  const picks=roster.filter(r=>r.type==='pick');
+  document.getElementById('rosterCount').textContent=`${players.length} player${players.length!==1?'s':''} · ${picks.length} pick${picks.length!==1?'s':''}`;
+  if(!roster.length){
+    list.innerHTML='<div class="roster-empty">Add players and picks to build your dynasty roster</div>';
+    return;
+  }
+  const sorted=[...roster].sort((a,b)=>{
+    if(a.type!==b.type) return a.type==='player'?-1:1;
+    if(a.type==='player') return getPlayerVal(b.data)-getPlayerVal(a.data);
+    return b.value-a.value;
+  });
+  list.innerHTML=sorted.map((r,i)=>{
+    const origIdx=roster.indexOf(r);
+    const isPick=r.type==='pick';
+    return `<div class="roster-item">
+      <div class="ri-av ${isPick?'ri-pick-av':''}">${isPick?'📋':ini(r.data.name)}</div>
+      <span class="pos-badge ${isPick?'PK':r.data.pos}">${isPick?'PICK':r.data.pos}</span>
+      <div style="flex:1">
+        <div class="ri-name">${isPick?r.name:r.data.name}</div>
+        <div class="ri-sub">${isPick?r.desc:`${r.data.team} · Age ${r.data.age}`}</div>
+      </div>
+      <button class="ri-remove" onclick="removeAsset(${origIdx})">×</button>
+    </div>`;
+  }).join('');
+}
+
+// ── PICK MODAL ──
+function openPickModal(){
+  pickSelYear='2026';pickSelRound=1;pickSelSlot=null;pickSelQuality=null;
+  document.querySelectorAll('.year-tab').forEach(t=>t.classList.toggle('active',t.dataset.year==='2026'));
+  buildPickContent();
+  document.getElementById('pickModal').classList.add('open');
+}
+function closePickModal(){document.getElementById('pickModal').classList.remove('open');}
+document.getElementById('pickYearTabs').addEventListener('click',e=>{
+  const t=e.target.closest('.year-tab');if(!t)return;
+  pickSelYear=t.dataset.year;pickSelSlot=null;pickSelQuality=null;
+  document.querySelectorAll('.year-tab').forEach(x=>x.classList.toggle('active',x===t));
+  buildPickContent();
+});
+function buildPickContent(){
+  const ls=parseInt(document.getElementById('leagueSize').value);
+  const c=document.getElementById('pickContent');
+  if(pickSelYear==='2026'){
+    const slots=PICKS_2026[ls];
+    let html=`<div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--amber);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px">2026 · Specific Picks (${ls}-team)</div>`;
+    [1,2,3,4].forEach(r=>{
+      html+=`<div class="rnd-label">Round ${r}</div><div class="picks-grid">`;
+      slots[r].forEach((val,i)=>{
+        const lbl=`${r}.${String(i+1).padStart(2,'0')}`;
+        const sel=(pickSelRound===r&&pickSelSlot===i)?'sel':'';
+        html+=`<div class="pick-slot ${sel}" onclick="sel2026(${r},${i})"><div class="pick-slot-lbl">${lbl}</div><div class="pick-slot-val">${(val/100).toFixed(0)}</div></div>`;
+      });
+      html+=`</div>`;
+    });
+    c.innerHTML=html;
+  } else {
+    const yr=parseInt(pickSelYear);
+    const vals=FUTURE_PICKS[yr];
+    const mult=YEAR_MULT[yr];
+    let html=`<div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--purple);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px">${pickSelYear} · Future Picks (${Math.round(mult*100)}% value weight)</div>`;
+    html+=`<div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1px;margin-bottom:10px">${yr===2027?'Deep class — strong value':'Murky class — speculative value'}</div>`;
+    [1,2,3,4].forEach(r=>{
+      html+=`<div class="rnd-label">Round ${r}</div><div class="future-grid">`;
+      ['Early','Mid','Late'].forEach(q=>{
+        const v=vals[r][q];
+        const sel=(pickSelRound===r&&pickSelQuality===q)?'sel':'';
+        html+=`<div class="future-opt ${sel}" onclick="selFuture(${r},'${q}')"><div class="fo-round">${r}${r===1?'st':r===2?'nd':r===3?'rd':'th'}</div><div class="fo-quality">${q}</div><div class="fo-val">${(v/100).toFixed(0)}</div></div>`;
+      });
+      html+=`</div>`;
+    });
+    c.innerHTML=html;
+  }
+}
+function sel2026(r,i){pickSelRound=r;pickSelSlot=i;pickSelQuality=null;buildPickContent();}
+function selFuture(r,q){pickSelRound=r;pickSelQuality=q;pickSelSlot=null;buildPickContent();}
+function confirmPick(){
+  const ls=parseInt(document.getElementById('leagueSize').value);
+  let val,name,desc;
+  if(pickSelYear==='2026'){
+    if(pickSelSlot===null){alert('Select a pick slot.');return;}
+    val=PICKS_2026[ls][pickSelRound][pickSelSlot];
+    const lbl=`${pickSelRound}.${String(pickSelSlot+1).padStart(2,'0')}`;
+    name=`2026 Round ${pickSelRound} Pick ${lbl}`;
+    desc=`2026 specific · ${lbl} · ${ls}-team`;
+  } else {
+    if(!pickSelQuality){alert('Select Early, Mid, or Late.');return;}
+    val=FUTURE_PICKS[parseInt(pickSelYear)][pickSelRound][pickSelQuality];
+    name=`${pickSelYear} Round ${pickSelRound} (${pickSelQuality})`;
+    desc=`${pickSelYear} future · Rd ${pickSelRound} · ${pickSelQuality}`;
+  }
+  roster.push({type:'pick',name,desc,value:val,year:parseInt(pickSelYear),round:pickSelRound});
+  renderRoster();
+  closePickModal();
+}
+
+// ── ANALYSIS ENGINE ──
+function runAnalysis(){
+  if(roster.length<3){alert('Add at least 3 players to generate a meaningful report.');return;}
+  const fmt=document.getElementById('fmtSelect').value;
+  const ls=parseInt(document.getElementById('leagueSize').value);
+  const isSF=fmt==='sf'||document.getElementById('rosterType').value==='sf';
+  const isTEP=fmt.startsWith('tep');
+  const tepMult=fmt==='tep15'?1.5:fmt==='tep175'?1.75:2.0;
+
+  // Split roster
+  const qbs=roster.filter(r=>r.type==='player'&&r.data.pos==='QB').sort((a,b)=>getPlayerVal(b.data)-getPlayerVal(a.data));
+  const rbs=roster.filter(r=>r.type==='player'&&r.data.pos==='RB').sort((a,b)=>getPlayerVal(b.data)-getPlayerVal(a.data));
+  const wrs=roster.filter(r=>r.type==='player'&&r.data.pos==='WR').sort((a,b)=>getPlayerVal(b.data)-getPlayerVal(a.data));
+  const tes=roster.filter(r=>r.type==='player'&&r.data.pos==='TE').sort((a,b)=>getPlayerVal(b.data)-getPlayerVal(a.data));
+  const picks=roster.filter(r=>r.type==='pick');
+
+  function avgVal(arr,n){
+    const slice=arr.slice(0,n);
+    if(!slice.length) return 0;
+    return slice.reduce((s,r)=>s+getPlayerVal(r.data),0)/slice.length;
+  }
+  function avgAge(arr){
+    if(!arr.length) return 0;
+    return arr.reduce((s,r)=>s+r.data.age,0)/arr.length;
+  }
+
+  // ── POSITIONAL SCORES (0-100) ──
+  const maxQB=9800, maxRB=9200, maxWR=9100, maxTE=8800;
+
+  // QB Score (15% weight, 22% if SF)
+  const qbTop=isSF?qbs.slice(0,2):qbs.slice(0,1);
+  const qbScore=qbTop.length?Math.min(100,Math.round(avgVal(qbTop,2)/maxQB*100)):0;
+
+  // RB Score (20% weight)
+  const rbScore=rbs.length?Math.min(100,Math.round((avgVal(rbs,2)*0.7+avgVal(rbs,4)*0.3)/maxRB*100)):0;
+
+  // WR Score (25% weight)
+  const wrScore=wrs.length?Math.min(100,Math.round((avgVal(wrs,2)*0.65+avgVal(wrs,4)*0.35)/maxWR*100)):0;
+
+  // TE Score (15% weight, higher if TEP)
+  const teScore=tes.length?Math.min(100,Math.round(avgVal(tes,1)/maxTE*100*(isTEP?1.2:1.0))):0;
+
+  // Age Score (15% weight) — lower avg age = higher score
+  const allPlayers=[...qbs,...rbs,...wrs,...tes].slice(0,10);
+  const teamAvgAge=allPlayers.length?allPlayers.reduce((s,r)=>s+r.data.age,0)/allPlayers.length:28;
+  const ageScore=Math.min(100,Math.max(0,Math.round((30-teamAvgAge)*10)));
+
+  // Youth stars count
+  const youngStars=allPlayers.filter(r=>r.data.age<=23&&getPlayerVal(r.data)>=6000).length;
+  const agingVets=allPlayers.filter(r=>r.data.age>=30&&getPlayerVal(r.data)>=5000).length;
+
+  // Pick Capital Score (10% weight)
+  // Group picks by year, apply year multipliers, then score
+  const picks2026=picks.filter(p=>p.year===2026);
+  const picks2027=picks.filter(p=>p.year===2027);
+  const picks2028=picks.filter(p=>p.year===2028);
+  const picks2029=picks.filter(p=>p.year===2029);
+  const pickCapitalRaw=
+    picks2026.reduce((s,p)=>s+p.value*YEAR_MULT[2026],0)+
+    picks2027.reduce((s,p)=>s+p.value*YEAR_MULT[2027],0)+
+    picks2028.reduce((s,p)=>s+p.value*YEAR_MULT[2028],0)+
+    picks2029.reduce((s,p)=>s+p.value*YEAR_MULT[2029],0);
+  // Score pick capital — max expected is ~2 first rounders at full value
+  const pickScore=Math.min(100,Math.round(pickCapitalRaw/18000*100));
+
+  // ── WEIGHTED OVERALL SCORE ──
+  const qbW=isSF?0.20:0.15;
+  const rbW=0.20, wrW=0.25, teW=isTEP?0.18:0.15;
+  const ageW=0.12, pickW=0.10;
+  const remaining=1-(qbW+rbW+wrW+teW+ageW+pickW);
+  const overallScore=Math.round(
+    qbScore*qbW+rbScore*rbW+wrScore*wrW+teScore*teW+ageScore*ageW+pickScore*pickW
+  );
+
+  // ── TIER & VERDICT ──
+  let tier,tierBadge,tierColor,tierBg,verdict,gradeLetterStr,gradePlusStr,windowStr,summary;
+  if(overallScore>=88){
+    tier='powerhouse';tierBadge='💎 DYNASTY POWERHOUSE';tierColor='#4DBD8A';
+    verdict='DYNASTY POWERHOUSE';gradeLetterStr='A';gradePlusStr='+';
+    windowStr='Championship window: NOW — 3+ years';
+    summary='You have the rare combination of elite talent, roster depth, and youth. This is a multi-year championship machine. Your only job is to protect the core, avoid panic trades, and stay aggressive in the short term.';
+  } else if(overallScore>=75){
+    tier='contender';tierBadge='🟢 CONTENDER';tierColor='var(--green)';
+    verdict='LEGITIMATE CONTENDER';gradeLetterStr='A';gradePlusStr='';
+    windowStr='Championship window: This season — 2 years';
+    summary='This is a real championship-caliber roster. You have elite pieces and a viable path to a title. A few targeted upgrades could push you over the top. Avoid rebuilding — your window is open.';
+  } else if(overallScore>=62){
+    tier='fringe';tierBadge='🟡 FRINGE CONTENDER';tierColor='var(--amber)';
+    verdict='FRINGE CONTENDER';gradeLetterStr='B';gradePlusStr=youngStars>=2?'+':'';
+    windowStr='Championship window: 1-2 years (with upgrades)';
+    summary='You have genuine pieces but clear gaps preventing championship contention. The right moves — whether buying at a weak position or selling aging depth — could flip you into a real contender relatively quickly.';
+  } else if(overallScore>=45){
+    tier='developing';tierBadge='🔵 DEVELOPING';tierColor='var(--blue)';
+    verdict=youngStars>=2?'DEVELOPING — HIGH UPSIDE':'DEVELOPING';gradeLetterStr='C';gradePlusStr=youngStars>=2?'+':'';
+    windowStr=youngStars>=2?'Championship window: 2-3 years':'Championship window: 3+ years';
+    summary=youngStars>=2?'Your young core gives this rebuild real upside. The pieces are there but they need more time. Be patient, keep accumulating assets, and your window will open.':'Your roster needs significant work. Focus on adding youth and draft capital. The rebuild is necessary — embrace it and set yourself up for a dominant future.';
+  } else {
+    tier='rebuild';tierBadge='🔴 FULL REBUILD';tierColor='var(--red)';
+    verdict='FULL REBUILD';gradeLetterStr='D';gradePlusStr='';
+    windowStr='Championship window: 3-5 years';
+    summary='This roster needs a reset. Identify 1-2 young pieces worth building around, maximize value on aging veterans, load up on picks, and commit to the process. Done right, rebuilds create the next dynasty powerhouse.';
+  }
+
+  // ── POS LETTER GRADES ──
+  function scoreToGrade(s){
+    if(s>=90)return{g:'A+',c:'var(--green)'};if(s>=80)return{g:'A',c:'var(--green)'};
+    if(s>=73)return{g:'B+',c:'var(--blue)'};if(s>=65)return{g:'B',c:'var(--blue)'};
+    if(s>=57)return{g:'C+',c:'var(--amber)'};if(s>=48)return{g:'C',c:'var(--amber)'};
+    if(s>=38)return{g:'D+',c:'var(--red)'};return{g:'D',c:'var(--red)'};
+  }
+  const qbG=scoreToGrade(qbScore),rbG=scoreToGrade(rbScore),wrG=scoreToGrade(wrScore),teG=scoreToGrade(teScore),pickG=scoreToGrade(pickScore);
+
+  // ── CONTENTION TIMELINE ──
+  const years=['2026','2027','2028','2029','2030'];
+  const peakYear=overallScore>=75?'2026':overallScore>=62?'2027':overallScore>=45?'2028':'2029';
+  const timelineScores=years.map(y=>{
+    const offset=parseInt(y)-parseInt(peakYear);
+    const base=overallScore;
+    const yearBonus=youngStars*2;
+    return Math.max(5,Math.min(100,base-Math.abs(offset)*10+yearBonus+(offset<0?-15:0)));
+  });
+  function timelineColor(s){if(s>=75)return'var(--green)';if(s>=55)return'var(--amber)';return'rgba(245,240,232,0.15)';}
+
+  // ── ROADMAP ──
+  const roadmaps={
+    powerhouse:{icon:'💎',name:'SUSTAIN THE DYNASTY',desc:'Protect your core, replace aging depth, stay aggressive',steps:[
+      'Lock in contracts on your young cornerstone players — do not trade them regardless of offer',
+      'Sell <strong>aging depth</strong> (28+ players outside your top 8) at peak value — buy low on replacements',
+      'Target rookie drafts to replace RBs entering their decline phase (27+)',
+      'Stay aggressive in trades — your contention window justifies mortgaging future picks for win-now pieces',
+      'Monitor your QB situation closely — elite QB play is the single biggest factor in dynasty championships'
+    ]},
+    contender:{icon:'🏆',name:'WIN NOW',desc:'Your window is open — make the moves to close it',steps:[
+      'Identify your <strong>one or two biggest roster holes</strong> and address them aggressively this offseason',
+      'Consider trading future picks (especially 2028-2029) for proven veterans — your window is now',
+      'Sell high on any aging contributors (28+ RBs especially) before their value drops further',
+      'Do not panic sell young pieces — they are assets that help you sustain the window',
+      'Target playoff-schedule teams in your lineup optimizer every week — matchups matter in dynasty too'
+    ]},
+    fringe:{icon:'📈',name:'TARGETED UPGRADE',desc:'Close the gap with a few smart moves',steps:[
+      'Pinpoint your weakest position group and buy aggressively there — do not spread resources thin',
+      'Sell <strong>aging depth</strong> for youth at your weakest position rather than picking in the draft',
+      'Avoid trading young players under 24 — they are your path to the next window',
+      'Target the upcoming rookie draft for your weakest position group',
+      'Evaluate your QB situation honestly — a mediocre QB is often the hidden cap on a fringe contender'
+    ]},
+    developing:{icon:'🔨',name:'CONTROLLED REBUILD',desc:'Build the foundation for your next dynasty run',steps:[
+      'Keep your young cornerstones (23 and under with elite value) — these are non-negotiable holds',
+      'Sell aging veterans (28+) at whatever value you can get and reinvest in youth and picks',
+      'Prioritize <strong>2026 and 2027 draft capital</strong> — both classes are strong and picks are more valuable now',
+      'Target the upcoming rookie draft with multiple picks — volume in youth rebuilds wins',
+      'Patience is your most valuable asset right now — trust the process and avoid panic moves'
+    ]},
+    rebuild:{icon:'🔴',name:'FULL REBUILD',desc:'Tear it down and build something special',steps:[
+      'Accept the rebuild — trying to half-rebuild leads to being stuck in mediocrity for years',
+      'Maximize value on <strong>every aging veteran</strong> (27+) — someone always overpays for established names',
+      'Accumulate 2026 and 2027 picks aggressively — these are your rebuild currency',
+      'Identify 1-2 young players worth keeping as your new foundation and build around them',
+      'Embrace the draft — loading up on 3-4 rookies per year is how you turn a rebuild into a dynasty'
+    ]},
+  };
+  const rm=roadmaps[tier];
+
+  // ── RECOMMENDED MOVES ──
+  const moves=[];
+  const sortedVets=allPlayers.filter(r=>r.data.age>=29&&getPlayerVal(r.data)>=4000).sort((a,b)=>getPlayerVal(b.data)-getPlayerVal(a.data));
+  if(sortedVets.length) moves.push({type:'sell',icon:'📤',text:`Sell high on <strong>${sortedVets[0].data.name}</strong> (Age ${sortedVets[0].data.age}, ${sortedVets[0].data.pos}) before their value declines. A contending team will overpay for proven production.`});
+  if(rbScore<55) moves.push({type:'buy',icon:'📥',text:`Your <strong>RB corps is your weakest unit</strong>. Target pass-catching backs aged 22-24 — they hold dynasty value longer and provide PPR floors. The upcoming rookie draft has strong RB options.`});
+  if(wrScore<55) moves.push({type:'buy',icon:'📥',text:`<strong>WR depth is thin</strong>. Wide receivers have the longest value curves in dynasty — prioritize buying young WRs (21-23) with clear target share emerging on their teams.`});
+  if(teScore<40&&!isTEP) moves.push({type:'buy',icon:'📥',text:`<strong>No elite TE</strong> is a significant weekly liability. TE is the hardest position to fix in-season. Prioritize acquiring a TE1 now — even at a slight overpay.`});
+  if(teScore<40&&isTEP) moves.push({type:'buy',icon:'📥',text:`<strong>In a TE Premium league, an elite TE is the single biggest advantage</strong> you can have. This should be your #1 priority — overpay if you have to.`});
+  if(qbs.length<2&&isSF) moves.push({type:'draft',icon:'🎯',text:`In a Superflex league, <strong>you're one injury away from a crisis with only one QB</strong>. Stash a young QB in the upcoming rookie draft — Fernando Mendoza or Ty Simpson offer upside.`});
+  if(youngStars>=2) moves.push({type:'hold',icon:'🔒',text:`<strong>Do not trade your young stars</strong> (${allPlayers.filter(r=>r.data.age<=23&&getPlayerVal(r.data)>=6000).map(r=>r.data.name.split(' ').pop()).slice(0,3).join(', ')}). These are your championship foundation. Any offer short of generational should be declined.`});
+  if(picks.length===0) moves.push({type:'draft',icon:'🎯',text:`<strong>You have no draft capital</strong>, which limits your rebuild options. Even if you're contending, owning future picks gives you flexibility. Try to acquire at least a 2027 first-round pick.`});
+  if(picks2026.length>=2) moves.push({type:'hold',icon:'🔒',text:`<strong>Your 2026 pick capital is excellent</strong> — these are your most valuable assets. Unless the return is elite established players (not picks), hold these and use them in the draft.`});
+  const stashCandidates=PLAYERS.filter(p=>p.age<=22&&getPlayerVal(p)>=4000&&!roster.find(r=>r.type==='player'&&r.data.name===p.name)).sort((a,b)=>getPlayerVal(b)-getPlayerVal(a)).slice(0,1);
+  if(stashCandidates.length) moves.push({type:'stash',icon:'📋',text:`<strong>Stash ${stashCandidates[0].name}</strong> (Age ${stashCandidates[0].age}, ${stashCandidates[0].pos}) if available on your waiver wire or for a cheap price — the upside at their age justifies the roster spot.`});
+  if(moves.length<4) moves.push({type:'hold',icon:'📋',text:`<strong>Roster balance is solid.</strong> Focus on depth through the waiver wire and value picks in the rookie draft rather than making big splashes that disrupt your current core.`});
+
+  // ── RENDER REPORT ──
+  const rp=document.getElementById('rightPanel');
+  rp.innerHTML=`<div class="report">
+
+    <!-- OVERALL GRADE -->
+    <div class="grade-card grade-${tier}">
+      <div class="grade-top">
+        <div class="grade-left">
+          <div class="grade-tier-badge" style="background:${tier==='powerhouse'?'rgba(77,189,138,0.12)':tier==='contender'?'rgba(77,189,138,0.1)':tier==='fringe'?'rgba(237,186,82,0.1)':tier==='developing'?'rgba(122,171,240,0.1)':'rgba(192,57,43,0.1)'};border:1px solid ${tierColor};color:${tierColor}">${tierBadge}</div>
+          <div class="grade-letter-wrap">
+            <span class="grade-letter" style="color:${tierColor}">${gradeLetterStr}</span>
+            <span class="grade-plus" style="color:${tierColor}">${gradePlusStr}</span>
+          </div>
+        </div>
+        <div class="grade-right">
+          <div class="grade-verdict">${verdict}</div>
+          <div class="grade-score">Overall Score: <b>${overallScore}/100</b></div>
+          <div class="grade-window" style="color:${tierColor}">${windowStr}</div>
+        </div>
+      </div>
+      <div class="score-bar-section">
+        <div class="score-bar-label"><span>Roster Strength</span><span>${overallScore}/100</span></div>
+        <div class="score-bar-track"><div class="score-bar-fill" style="width:${overallScore}%;background:${tierColor}"></div></div>
+      </div>
+      <div class="grade-summary">${summary}</div>
+    </div>
+
+    <!-- POSITIONAL GRADES -->
+    <div class="pos-grades-card">
+      <div class="section-label">// Positional Breakdown</div>
+      <div class="pos-grades-grid">
+        <div class="pg-item">
+          <div class="pg-pos-lbl">QB${isSF?' (SF)':''}</div>
+          <div class="pg-grade" style="color:${qbG.c}">${qbG.g}</div>
+          <div class="pg-detail">${qbs.length} QB${qbs.length!==1?'s':''} · Score: ${qbScore}</div>
+          <div class="pg-bar" style="background:${qbG.c};width:${qbScore}%"></div>
+          <div class="pg-players">${qbs.slice(0,2).map(r=>r.data.name.split(' ').pop()).join(', ')||'None'}</div>
+        </div>
+        <div class="pg-item">
+          <div class="pg-pos-lbl">RB</div>
+          <div class="pg-grade" style="color:${rbG.c}">${rbG.g}</div>
+          <div class="pg-detail">${rbs.length} RB${rbs.length!==1?'s':''} · Score: ${rbScore}</div>
+          <div class="pg-bar" style="background:${rbG.c};width:${rbScore}%"></div>
+          <div class="pg-players">${rbs.slice(0,2).map(r=>r.data.name.split(' ').pop()).join(', ')||'None'}</div>
+        </div>
+        <div class="pg-item">
+          <div class="pg-pos-lbl">WR</div>
+          <div class="pg-grade" style="color:${wrG.c}">${wrG.g}</div>
+          <div class="pg-detail">${wrs.length} WR${wrs.length!==1?'s':''} · Score: ${wrScore}</div>
+          <div class="pg-bar" style="background:${wrG.c};width:${wrScore}%"></div>
+          <div class="pg-players">${wrs.slice(0,3).map(r=>r.data.name.split(' ').pop()).join(', ')||'None'}</div>
+        </div>
+        <div class="pg-item">
+          <div class="pg-pos-lbl">TE${isTEP?` (${tepMult}x)`:''}</div>
+          <div class="pg-grade" style="color:${teG.c}">${teG.g}</div>
+          <div class="pg-detail">${tes.length} TE${tes.length!==1?'s':''} · Score: ${teScore}</div>
+          <div class="pg-bar" style="background:${teG.c};width:${teScore}%"></div>
+          <div class="pg-players">${tes.slice(0,1).map(r=>r.data.name.split(' ').pop()).join(', ')||'None'}</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+        <div class="pg-item">
+          <div class="pg-pos-lbl">Avg Age (top 10)</div>
+          <div class="pg-grade" style="color:${teamAvgAge<24?'var(--green)':teamAvgAge<27?'var(--blue)':teamAvgAge<30?'var(--amber)':'var(--red)'}">${teamAvgAge.toFixed(1)}</div>
+          <div class="pg-detail">${youngStars} youth star${youngStars!==1?'s':''} · ${agingVets} aging vet${agingVets!==1?'s':''}</div>
+        </div>
+        <div class="pg-item">
+          <div class="pg-pos-lbl">Pick Capital</div>
+          <div class="pg-grade" style="color:${pickG.c}">${pickG.g}</div>
+          <div class="pg-detail">${picks.length} pick${picks.length!==1?'s':''} · Score: ${pickScore}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PICK CAPITAL BREAKDOWN -->
+    <div class="pick-capital-card">
+      <div class="section-label">// Pick Capital Grade</div>
+      <div style="font-size:11px;color:rgba(245,240,232,0.45);margin-bottom:10px;line-height:1.6;font-weight:300">Pick values are weighted by year: 2026 = 100% · 2027 = 85% (deep class) · 2028 = 45% (murky) · 2029 = 25% (speculative)</div>
+      <div class="pick-capital-grid">
+        ${[2026,2027,2028,2029].map(yr=>{
+          const yPicks=picks.filter(p=>p.year===yr);
+          const yVal=yPicks.reduce((s,p)=>s+p.value*YEAR_MULT[yr],0);
+          const yScore=Math.min(100,Math.round(yVal/8000*100));
+          const yG=scoreToGrade(yScore);
+          return`<div class="pc-year">
+            <div class="pc-year-label">${yr}</div>
+            <div class="pc-year-grade" style="color:${yG.c}">${yPicks.length?yG.g:'—'}</div>
+            <div class="pc-year-picks">${yPicks.length} pick${yPicks.length!==1?'s':''}</div>
+            <div class="pc-year-val" style="color:${YEAR_MULT[yr]>=0.8?'var(--green)':YEAR_MULT[yr]>=0.5?'var(--amber)':'var(--muted)'}">${Math.round(YEAR_MULT[yr]*100)}% weight</div>
+          </div>`;
+        }).join('')}
+      </div>
+      ${picks.length===0?`<div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--red);letter-spacing:1px;padding:8px 0">⚠ No picks on roster — add picks using the + Pick button</div>`:''}
+      <div class="pc-total-bar">
+        <div class="score-bar-label"><span>Overall Pick Capital Score</span><span>${pickScore}/100</span></div>
+        <div class="score-bar-track"><div class="score-bar-fill" style="width:${pickScore}%;background:${pickG.c}"></div></div>
+      </div>
+    </div>
+
+    <!-- CONTENTION WINDOW -->
+    <div class="window-card">
+      <div class="section-label">// Contention Window</div>
+      <div class="window-timeline">
+        ${years.map((y,i)=>{
+          const s=timelineScores[i];
+          const isPeak=y===peakYear;
+          return`<div class="wt-col">
+            <div class="wt-bar-wrap">
+              <div class="wt-bar" style="height:${s}%;background:${timelineColor(s)}"></div>
+              ${isPeak?`<div class="wt-peak-ring show"></div>`:''}
+            </div>
+            <div class="wt-year-lbl">${y}</div>
+            <div class="wt-score-lbl">${s}</div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div style="font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1px;margin-top:10px;text-align:center">Peak window: <span style="color:var(--amber)">${peakYear}</span> · Based on age curve + roster composition + pick capital</div>
+    </div>
+
+    <!-- ROADMAP -->
+    <div class="roadmap-card">
+      <div class="section-label">// Championship Roadmap</div>
+      <div class="roadmap-strategy" style="background:${tier==='powerhouse'?'rgba(77,189,138,0.08)':tier==='contender'?'rgba(77,189,138,0.06)':tier==='fringe'?'rgba(237,186,82,0.06)':tier==='developing'?'rgba(122,171,240,0.06)':'rgba(192,57,43,0.06)'};border:1px solid ${tierColor}30">
+        <span class="rs-icon">${rm.icon}</span>
+        <div>
+          <div class="rs-name" style="color:${tierColor}">${rm.name}</div>
+          <div class="rs-desc">${rm.desc}</div>
+        </div>
+      </div>
+      <div class="roadmap-steps">
+        ${rm.steps.map((step,i)=>`
+          <div class="roadmap-step" style="border-left-color:${tierColor}60">
+            <div class="rs-num" style="color:${tierColor}">${i+1}</div>
+            <div class="rs-text">${step}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- RECOMMENDED MOVES -->
+    <div class="moves-card">
+      <div class="section-label">// Recommended Moves</div>
+      <div class="move-list">
+        ${moves.slice(0,6).map(m=>`
+          <div class="move-item move-${m.type}">
+            <span class="move-icon">${m.icon}</span>
+            <div class="move-content">
+              <div class="move-type">${m.type.toUpperCase()}</div>
+              <div class="move-text">${m.text}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>
+
+  </div>`;
+
+  rp.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+document.getElementById('mobBtn').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+
+// ── PLATFORM CONNECT FOR CALCULATOR ──
+let calcConnectedRoster = [];
+let calcSelectedLeagueId = null;
+let calcSelectedTeamId = null;
+let calcConnectedUsername = '';
+let calcConnectedLeagueName = '';
+let calcCurrentPlatform = '';
+
+const DEMO_LEAGUES_CALC = [
+  {id:'cl_001',name:'The Dynasty League',type:'dynasty',size:12,season:'2025'},
+  {id:'cl_002',name:'Slaughterhouse Fantasy League',type:'dynasty',size:12,season:'2025'},
+  {id:'cl_003',name:'Weekend Warriors Dynasty',type:'dynasty',size:10,season:'2025'},
+];
+
+const DEMO_TEAMS_CALC = [
+  {id:'ct_001',name:'Championship Hopefuls',owner:'You',wins:9,losses:5},
+  {id:'ct_002',name:'The Dark Horses',owner:'League Mate 1',wins:11,losses:3},
+  {id:'ct_003',name:'Rebuild Mode',owner:'League Mate 2',wins:5,losses:9},
+  {id:'ct_004',name:'Dynasty Kings',owner:'League Mate 3',wins:8,losses:6},
+  {id:'ct_005',name:'Pick Collectors',owner:'League Mate 4',wins:7,losses:7},
+  {id:'ct_006',name:'Waiver Wire Warriors',owner:'League Mate 5',wins:6,losses:8},
+  {id:'ct_007',name:'Stacked & Ready',owner:'League Mate 6',wins:10,losses:4},
+  {id:'ct_008',name:'Eternal Rebuilders',owner:'League Mate 7',wins:3,losses:11},
+  {id:'ct_009',name:'Consistent Contenders',owner:'League Mate 8',wins:8,losses:6},
+  {id:'ct_010',name:'The Managers',owner:'League Mate 9',wins:7,losses:7},
+  {id:'ct_011',name:'Just Here 2 Trade',owner:'League Mate 10',wins:4,losses:10},
+  {id:'ct_012',name:'Fantasy Gods',owner:'League Mate 11',wins:12,losses:2},
+];
+
+// Sample roster for demo — matches top players from our DB
+const DEMO_CALC_ROSTER_NAMES = [
+  'Josh Allen','Puka Nacua','Jahmyr Gibbs','Trey McBride','De'Von Achane',
+  'Ja'Marr Chase','C.J. Stroud','Tyler Warren','Bijan Robinson','Drake London',
+  'Ladd McConkey','Sam LaPorta','Breece Hall','Rome Odunze','Emeka Egbuka',
+  'Omarion Hampton','Kayshon Boutte','Pat Freiermuth','Kimani Vidal','Mason Taylor'
+];
+
+function openPlatformConnect(platform){
+  calcCurrentPlatform=platform;
+  calcSelectedLeagueId=null;calcSelectedTeamId=null;
+  document.getElementById('connectTextInput').value='';
+  document.getElementById('connectError').classList.remove('show');
+  document.getElementById('connectLoading').classList.remove('show');
+  document.getElementById('connectLeagues').classList.remove('show');
+  document.getElementById('connectTeams').classList.remove('show');
+  document.getElementById('importRosterBtn').disabled=true;
+
+  if(platform==='Sleeper'){
+    document.getElementById('connectModalTitle').textContent='CONNECT SLEEPER';
+    document.getElementById('connectModalSub').textContent='Import your dynasty roster directly from Sleeper — no password needed';
+    document.getElementById('connectTextInput').placeholder='Your Sleeper username...';
+    document.getElementById('sleeperSteps').style.display='block';
+    document.getElementById('oauthSteps').style.display='none';
+  } else {
+    document.getElementById('connectModalTitle').textContent='CONNECT '+platform.toUpperCase();
+    document.getElementById('connectModalSub').textContent=platform+' OAuth integration coming soon. Use Sleeper for live imports.';
+    document.getElementById('connectTextInput').placeholder='League ID...';
+    document.getElementById('sleeperSteps').style.display='none';
+    document.getElementById('oauthSteps').style.display='block';
+  }
+  document.getElementById('connectOverlay').classList.add('open');
+}
+
+function closePlatformConnect(){
+  document.getElementById('connectOverlay').classList.remove('open');
+}
+
+async function submitPlatformConnect(){
+  const username=document.getElementById('connectTextInput').value.trim();
+  if(!username){alert('Please enter your username.');return;}
+  calcConnectedUsername=username;
+
+  if(calcCurrentPlatform!=='Sleeper'){
+    closePlatformConnect();
+    alert(calcCurrentPlatform+' OAuth integration is coming soon! Use Sleeper for live roster imports, or add players manually using the search bar.');
+    return;
+  }
+
+  document.getElementById('connectError').classList.remove('show');
+  document.getElementById('connectLoading').classList.add('show');
+  document.getElementById('connectLeagues').classList.remove('show');
+  document.getElementById('connectSubmitBtn').disabled=true;
+
+  // PRODUCTION: Replace with real API proxy call
+  // const res = await fetch('/api/sleeper/user/'+username+'/leagues');
+  // const leagues = await res.json();
+  await new Promise(r=>setTimeout(r,1200));
+
+  document.getElementById('connectLoading').classList.remove('show');
+  document.getElementById('connectSubmitBtn').disabled=false;
+
+  if(username.toLowerCase()==='test123'||username.toLowerCase()==='invalid'){
+    document.getElementById('connectError').classList.add('show');
+    return;
+  }
+
+  // Render leagues
+  const list=document.getElementById('leagueList');
+  list.innerHTML=DEMO_LEAGUES_CALC.map(l=>`
+    <div class="league-item" id="cl_${l.id}" onclick="calcSelectLeague('${l.id}','${l.name}')">
+      <div><div class="league-name">${l.name}</div><div class="league-meta">${l.size} teams · Dynasty · ${l.season}</div></div>
+    </div>`).join('');
+  document.getElementById('connectLeagues').classList.add('show');
+}
+
+function calcSelectLeague(id, name){
+  calcSelectedLeagueId=id;
+  calcConnectedLeagueName=name;
+  document.querySelectorAll('.league-item').forEach(el=>el.classList.remove('sel'));
+  document.getElementById('cl_'+id).classList.add('sel');
+  // Show teams
+  const tl=document.getElementById('teamList');
+  tl.innerHTML=DEMO_TEAMS_CALC.map(t=>`
+    <div class="team-item" id="ct_${t.id}" onclick="calcSelectTeam('${t.id}','${t.name}')">
+      <div><div class="team-name">${t.name}</div><div class="team-record">${t.owner} · ${t.wins}W-${t.losses}L</div></div>
+    </div>`).join('');
+  document.getElementById('connectTeams').classList.add('show');
+}
+
+function calcSelectTeam(id, name){
+  calcSelectedTeamId=id;
+  document.querySelectorAll('.team-item').forEach(el=>el.classList.remove('sel'));
+  document.getElementById('ct_'+id).classList.add('sel');
+  document.getElementById('importRosterBtn').disabled=false;
+}
+
+function importRosterToCalc(){
+  if(!calcSelectedLeagueId||!calcSelectedTeamId) return;
+
+  // PRODUCTION: Replace with real roster API call
+  // const rosterData = await fetch('/api/sleeper/league/'+calcSelectedLeagueId+'/roster/'+calcSelectedTeamId).then(r=>r.json());
+  // Map player IDs to our PLAYERS database
+
+  // DEMO: Match demo names to our player database
+  calcConnectedRoster = PLAYERS.filter(p=>
+    DEMO_CALC_ROSTER_NAMES.some(n=>{
+      const parts=n.toLowerCase().split(' ');
+      return parts.every(part=>p.name.toLowerCase().includes(part));
+    })
+  );
+
+  // Pad with top players if not enough matched
+  if(calcConnectedRoster.length < 10){
+    const fallback=[...PLAYERS].sort((a,b)=>b.ppr-a.ppr)
+      .filter(p=>!calcConnectedRoster.find(c=>c.name===p.name))
+      .slice(0, 20-calcConnectedRoster.length);
+    calcConnectedRoster=[...calcConnectedRoster,...fallback];
+  }
+
+  closePlatformConnect();
+
+  // Mark Sleeper as connected
+  document.getElementById('platSleeper').classList.add('connected');
+  document.getElementById('sleeperStatus').textContent='✓ Connected';
+  document.getElementById('connectedBadge').classList.add('show');
+  document.getElementById('connectedInfo').textContent=calcConnectedUsername+' · '+calcConnectedLeagueName;
+
+  // Auto-populate roster with connected players
+  roster=[];
+  calcConnectedRoster.forEach(p=>{
+    roster.push({type:'player',data:p});
+  });
+  renderRoster();
+
+  // Scroll to roster
+  document.getElementById('rosterList').scrollIntoView({behavior:'smooth',block:'start'});
+
+  // Show success
+  const count=calcConnectedRoster.length;
+  alert('✓ '+count+' players imported from '+calcConnectedLeagueName+'! Your roster has been auto-populated. Add any missing picks using the + Pick button, then hit Grade My Team.');
+}
+
+// Override openConnect to use new function (backwards compat)
+function openConnect(platform){ openPlatformConnect(platform); }
+
+document.getElementById('connectOverlay').addEventListener('click',function(e){
+  if(e.target===this) closePlatformConnect();
+});
+document.getElementById('connectTextInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter') submitPlatformConnect();
+});
+
+</script>
+</body>
+</html>
