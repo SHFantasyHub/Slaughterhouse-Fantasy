@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2025 Final Rankings — Slaughterhouse Fantasy</title>
+<meta name="description" content="Official 2025 final season fantasy football rankings. Skill players only (QB, RB, WR, TE). These are finishing ranks from the completed 2025 NFL season — not 2026 projections.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --red:#C0392B;--red-dim:rgba(192,57,43,0.1);
+  --off-white:#F5F0E8;--charcoal:#131313;--mid:#1E1E1E;--mid2:#252525;--mid3:#2C2C2C;
+  --muted:#666260;--border:rgba(245,240,232,0.08);--border-strong:rgba(245,240,232,0.18);
+  --green:#4DBD8A;--amber:#EDBA52;--blue:#7AABF0;--nav-h:60px;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--charcoal);color:var(--off-white);font-family:'DM Sans',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:var(--nav-h);border-bottom:1px solid var(--border);background:rgba(19,19,19,0.97);backdrop-filter:blur(10px);position:sticky;top:0;z-index:200;}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;}
+.nav-wt{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:3px;color:var(--off-white);}
+.nav-ws{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:2px;color:var(--red);display:block;margin-top:1px;}
+.nav-div{width:1px;height:24px;background:var(--border-strong);margin:0 6px;}
+.nav-links{display:flex;gap:16px;list-style:none;align-items:center;}
+.nav-links a{color:rgba(245,240,232,0.5);text-decoration:none;font-size:11px;font-weight:500;letter-spacing:0.8px;text-transform:uppercase;transition:color 0.2s;white-space:nowrap;}
+.nav-links a:hover{color:var(--off-white);}
+.nav-links a.active{color:var(--red);}
+.nav-cta{background:var(--red)!important;color:var(--off-white)!important;padding:6px 14px!important;border-radius:3px!important;}
+.mob-btn{display:none;background:transparent;border:1px solid var(--border);color:var(--off-white);padding:6px 10px;border-radius:3px;cursor:pointer;font-size:14px;}
+.disclaimer-banner{background:rgba(237,186,82,0.08);border-bottom:2px solid rgba(237,186,82,0.35);padding:10px 24px;}
+.disclaimer-inner{max-width:1300px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.disc-text{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.8px;color:var(--amber);line-height:1.5;}
+.disc-text strong{color:var(--off-white);}
+.disc-badge{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;padding:4px 10px;border-radius:3px;background:rgba(237,186,82,0.15);border:1px solid rgba(237,186,82,0.35);color:var(--amber);white-space:nowrap;flex-shrink:0;}
+.page-header{padding:28px 24px 0;max-width:1300px;margin:0 auto;}
+.eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--red);text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.eyebrow::before{content:'';width:20px;height:1px;background:var(--red);}
+.page-title{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:3px;color:var(--off-white);line-height:1;}
+.page-title span{color:var(--red);}
+.page-sub{font-size:12px;color:rgba(245,240,232,0.4);margin-top:6px;font-family:'Space Mono',monospace;letter-spacing:0.5px;}
+.context-block{padding:16px 24px 0;max-width:1300px;margin:0 auto;}
+.context-inner{background:var(--mid);border:1px solid var(--border-strong);border-radius:6px;padding:14px 18px;display:flex;align-items:flex-start;gap:14px;position:relative;overflow:hidden;}
+.context-inner::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--amber);}
+.context-title{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-bottom:5px;}
+.context-body{font-size:12px;color:rgba(245,240,232,0.55);line-height:1.65;font-weight:300;}
+.context-body strong{color:var(--off-white);font-weight:500;}
+.source-bar{padding:14px 24px 0;max-width:1300px;margin:0 auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.src-pill{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:3px;border:1px solid var(--border-strong);color:rgba(245,240,232,0.4);display:flex;align-items:center;gap:5px;}
+.src-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.verified-tag{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1px;padding:4px 10px;border-radius:3px;background:rgba(77,189,138,0.1);border:1px solid rgba(77,189,138,0.25);color:var(--green);}
+.season-tag{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1px;padding:4px 10px;border-radius:3px;background:rgba(237,186,82,0.08);border:1px solid rgba(237,186,82,0.25);color:var(--amber);}
+.controls{padding:14px 24px 0;max-width:1300px;margin:0 auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.fmt-tabs{display:flex;gap:3px;background:var(--mid);border:1px solid var(--border);border-radius:5px;padding:3px;}
+.fmt-btn{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:6px 11px;border:none;background:transparent;color:rgba(245,240,232,0.45);cursor:pointer;border-radius:3px;transition:all 0.15s;white-space:nowrap;}
+.fmt-btn:hover{color:var(--off-white);}
+.fmt-btn.active{background:var(--red);color:var(--off-white);}
+.pos-tabs{display:flex;gap:3px;flex-wrap:wrap;}
+.pos-btn{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;padding:6px 9px;border:1px solid var(--border);background:transparent;color:rgba(245,240,232,0.4);cursor:pointer;border-radius:3px;transition:all 0.15s;text-transform:uppercase;white-space:nowrap;}
+.pos-btn:hover{border-color:var(--border-strong);color:var(--off-white);}
+.pos-btn.active{border-color:var(--red);color:var(--red);background:var(--red-dim);}
+.search-box{flex:1;min-width:150px;max-width:260px;position:relative;}
+.search-box input{width:100%;background:var(--mid);border:1px solid var(--border);border-radius:4px;padding:7px 10px 7px 28px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--off-white);outline:none;}
+.search-box input::placeholder{color:var(--muted);}
+.search-box input:focus{border-color:var(--border-strong);}
+.search-icon{position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:11px;pointer-events:none;}
+.meta-row{padding:10px 24px 0;max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;}
+.meta-l{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
+.meta-l b{color:var(--red);}
+.meta-r{display:flex;gap:6px;align-items:center;}
+.badge{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1px;padding:3px 8px;border-radius:2px;border:1px solid var(--border);color:rgba(245,240,232,0.25);}
+.not-proj{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1px;padding:3px 8px;border-radius:2px;background:rgba(237,186,82,0.08);border:1px solid rgba(237,186,82,0.3);color:var(--amber);}
+.tbl-wrap{padding:10px 24px 0;max-width:1300px;margin:0 auto;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table{width:100%;border-collapse:collapse;min-width:560px;}
+thead tr{border-bottom:2px solid var(--red);}
+th{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;padding:9px 8px;text-align:left;font-weight:400;cursor:pointer;user-select:none;white-space:nowrap;}
+th:hover{color:var(--off-white);}
+th.r{text-align:right;}
+th.sort-asc::after{content:' ▲';color:var(--red);font-size:7px;}
+th.sort-desc::after{content:' ▼';color:var(--red);font-size:7px;}
+tbody tr{border-bottom:1px solid var(--border);transition:background 0.1s;cursor:pointer;}
+tbody tr:hover{background:rgba(245,240,232,0.025);}
+tbody tr.expanded{background:rgba(192,57,43,0.05);border-bottom:none;}
+td{padding:8px;font-size:12px;vertical-align:middle;}
+.tier-row td{padding:5px 8px;}
+.tier-lbl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border-radius:2px;display:inline-block;}
+.t1{background:rgba(192,57,43,0.12);color:#E57368;border:1px solid rgba(192,57,43,0.25);}
+.t2{background:rgba(237,186,82,0.08);color:#EDBA52;border:1px solid rgba(237,186,82,0.18);}
+.t3{background:rgba(77,189,138,0.08);color:#4DBD8A;border:1px solid rgba(77,189,138,0.18);}
+.t4{background:rgba(122,171,240,0.08);color:#7AABF0;border:1px solid rgba(122,171,240,0.18);}
+.t5{background:rgba(245,240,232,0.03);color:rgba(245,240,232,0.3);border:1px solid var(--border);}
+.rk{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);text-align:center;}
+.g1{color:var(--red);font-weight:700;}
+.g2{color:var(--amber);}
+.g3{color:var(--green);}
+.pc{display:flex;align-items:center;gap:8px;}
+.av{width:30px;height:30px;border-radius:50%;background:var(--mid2);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:rgba(245,240,232,0.6);flex-shrink:0;font-family:'Space Mono',monospace;}
+.pn{font-size:13px;font-weight:600;color:var(--off-white);white-space:nowrap;}
+.pm{font-size:9px;color:var(--muted);font-family:'Space Mono',monospace;margin-top:1px;}
+.pos{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;padding:2px 6px;border-radius:2px;}
+.QB{background:rgba(192,57,43,0.2);color:#E57368;}
+.RB{background:rgba(77,189,138,0.15);color:#4DBD8A;}
+.WR{background:rgba(122,171,240,0.15);color:#7AABF0;}
+.TE{background:rgba(237,186,82,0.15);color:#EDBA52;}
+.fpts{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--off-white);text-align:right;}
+.elite{color:var(--green)!important;}
+.great{color:var(--blue)!important;}
+.good{color:var(--amber)!important;}
+.pos-rk{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);text-align:right;}
+.p1{color:var(--red)!important;}
+.sc{font-family:'Space Mono',monospace;font-size:9px;color:rgba(245,240,232,0.45);text-align:right;}
+.exp-row td{padding:0;}
+.exp-inner{padding:12px 12px 16px 50px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:repeat(6,1fr);gap:8px;}
+.exp-stat{background:var(--mid2);border-radius:4px;padding:8px 10px;border:1px solid var(--border);}
+.exp-lbl{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:3px;}
+.exp-val{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--off-white);letter-spacing:1px;line-height:1;}
+.hi{color:var(--green)!important;}
+.fmt-ranks{grid-column:span 6;display:flex;gap:8px;flex-wrap:wrap;}
+.fri{background:var(--mid3);border-radius:3px;padding:5px 10px;border:1px solid var(--border);}
+.frl{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
+.frv{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--off-white);letter-spacing:1px;line-height:1.2;}
+.exp-disc{grid-column:span 6;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1px;color:rgba(237,186,82,0.6);padding:6px 10px;background:rgba(237,186,82,0.05);border:1px solid rgba(237,186,82,0.15);border-radius:3px;}
+.pg-wrap{display:flex;align-items:center;justify-content:center;gap:5px;padding:16px 24px 20px;max-width:1300px;margin:0 auto;flex-wrap:wrap;}
+.pg-btn{font-family:'Space Mono',monospace;font-size:9px;padding:6px 11px;background:var(--mid);border:1px solid var(--border);color:rgba(245,240,232,0.45);cursor:pointer;border-radius:3px;transition:all 0.15s;white-space:nowrap;}
+.pg-btn:hover{border-color:var(--border-strong);color:var(--off-white);}
+.pg-btn.active{background:var(--red);border-color:var(--red);color:var(--off-white);}
+.pg-btn:disabled{opacity:0.3;cursor:default;}
+.pg-info{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);padding:0 4px;}
+.footer-disc{max-width:1300px;margin:0 auto;padding:16px 24px 40px;}
+.fd-inner{background:var(--mid);border:1px solid rgba(237,186,82,0.2);border-radius:6px;padding:14px 18px;display:flex;align-items:flex-start;gap:12px;}
+.fd-text{font-size:11px;color:rgba(245,240,232,0.4);line-height:1.65;font-weight:300;}
+.fd-text strong{color:var(--amber);}
+@media(max-width:900px){
+  .nav-links{display:none;}
+  .nav-links.open{display:flex;flex-direction:column;position:fixed;top:var(--nav-h);left:0;right:0;background:rgba(19,19,19,0.98);padding:16px 24px;border-bottom:1px solid var(--border);z-index:199;gap:14px;}
+  .mob-btn{display:block;}
+  .page-title{font-size:32px;}
+  .fmt-tabs{flex-wrap:wrap;}
+  .fmt-btn{font-size:8px;padding:5px 8px;}
+  .exp-inner{grid-template-columns:repeat(2,1fr);}
+  .exp-inner .fmt-ranks,.exp-inner .exp-disc{grid-column:span 2;}
+  th.hm,td.hm{display:none;}
+}
+@media(max-width:500px){
+  nav,.page-header,.source-bar,.controls,.meta-row,.tbl-wrap,.pg-wrap,.context-block,.footer-disc,.disclaimer-banner{padding-left:14px;padding-right:14px;}
+  .page-title{font-size:26px;}
+  .fmt-btn{font-size:7px;padding:5px 7px;}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">
+    <svg width="32" height="24" viewBox="0 0 32 24" fill="none" style="flex-shrink:0">
+      <text x="0" y="20" font-family="'Bebas Neue',sans-serif" font-size="22" fill="#F5F0E8" font-style="italic">S</text>
+      <text x="13" y="20" font-family="'Bebas Neue',sans-serif" font-size="22" fill="#C0392B" font-style="italic">H</text>
+      <line x1="11" y1="2" x2="16" y2="22" stroke="#C0392B" stroke-width="1.2" opacity="0.5"/>
+    </svg>
+    <div class="nav-div"></div>
+    <div><span class="nav-wt">SLAUGHTERHOUSE</span><span class="nav-ws">FANTASY</span></div>
+  </a>
+  <button class="mob-btn" id="mobBtn">☰</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="rankings.html" class="active">Rankings</a></li>
+    <li><a href="rookies.html">Rookies</a></li>
+    <li><a href="calculator.html">Calculator</a></li>
+    <li><a href="optimizer.html">Optimizer</a></li>
+    <li><a href="trade.html">Trade Analyzer</a></li>
+    <li><a href="#" class="nav-cta">Join Free</a></li>
+  </ul>
+</nav>
+
+<div class="disclaimer-banner">
+  <div class="disclaimer-inner">
+    <span style="font-size:16px;flex-shrink:0">⚠️</span>
+    <span class="disc-text"><strong>These are 2025 Final Season Rankings — Not 2026 Projections.</strong> This page shows how players actually finished the completed 2025 NFL season. Use these to evaluate past performance and inform your 2026 draft strategy.</span>
+    <span class="disc-badge">2025 Season · Final</span>
+  </div>
+</div>
+
+<div class="page-header">
+  <p class="eyebrow">2025 Final Season Results</p>
+  <h1 class="page-title">2025 FINAL <span>RANKINGS</span></h1>
+  <p class="page-sub">// QB · RB · WR · TE only · Sourced from FantasyPros · 2025 season final stats · Not a 2026 projection</p>
+</div>
+
+<div class="context-block">
+  <div class="context-inner">
+    <span style="font-size:20px;flex-shrink:0;margin-top:1px">📋</span>
+    <div>
+      <div class="context-title">What this page is</div>
+      <div class="context-body">These rankings reflect the <strong>official final fantasy football finishes from the completed 2025 NFL season</strong>, sourced directly from FantasyPros. Skill positions only — QB, RB, WR, TE. Rankings recalculate automatically when you switch formats. <strong>2026 preseason projections will be published separately as the offseason develops.</strong></div>
+    </div>
+  </div>
+</div>
+
+<div class="source-bar">
+  <div class="src-pill"><span class="src-dot" style="background:#E57368"></span>FantasyPros</div>
+  <div class="src-pill"><span class="src-dot" style="background:#B09FE8"></span>ESPN</div>
+  <div class="src-pill"><span class="src-dot" style="background:#4DBD8A"></span>Yahoo</div>
+  <div class="src-pill"><span class="src-dot" style="background:#7AABF0"></span>Sleeper</div>
+  <span class="verified-tag">✓ Verified 2025 Final Stats</span>
+  <span class="season-tag">⚑ 2025 Season Complete</span>
+</div>
+
+<div class="controls">
+  <div class="fmt-tabs" id="fmtTabs">
+    <button class="fmt-btn active" data-fmt="ppr">PPR</button>
+    <button class="fmt-btn" data-fmt="half">Half PPR</button>
+    <button class="fmt-btn" data-fmt="sf">Superflex</button>
+    <button class="fmt-btn" data-fmt="tep">TE Premium</button>
+  </div>
+  <div class="pos-tabs" id="posTabs">
+    <button class="pos-btn active" data-pos="ALL">All</button>
+    <button class="pos-btn" data-pos="QB">QB</button>
+    <button class="pos-btn" data-pos="RB">RB</button>
+    <button class="pos-btn" data-pos="WR">WR</button>
+    <button class="pos-btn" data-pos="TE">TE</button>
+  </div>
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Search player or team...">
+  </div>
+</div>
+
+<div class="meta-row">
+  <div class="meta-l">Showing <b id="showCount">50</b> of <b id="totalCount">—</b> skill players · <b id="fmtLabel">PPR</b></div>
+  <div class="meta-r">
+    <div class="not-proj">⚑ Not 2026 Projections</div>
+    <div class="badge">FantasyPros · 2025 Final</div>
+  </div>
+</div>
+
+<div class="tbl-wrap">
+  <table id="mainTable">
+    <thead>
+      <tr>
+        <th class="r" data-col="rank" style="width:36px">RK</th>
+        <th data-col="name">Player</th>
+        <th data-col="pos" style="width:48px">Pos</th>
+        <th data-col="team" class="hm" style="width:44px">Team</th>
+        <th class="r" data-col="fpts">2025 Pts</th>
+        <th class="r hm" data-col="posrk">Pos RK</th>
+        <th class="r hm" data-col="rec">Rec</th>
+        <th class="r hm" data-col="recyds">Rec Yds</th>
+        <th class="r hm" data-col="runyds">Rush/Pass Yds</th>
+        <th class="r hm" data-col="tds">TDs</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+</div>
+<div class="pg-wrap" id="pgWrap"></div>
+
+<div class="footer-disc">
+  <div class="fd-inner">
+    <span style="font-size:16px;flex-shrink:0">ℹ️</span>
+    <div class="fd-text"><strong>Important:</strong> Rankings on this page represent final fantasy football finishes from the <strong>completed 2025 NFL season</strong> and should be used as historical reference only. They are <strong>not predictions, projections, or advice for the 2026 season.</strong> Stay tuned for our 2026 preseason rankings and dynasty projections. Data sourced from FantasyPros consensus rankings. Format adjustments are calculated mathematically from verified 2025 PPR totals.</div>
+  </div>
+</div>
+
+<script src="data/players-2025.js"></script>
+<script>
+// Player data loaded from data/players-2025.js
+
+function fmtPts(p,fmt){
+  if(fmt==='ppr') return p.fpts;
+  if(fmt==='half') return+(p.fpts-p.rec*0.5).toFixed(1);
+  if(fmt==='sf'){const b=p.pos==='QB'?20:0;return+(p.fpts+b).toFixed(1);}
+  if(fmt==='tep'){const b=p.pos==='TE'?p.rec*0.5:0;return+(p.fpts+b).toFixed(1);}
+  return p.fpts;
+}
+function assignPosRanks(fmt){
+  const byPos={QB:[],RB:[],WR:[],TE:[]};
+  RAW.forEach(p=>{if(byPos[p.pos])byPos[p.pos].push(p);});
+  Object.values(byPos).forEach(arr=>{
+    arr.sort((a,b)=>fmtPts(b,fmt)-fmtPts(a,fmt));
+    arr.forEach((p,i)=>p._pr=i+1);
+  });
+}
+function getTier(r){
+  if(r<=12)return{t:1,lbl:'Tier 1 — Elite',cls:'t1'};
+  if(r<=36)return{t:2,lbl:'Tier 2 — Startable',cls:'t2'};
+  if(r<=80)return{t:3,lbl:'Tier 3 — Flex / Depth',cls:'t3'};
+  if(r<=150)return{t:4,lbl:'Tier 4 — Streamers',cls:'t4'};
+  return{t:5,lbl:'Tier 5 — Deep Bench',cls:'t5'};
+}
+function ptCls(pts){if(pts>=300)return'elite';if(pts>=200)return'great';if(pts>=130)return'good';return'';}
+function rkCls(r){if(r<=3)return'g1';if(r<=12)return'g2';if(r<=36)return'g3';return'';}
+function ini(n){const p=n.split(' ');return p.length===1?n.slice(0,2).toUpperCase():(p[0][0]+p[p.length-1][0]).toUpperCase();}
+
+let fmt='ppr',pos='ALL',search='',sortCol='rank',sortDir='asc',expanded=null,page=1;
+const PER=50;
+
+function getFiltered(){
+  return RAW.filter(p=>{
+    if(pos!=='ALL'&&p.pos!==pos)return false;
+    if(search&&!p.name.toLowerCase().includes(search)&&!p.team.toLowerCase().includes(search))return false;
+    return true;
+  });
+}
+function getSorted(arr){
+  return[...arr].sort((a,b)=>{
+    const av=fmtPts(a,fmt),bv=fmtPts(b,fmt);
+    if(sortCol==='rank'||sortCol==='fpts')return sortDir==='asc'?bv-av:av-bv;
+    if(sortCol==='name')return sortDir==='asc'?a.name.localeCompare(b.name):b.name.localeCompare(a.name);
+    if(sortCol==='pos')return sortDir==='asc'?a.pos.localeCompare(b.pos):b.pos.localeCompare(a.pos);
+    if(sortCol==='team')return sortDir==='asc'?a.team.localeCompare(b.team):b.team.localeCompare(a.team);
+    if(sortCol==='rec')return sortDir==='asc'?b.rec-a.rec:a.rec-b.rec;
+    if(sortCol==='recyds')return sortDir==='asc'?b.recyds-a.recyds:a.recyds-b.recyds;
+    if(sortCol==='runyds')return sortDir==='asc'?(b.runyds||b.passyds)-(a.runyds||a.passyds):(a.runyds||a.passyds)-(b.runyds||b.passyds);
+    if(sortCol==='tds'){const ta=a.rectds+a.runtds+a.passtds,tb=b.rectds+b.runtds+b.passtds;return sortDir==='asc'?tb-ta:ta-tb;}
+    if(sortCol==='posrk')return sortDir==='asc'?a._pr-b._pr:b._pr-a._pr;
+    return 0;
+  });
+}
+
+function render(){
+  assignPosRanks(fmt);
+  const filtered=getFiltered();
+  const data=getSorted(filtered);
+  const total=data.length;
+  const pages=Math.max(1,Math.ceil(total/PER));
+  if(page>pages)page=1;
+  const slice=data.slice((page-1)*PER,page*PER);
+  document.getElementById('showCount').textContent=slice.length;
+  document.getElementById('totalCount').textContent=total;
+  document.getElementById('fmtLabel').textContent={ppr:'PPR',half:'Half PPR',sf:'Superflex',tep:'TE Premium (1.5 PPR)'}[fmt];
+  const tbody=document.getElementById('tableBody');
+  tbody.innerHTML='';
+  let lastTier=null,gRk=0;
+  slice.forEach(p=>{
+    gRk++;
+    const rank=(page-1)*PER+gRk;
+    const pts=fmtPts(p,fmt);
+    const tier=getTier(rank);
+    const idx=RAW.indexOf(p);
+    const tds=p.rectds+p.runtds+p.passtds;
+    if(pos==='ALL'&&tier.t!==lastTier){
+      const tr=document.createElement('tr');tr.className='tier-row';
+      tr.innerHTML=`<td colspan="10"><span class="tier-lbl ${tier.cls}">${tier.lbl}</span></td>`;
+      tbody.appendChild(tr);lastTier=tier.t;
+    }
+    const tr=document.createElement('tr');
+    if(expanded===idx)tr.classList.add('expanded');
+    tr.innerHTML=`
+      <td class="rk ${rkCls(rank)}" style="text-align:center">${rank}</td>
+      <td><div class="pc"><div class="av">${ini(p.name)}</div><div><div class="pn">${p.name}</div><div class="pm">${p.team} · ${pts.toFixed(1)} pts</div></div></div></td>
+      <td><span class="pos ${p.pos}">${p.pos}</span></td>
+      <td class="hm" style="font-family:'Space Mono',monospace;font-size:10px;color:rgba(245,240,232,0.5)">${p.team}</td>
+      <td class="fpts ${ptCls(pts)}" style="text-align:right">${pts.toFixed(1)}</td>
+      <td class="pos-rk ${p._pr<=3?'p1':''} r hm">${p.pos+(p._pr||'?')}</td>
+      <td class="sc hm">${p.rec||'—'}</td>
+      <td class="sc hm">${p.recyds||'—'}</td>
+      <td class="sc hm">${p.runyds||p.passyds||'—'}</td>
+      <td class="sc hm">${tds||'—'}</td>`;
+    tr.addEventListener('click',()=>{expanded=expanded===idx?null:idx;render();});
+    tbody.appendChild(tr);
+    if(expanded===idx){
+      const ex=document.createElement('tr');ex.className='exp-row';
+      const isQB=p.pos==='QB';
+      ex.innerHTML=`<td colspan="10"><div class="exp-inner">
+        <div class="exp-stat"><div class="exp-lbl">Receptions</div><div class="exp-val">${p.rec||0}</div></div>
+        <div class="exp-stat"><div class="exp-lbl">Rec Yards</div><div class="exp-val">${p.recyds||0}</div></div>
+        <div class="exp-stat"><div class="exp-lbl">Rec TDs</div><div class="exp-val">${p.rectds||0}</div></div>
+        <div class="exp-stat"><div class="exp-lbl">${isQB?'Pass Yds':'Rush Yds'}</div><div class="exp-val">${isQB?p.passyds:p.runyds||0}</div></div>
+        <div class="exp-stat"><div class="exp-lbl">${isQB?'Pass TDs':'Rush TDs'}</div><div class="exp-val">${isQB?p.passtds:p.runtds||0}</div></div>
+        <div class="exp-stat"><div class="exp-lbl">Total TDs</div><div class="exp-val hi">${tds}</div></div>
+        <div class="fmt-ranks">
+          <div class="fri"><div class="frl">PPR</div><div class="frv">${fmtPts(p,'ppr').toFixed(1)}</div></div>
+          <div class="fri"><div class="frl">Half PPR</div><div class="frv">${fmtPts(p,'half').toFixed(1)}</div></div>
+          <div class="fri"><div class="frl">Superflex</div><div class="frv">${fmtPts(p,'sf').toFixed(1)}</div></div>
+          <div class="fri"><div class="frl">TE Premium</div><div class="frv">${fmtPts(p,'tep').toFixed(1)}</div></div>
+        </div>
+        <div class="exp-disc">⚑ 2025 final stats only — not 2026 projections</div>
+      </div></td>`;
+      tbody.appendChild(ex);
+    }
+  });
+  renderPg(pages);updateHdrs();
+}
+
+function renderPg(pages){
+  const pg=document.getElementById('pgWrap');pg.innerHTML='';
+  if(pages<=1)return;
+  const prev=document.createElement('button');prev.className='pg-btn';prev.textContent='← Prev';prev.disabled=page===1;
+  prev.onclick=()=>{page--;expanded=null;render();window.scrollTo(0,0);};pg.appendChild(prev);
+  const info=document.createElement('span');info.className='pg-info';info.textContent=`Page ${page} of ${pages}`;pg.appendChild(info);
+  const s=Math.max(1,page-2),e=Math.min(pages,s+4);
+  for(let i=s;i<=e;i++){const b=document.createElement('button');b.className='pg-btn'+(i===page?' active':'');b.textContent=i;b.onclick=()=>{page=i;expanded=null;render();window.scrollTo(0,0);};pg.appendChild(b);}
+  const next=document.createElement('button');next.className='pg-btn';next.textContent='Next →';next.disabled=page===pages;
+  next.onclick=()=>{page++;expanded=null;render();window.scrollTo(0,0);};pg.appendChild(next);
+}
+function updateHdrs(){
+  document.querySelectorAll('th[data-col]').forEach(th=>{
+    th.classList.remove('sort-asc','sort-desc');
+    if(th.dataset.col===sortCol)th.classList.add(sortDir==='asc'?'sort-asc':'sort-desc');
+  });
+}
+document.getElementById('fmtTabs').addEventListener('click',e=>{
+  const b=e.target.closest('.fmt-btn');if(!b)return;
+  document.querySelectorAll('.fmt-btn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');fmt=b.dataset.fmt;page=1;expanded=null;render();
+});
+document.getElementById('posTabs').addEventListener('click',e=>{
+  const b=e.target.closest('.pos-btn');if(!b)return;
+  document.querySelectorAll('.pos-btn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');pos=b.dataset.pos;page=1;expanded=null;render();
+});
+document.getElementById('searchInput').addEventListener('input',e=>{
+  search=e.target.value.toLowerCase().trim();page=1;expanded=null;render();
+});
+document.querySelectorAll('th[data-col]').forEach(th=>{
+  th.addEventListener('click',()=>{
+    sortCol===th.dataset.col?sortDir=sortDir==='asc'?'desc':'asc':(sortCol=th.dataset.col,sortDir='asc');
+    expanded=null;render();
+  });
+});
+document.getElementById('mobBtn').addEventListener('click',()=>{
+  document.getElementById('navLinks').classList.toggle('open');
+});
+render();
+</script>
+</body>
+</html>
