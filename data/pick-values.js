@@ -14,7 +14,7 @@
 //
 // TO UPDATE: Change values after each draft to reflect new class strength
 // Last updated: May 2026
-
+ 
 // ── PICK VALUES ──
 // 2026: specific slots per league size
 // Format: [early picks higher value, late picks lower value]
@@ -38,47 +38,20 @@ const PICK_VALUES_2026 = {
     4: [90,80,72,64,56,48,40,36,32,28,24,20,18,16],
   }
 };
-
+ 
 // Future picks (2027-2029): Early/Mid/Late by round
 const FUTURE_PICK_VALUES = {
   2027: {1:{Early:4200,Mid:3200,Late:2400},2:{Early:1800,Mid:1200,Late:800},3:{Early:600,Mid:400,Late:260},4:{Early:200,Mid:140,Late:90}},
   2028: {1:{Early:3600,Mid:2800,Late:2000},2:{Early:1500,Mid:1000,Late:660},3:{Early:500,Mid:330,Late:210},4:{Early:160,Mid:110,Late:70}},
   2029: {1:{Early:3000,Mid:2400,Late:1800},2:{Early:1200,Mid:800,Late:540},3:{Early:400,Mid:260,Late:170},4:{Early:130,Mid:90,Late:56}},
 };
-
-let sideA=[], sideB=[];
-let pickTarget=null, selYear='2026', selRound=1, selSlot=null, selQuality=null;
-let fmt='sf', tepMult=1.5, leagueSize=12;
-
-// ── VALUE CALCULATION ──
-function getVal(asset){
-  if(asset.type==='player'){
-    const p=asset.data;
-    if(fmt==='ppr') return p.ppr;
-    if(fmt==='half') return p.half;
-    if(fmt==='sf') return p.sf;
-    if(fmt==='tep'){
-      // TEP: add bonus per reception * (mult-1) for TEs
-      const bonus = p.pos==='TE' ? Math.round(p.ppr * (tepMult-1) * 0.15) : 0;
-      return p.ppr + bonus;
-    }
-    return p.ppr;
-  }
-  if(asset.type==='pick') return asset.value;
-  return 0;
-}
-
-function totalVal(side){ return side.reduce((s,a)=>s+getVal(a),0); }
-
-// ── YEAR MULTIPLIERS (used for dynasty calculator grading) ──
-// These reflect how much weight each year's picks carry in team grades
+ 
+// ── YEAR MULTIPLIERS ──
+// Used by Dynasty Calculator for pick capital grading
+// 2026 = 100%, 2027 = 85% (deep class), 2028 = 45% (murky), 2029 = 25% (speculative)
 const YEAR_MULT={2026:1.0,2027:0.85,2028:0.45,2029:0.25};
-
-// ── FUTURE PICK VALUES (2027-2029) ──
-// Already discounted by year multiplier above
-// Format: year -> round -> Early/Mid/Late -> value
-const FUTURE_PICK_VALUES = {
-  2027:{1:{Early:4200,Mid:3200,Late:2400},2:{Early:1800,Mid:1200,Late:800},3:{Early:600,Mid:400,Late:260},4:{Early:200,Mid:140,Late:90}},
-  2028:{1:{Early:1900,Mid:1400,Late:1050},2:{Early:750,Mid:500,Late:330},3:{Early:240,Mid:160,Late:100},4:{Early:72,Mid:50,Late:32}},
-  2029:{1:{Early:900,Mid:700,Late:530},2:{Early:360,Mid:240,Late:160},3:{Early:120,Mid:78,Late:50},4:{Early:38,Mid:26,Late:16}}
-};
+ 
+// ── ALIASES for backwards compatibility ──
+// Calculator uses PICKS_2026 and FUTURE_PICKS
+const PICKS_2026 = PICK_VALUES_2026;
+const FUTURE_PICKS = FUTURE_PICK_VALUES;
